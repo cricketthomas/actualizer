@@ -17,6 +17,8 @@ namespace actualizer.Controllers
     {
         
         private static readonly HttpClient client = new HttpClient();
+        List<string> returnObject = new List<string> { };
+
         static async Task<string> GetCommentsAsync(string video_id, string lang = "en") //void means returns nothing
         {
             string key = "AIzaSyCFDwRa8R7V2g3H-7GzcLkPzedoPIruaVg";
@@ -32,10 +34,17 @@ namespace actualizer.Controllers
 
             int index = 0;
             foreach (var i in rootobject.items){
-                commentRows.Add(new Comments { id = index, text = i.snippet.topLevelComment.snippet.textDisplay, language = "en" });
+                commentRows.Add(new Comments { id = index, text = i.snippet.topLevelComment.snippet.textDisplay, language = lang });
                 index++; 
             }
-            string json = JsonConvert.SerializeObject(new { results = commentRows });
+            string nextPage = rootobject.nextPageToken;
+            string json = JsonConvert.SerializeObject(new {
+                video_id,
+                count = commentRows.Count,
+                comments = commentRows,
+                nextPage,
+
+            });
             Console.WriteLine(json);
 
             return json;
@@ -62,11 +71,36 @@ namespace actualizer.Controllers
 
 
         // POST api/values
+      
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<ActionResult<string>> PostItemAsync([FromBody] string value)
         {
-            Console.WriteLine(value);
+            // _context.TodoItems.Add(item);
+            // await _context.SaveChangesAsync();
+            try
+            {
+                var c = await GetCommentsAsync(value);
+                string videoId = value;
+
+
+
+
+                //return Ok( new { video_id = videoId,  c });
+
+                return Ok(c);
+
+
+
+            }
+            catch
+            {
+                return BadRequest();
+            }
+
+
+
         }
+
 
         // PUT api/values/5
         [HttpPut("{id}")]

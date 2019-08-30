@@ -12,10 +12,10 @@ namespace actualizer.Models
 {
     public class Comments
     {
+
         public int id { get; set; }
         public string text { get; set; }
         public string language { get; set; }
-
 
         //public static int count = 0;
 
