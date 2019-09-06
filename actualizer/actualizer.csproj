@@ -25,4 +25,7 @@
     <Compile Remove="Models\Comments %28copy%29.cs" />
     <Compile Remove="Models\Comments.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="readme.md" />
+  </ItemGroup>
 </Project>
