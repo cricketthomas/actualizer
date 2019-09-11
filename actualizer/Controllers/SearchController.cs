@@ -52,7 +52,7 @@ namespace actualizer.Controllers
         [HttpGet]
         public async Task<ActionResult<string>> GetAsync( string video_id, string search, string lang = "en")
         {
-            string c = await GetCommentsNextPageAsync(video_id, search, lang);
+            string c = await GetCommentsNextPageAsync(video_id: video_id, search: search, lang: lang);
             return Ok(c);
         }
     }

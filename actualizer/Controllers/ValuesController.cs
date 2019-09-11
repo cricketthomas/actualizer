@@ -49,15 +49,6 @@ namespace actualizer.Controllers
             return json;
         }
 
-        // GET api/values
-        /*
-        [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-        */
-
 
         // GET api/values/ --- youtube video id 
         [HttpGet]

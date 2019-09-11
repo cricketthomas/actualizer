@@ -29,4 +29,17 @@ namespace actualizer.Models
     
 
     }
+
+
+    public class ReturnJson
+    {
+        public string search { get; set; }
+        public string url { get; set; }
+        public string video_id { get; set; }
+        public int count { get; set; }
+        public string comments { get; set; }
+        public string nextPage { get; set; }
+    }
+
+    
 }
