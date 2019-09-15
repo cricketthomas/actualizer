@@ -19,6 +19,8 @@ namespace actualizer.Controllers
 
         static async Task<string> GetCommentsNextPageAsync(string video_id, string NextPageToken, string search) //void means returns nothing
         {
+
+
             string key = "AIzaSyCFDwRa8R7V2g3H-7GzcLkPzedoPIruaVg";
             string u = "https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&maxResults=100";
             string url = $"{u}&pageToken={NextPageToken}&searchTerms={search}&textFormat=plainText&videoId={video_id}&key={key}";            
@@ -35,8 +37,12 @@ namespace actualizer.Controllers
             }
             //IEnumerable<string> obj = rootobject.items.Select(r => r.snippet.topLevelComment.snippet.textDisplay).Where(r => r == "dog");
 
+   
+
             
-        string nextPage = rootobject.nextPageToken;
+            string nextPage = rootobject.nextPageToken;
+
+
             string json = JsonConvert.SerializeObject(new
             {
                 search,
@@ -46,7 +52,11 @@ namespace actualizer.Controllers
                 comments = commentRows,
                 nextPage,
             });
-            return json;
+
+
+			return json;
+
+
         }
         /*
         static async Task<string> GetCommentsAsync(string video_id1, string lang1 = "en")

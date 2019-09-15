@@ -16,18 +16,6 @@ namespace actualizer.Models
         public int id { get; set; }
         public string text { get; set; }
         public string language { get; set; }
-
-        //public static int count = 0;
-
-        /*public Comments(int id,string text, string language) {
-
-            Console.WriteLine($"comments called{id},{text},{language}");
-            count++;
-        }*/
-
-        
-    
-
     }
 
 
@@ -37,8 +25,8 @@ namespace actualizer.Models
         public string url { get; set; }
         public string video_id { get; set; }
         public int count { get; set; }
-        public string comments { get; set; }
-        public string nextPage { get; set; }
+        public Comments[] comments { get; set; }
+        public string nextPage { get; set; } 
     }
 
     

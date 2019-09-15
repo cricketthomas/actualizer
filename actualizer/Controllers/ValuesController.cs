@@ -54,7 +54,7 @@ namespace actualizer.Controllers
         [HttpGet]
         public async Task<ActionResult<string>> GetAsync(string video_id, string lang)
         {
-            string c = await GetCommentsAsync(video_id, lang);
+            string c = await GetCommentsAsync(video_id: video_id, lang:lang);
             Console.WriteLine(c);
             return c;
         }

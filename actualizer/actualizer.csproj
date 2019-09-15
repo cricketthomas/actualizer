@@ -24,6 +24,7 @@
     <Compile Remove="Models\PageInfo.cs" />
     <Compile Remove="Models\Comments %28copy%29.cs" />
     <Compile Remove="Models\Comments.cs" />
+    <Compile Remove="Controllers\PageController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="readme.md" />

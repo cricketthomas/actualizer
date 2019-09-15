@@ -50,9 +50,9 @@ namespace actualizer.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<string>> GetAsync( string video_id, string search, string lang = "en")
+        public async Task<ActionResult<string>> GetAsync( string v, string s, string l = "en")
         {
-            string c = await GetCommentsNextPageAsync(video_id: video_id, search: search, lang: lang);
+            string c = await GetCommentsNextPageAsync(video_id: v, search: s, lang: l);
             return Ok(c);
         }
     }
