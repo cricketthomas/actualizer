@@ -41,9 +41,6 @@ namespace actualizer.Controllers
                 index++;
             }
             string nextPage = rootobject.nextPageToken;
-
-
-
             string json = JsonConvert.SerializeObject(new
             {
                 search,
@@ -54,7 +51,6 @@ namespace actualizer.Controllers
                 nextPage
             });
            
-
             ReturnObject.Add(new ReturnJson { search= search , url = url, video_id = video_id, comments = commentRows.ToArray(), count = commentRows.Count, nextPage= nextPage });
 
             return ReturnObject;
@@ -79,23 +75,27 @@ namespace actualizer.Controllers
             {
                 for (var index = 0; index < pageReqCount; index++) {
                     Console.WriteLine(nextPageIdFromQuery);
-                    result = await GetCommentsNextPageAsync(video_id: v, search: s, NextPageToken: nextPageIdFromQuery);
-                    Console.WriteLine(nextPageIdFromQuery);
-                    results = result.Cast<ReturnJson>();
-                     nextPageIdFromQuery = results.Select(p => p.nextPage).First();
-                    obj.Add(new ReturnJson
-                    {
-                        search = results.Select(x => x.search).First(),
-                        count = results.Select(x => x.count).First(),
-                        url = results.Select(x => x.url).First(),
-                        video_id = results.Select(x => x.video_id).First(),
-                        comments = results.Select(x => x.comments).First(),
-                        nextPage = results.Select(x => x.nextPage).First(),
-                    });
+                    if (!string.IsNullOrEmpty(nextPageIdFromQuery)) {
+                        result = await GetCommentsNextPageAsync(video_id: v, search: s, NextPageToken: nextPageIdFromQuery);
+                        Console.WriteLine(nextPageIdFromQuery);
+                        results = result.Cast<ReturnJson>();
+                        nextPageIdFromQuery = results.Select(p => p.nextPage).First();
+                        obj.Add(new ReturnJson
+                        {
+                            search = results.Select(x => x.search).First(),
+                            count = results.Select(x => x.count).First(),
+                            url = results.Select(x => x.url).First(),
+                            video_id = results.Select(x => x.video_id).First(),
+                            comments = results.Select(x => x.comments).First(),
+                            nextPage = results.Select(x => x.nextPage).First(),
+                        });
+                     }
                 }
             }
-            Console.WriteLine(obj.ToList());
-            return Ok(obj.Count);
+
+            var alldata = obj.Select(o => o.comments.Select(c => new  { id = c.id, text = c.text, language = c.language}).ToArray());
+            
+            return Ok(alldata);
 
         }
 
