@@ -37,7 +37,11 @@ namespace actualizer.Controllers
             int index = 0;
             foreach (var i in rootobject.items)
             {
-                commentRows.Add(new Comments { id = index, text = i.snippet.topLevelComment.snippet.textDisplay, language = "en" });
+                commentRows.Add(new Comments { id = index,
+                    text = i.snippet.topLevelComment.snippet.textDisplay,
+                    language = "en",
+                    publishedAt =  i.snippet.topLevelComment.snippet.publishedAt
+                 });
                 index++;
             }
             string nextPage = rootobject.nextPageToken;
@@ -93,8 +97,8 @@ namespace actualizer.Controllers
                 }
             }
 
-            var alldata = obj.Select(o => o.comments.Select(c => new  { id = c.id, text = c.text, language = c.language}).ToArray());
-            
+            var alldata = obj.Select(o => o.comments.Select(c => new  { id = c.id, text = c.text, language = c.language, publishedAt = c.publishedAt}).ToArray());
+
             return Ok(alldata);
 
         }

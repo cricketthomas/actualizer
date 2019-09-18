@@ -16,6 +16,8 @@ namespace actualizer.Models
         public int id { get; set; }
         public string text { get; set; }
         public string language { get; set; }
+        public DateTime publishedAt { get; set; }
+
     }
 
 

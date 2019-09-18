@@ -16,6 +16,7 @@
       <Publish>true</Publish>
     </PackageReference>
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.Azure.CognitiveServices.Language.TextAnalytics" Version="4.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,6 +26,8 @@
     <Compile Remove="Models\Comments %28copy%29.cs" />
     <Compile Remove="Models\Comments.cs" />
     <Compile Remove="Controllers\PageController.cs" />
+    <Compile Remove="Controllers\EmptyClass.cs" />
+    <Compile Remove="Controllers\ApiKeyServiceClientCredentials.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="readme.md" />
