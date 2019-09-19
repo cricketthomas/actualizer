@@ -97,7 +97,7 @@ namespace actualizer.Controllers
                 }
             }
 
-            var alldata = obj.Select(o => o.comments.Select(c => new  { id = c.id, text = c.text, language = c.language, publishedAt = c.publishedAt}).ToArray());
+            var alldata = obj.Select(o => o.comments.Select(c => new  { id = c.id, text = c.text, language = c.language}).ToArray());
 
             return Ok(alldata);
 

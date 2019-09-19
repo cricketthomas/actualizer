@@ -31,5 +31,4 @@ namespace actualizer.Models
         public string nextPage { get; set; } 
     }
 
-    
 }

@@ -11,14 +11,31 @@ using Microsoft.Azure.CognitiveServices.Language.TextAnalytics;
 using Microsoft.Azure.CognitiveServices.Language.TextAnalytics.Models;
 using Microsoft.Rest;
 using actualizer.Models;
+using Newtonsoft.Json;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
+using System.Linq;
 
 
 namespace actualizer.Controllers
 {
+    public class Document {
+        public string language { get; set; }
+        public int id { get; set; }
+        public string text { get; set; }
+    }
+
+    public class Docs
+    {
+        public List<Document> documents { get; set; }
+    }
+
+
+
     [Route("api/[controller]")]
     public class KeyPhraseController : Controller
     {
-        static async Task<string> CallTextAnalyticsAPI() {
+        static async Task<string> CallTextAnalyticsAPI(Docs json) {
             var client = new HttpClient();
             var queryString = HttpUtility.ParseQueryString(string.Empty);
             // Request headers
@@ -26,11 +43,9 @@ namespace actualizer.Controllers
             var uri = "https://eastus.api.cognitive.microsoft.com/text/analytics/v2.1/keyPhrases" + queryString;
             HttpResponseMessage response;
 
-            Comments data = new Comments { id = 0, text = "I love you, money", language = "en" };
-            Console.WriteLine("**************************************************************");
+            var xxxxx =  Encoding.UTF8.GetBytes(String.Concat(json));
+            //Console.WriteLine("ccccccccccccccccccccccccccc");
 
-            Console.WriteLine(new { id = data.id, text = data.text, language = data.language });
-            Console.WriteLine("**************************************************************");
             var d = $@"
                    {{
                   ""documents"": [
@@ -52,8 +67,16 @@ namespace actualizer.Controllers
                   ]
                 }}
                 ";
-            byte[] byteData = Encoding.UTF8.GetBytes(d);
+
+
+            Console.WriteLine(d);
+            string output = JsonConvert.SerializeObject(json);
+            Console.WriteLine(output);
+
+            byte[] byteData = Encoding.UTF8.GetBytes(output);
+            Console.WriteLine("byte data");
             Console.WriteLine(byteData);
+
             using (var content = new ByteArrayContent(byteData))
             {
                 content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
@@ -65,6 +88,7 @@ namespace actualizer.Controllers
                     // ... Read the string.
                     Task<string> result = x.ReadAsStringAsync();
                     res = result.Result;
+                    Console.WriteLine("xxxxxxxxxxxxxxxxxxxxxxx");
                     Console.WriteLine(res);
                     return res;
                 }
@@ -76,31 +100,24 @@ namespace actualizer.Controllers
 
         }
 
-    
+        
 
 
      
         [HttpGet]
         public async Task<ActionResult<string>> GetAsync()
         {
-            string test = await CallTextAnalyticsAPI();
-            Console.WriteLine(test);
-            return test;
+            //string j = await CallTextAnalyticsAPI(Documents Document);
+            return "hello";
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(string id)
-        {
-
-            return "value";
-        }
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        public async Task<string> PostAsync([FromBody] Docs json)
         {
-      
+            string j = await CallTextAnalyticsAPI(json);
+            return j;
 
         }
 
