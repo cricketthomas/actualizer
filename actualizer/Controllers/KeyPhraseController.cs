@@ -15,10 +15,12 @@ using Newtonsoft.Json;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using System.Linq;
-
+using System.Collections;
 
 namespace actualizer.Controllers
 {
+
+    // classes for sending the json to the 
     public class Document {
         public string language { get; set; }
         public int id { get; set; }
@@ -28,6 +30,19 @@ namespace actualizer.Controllers
     public class Docs
     {
         public List<Document> documents { get; set; }
+    }
+
+
+    // Classes for the return object from Azure
+    public class AzureResponse
+    {
+        public string id { get; set; }
+        public List<string> keyPhrases { get; set; }
+    }
+
+    public class TextAnalytics
+    {
+        public List<AzureResponse> documents { get; set; }
     }
 
 
@@ -90,6 +105,7 @@ namespace actualizer.Controllers
                     res = result.Result;
                     Console.WriteLine("xxxxxxxxxxxxxxxxxxxxxxx");
                     Console.WriteLine(res);
+                  
                     return res;
                 }
                 
@@ -114,10 +130,17 @@ namespace actualizer.Controllers
 
         // POST api/values
         [HttpPost]
-        public async Task<string> PostAsync([FromBody] Docs json)
+        public async Task<IList> PostAsync([FromBody] Docs json)
         {
-            string j = await CallTextAnalyticsAPI(json);
-            return j;
+            string result = await CallTextAnalyticsAPI(json);
+            TextAnalytics textanalyticsresponse = JsonConvert.DeserializeObject<TextAnalytics>(result);
+
+            var p = textanalyticsresponse.documents; //.GroupBy(i => i.keyPhrases);
+
+            var allphrases = p.SelectMany(s => s.keyPhrases).ToList();
+            var allPhrasesCount = allphrases.GroupBy(x => x).Where(g => g.Count() > 1).Select(y => new { word = y.Key, count = y.Count() }).ToList();
+
+            return allPhrasesCount;
 
         }
 
