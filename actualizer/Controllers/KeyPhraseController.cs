@@ -138,7 +138,17 @@ namespace actualizer.Controllers
             var p = textanalyticsresponse.documents; //.GroupBy(i => i.keyPhrases);
 
             var allphrases = p.SelectMany(s => s.keyPhrases).ToList();
-            var allPhrasesCount = allphrases.GroupBy(x => x).Where(g => g.Count() > 1).Select(y => new { word = y.Key, count = y.Count() }).ToList();
+
+            var allPhrasesCount1 = allphrases.GroupBy(x => x)
+                .Where(g => g.Count() > 1 )
+                .Select(y => new { word = y.Key, count = y.Count() })
+                .ToList();
+
+
+            var allPhrasesCount = allphrases.GroupBy(x => x)
+                .Where(g => g.Count() > 1)
+                .Select(y => new { word = y.Key, count = y.Count() })
+                .ToList();
 
             return allPhrasesCount;
 

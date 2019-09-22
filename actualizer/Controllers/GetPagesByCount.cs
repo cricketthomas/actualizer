@@ -18,7 +18,7 @@ namespace actualizer.Controllers
 
 
 
-        static async Task<IList> GetCommentsNextPageAsync(string video_id, string search, string NextPageToken = null)  //void means returns nothing
+        static async Task<IList> GetCommentsNextPageAsync(string video_id, string search, int lastNumOfComments, string NextPageToken = null)  //void means returns nothing
         {
 
             string key = "AIzaSyCFDwRa8R7V2g3H-7GzcLkPzedoPIruaVg";
@@ -34,11 +34,11 @@ namespace actualizer.Controllers
 
 
 
-            int index = 0;
+            int index = lastNumOfComments;
             foreach (var i in rootobject.items)
             {
                 commentRows.Add(new Comments { id = index,
-                    text = i.snippet.topLevelComment.snippet.textDisplay,
+                text = i.snippet.topLevelComment.snippet.textDisplay,
                     language = "en",
                     publishedAt =  i.snippet.topLevelComment.snippet.publishedAt
                  });
@@ -67,10 +67,12 @@ namespace actualizer.Controllers
         public async Task<ActionResult<string>> GetAsync(string v, string s, string n, int pageReqCount = 1)  {
             List<ReturnJson> obj = new List<ReturnJson> { };
 
-            var result = await GetCommentsNextPageAsync(video_id: v, search: s, NextPageToken: n);
+            var result = await GetCommentsNextPageAsync(video_id: v, search: s, NextPageToken: n, lastNumOfComments: 0);
             var results = result.Cast<ReturnJson>();
             var nextPageIdFromQuery = results.Select(p => p.nextPage).First();
             Console.WriteLine(nextPageIdFromQuery);
+            int allCommentCount = -100; //HACK. Its this value so the index starts a 0, im sure i couldve done better but this works. 
+
             if (pageReqCount == 1 || string.IsNullOrEmpty(nextPageIdFromQuery))
             {
                 return Ok(result);
@@ -80,7 +82,10 @@ namespace actualizer.Controllers
                 for (var index = 0; index < pageReqCount; index++) {
                     Console.WriteLine(nextPageIdFromQuery);
                     if (!string.IsNullOrEmpty(nextPageIdFromQuery)) {
-                        result = await GetCommentsNextPageAsync(video_id: v, search: s, NextPageToken: nextPageIdFromQuery);
+
+                        int lastNumOfCommentInt = results.Select(c => c.count).Last();
+                        allCommentCount += lastNumOfCommentInt;
+                        result = await GetCommentsNextPageAsync(video_id: v, search: s, NextPageToken: nextPageIdFromQuery, lastNumOfComments: allCommentCount);
                         Console.WriteLine(nextPageIdFromQuery);
                         results = result.Cast<ReturnJson>();
                         nextPageIdFromQuery = results.Select(p => p.nextPage).First();
@@ -97,8 +102,12 @@ namespace actualizer.Controllers
                 }
             }
 
-            var alldata = obj.Select(o => o.comments.Select(c => new  { id = c.id, text = c.text, language = c.language}).ToArray());
+            var alldata = obj.Select(o => o.comments.Select(c => new  { id = c.id, text = c.text, language = c.language}).ToList());
 
+            var flattenedUniqueValues = alldata.SelectMany(x => x).ToArray();
+
+
+        
             return Ok(alldata);
 
         }
