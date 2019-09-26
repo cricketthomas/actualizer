@@ -12,7 +12,6 @@ namespace actualizer.Models
 {
     public class Comments
     {
-
         public int id { get; set; }
         public string text { get; set; }
         public string language { get; set; }
@@ -30,5 +29,48 @@ namespace actualizer.Models
         public Comments[] comments { get; set; }
         public string nextPage { get; set; } 
     }
+
+    // classes for sending the json to the 
+    public class Document
+    {
+        public string language { get; set; }
+        public int id { get; set; }
+        public string text { get; set; }
+    }
+
+    public class Docs
+    {
+        public List<Document> documents { get; set; }
+    }
+
+
+
+    // Classes for the return object from Azure Text analytics
+    public class AzureTextAnalytics
+    {
+        public int id { get; set; }
+        public List<string> keyPhrases { get; set; }
+    }
+
+    public class TextAnalytics
+    {
+        public List<AzureTextAnalytics> documents { get; set; }
+    }
+
+
+
+    // Classes for the return object from Azure for sentment
+    public class AzureSentiment
+    {
+        public int id { get; set; }
+        public double score { get; set; }
+    }
+
+    public class Sentiment
+    {
+        public List<AzureSentiment> documents { get; set; }
+    }
+
+//TODO: sentiment overtime.
 
 }

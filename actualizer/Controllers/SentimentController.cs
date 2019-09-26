@@ -7,31 +7,25 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.CognitiveServices.Language.TextAnalytics;
-using Microsoft.Azure.CognitiveServices.Language.TextAnalytics.Models;
 using Microsoft.Rest;
 using actualizer.Models;
 using Newtonsoft.Json;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.IO;
 using System.Linq;
 using System.Collections;
 
 namespace actualizer.Controllers
 {
 
- 
-
 
     [Route("api/[controller]")]
-    public class KeyPhraseController : Controller
+    public class SentimentController : Controller
     {
         static async Task<string> CallTextAnalyticsAPI(Docs json) {
             var client = new HttpClient();
             var queryString = HttpUtility.ParseQueryString(string.Empty);
             // Request headers
             client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "075e9f44d55d49ffad994b55b979434e");
-            var uri = "https://eastus.api.cognitive.microsoft.com/text/analytics/v2.1/keyPhrases" + queryString;
+            var uri = "https://eastus.api.cognitive.microsoft.com/text/analytics/v2.1/sentiment" + queryString;
             HttpResponseMessage response;
 
             var xxxxx =  Encoding.UTF8.GetBytes(String.Concat(json));
@@ -82,27 +76,25 @@ namespace actualizer.Controllers
         // POST api/values
         [HttpPost]
         public async Task<IList> PostAsync([FromBody] Docs json)
+        //        public async Task<IList> PostAsync([FromBody] Docs json)
+
         {
             string result = await CallTextAnalyticsAPI(json);
-            TextAnalytics textanalyticsresponse = JsonConvert.DeserializeObject<TextAnalytics>(result);
 
-            var p = textanalyticsresponse.documents; //.GroupBy(i => i.keyPhrases);
-
-            var allphrases = p.SelectMany(s => s.keyPhrases).ToList();
-
-            var allPhrasesCount1 = allphrases.GroupBy(x => x)
-                .Where(g => g.Count() > 1 )
-                .Select(y => new { word = y.Key, count = y.Count() })
-                .ToList();
+            Sentiment sentimentresponse = JsonConvert.DeserializeObject<Sentiment>(result);
 
 
-            var allPhrasesCount = allphrases.GroupBy(x => x)
-                .Where(g => g.Count() > 1)
-                .Select(y => new { word = y.Key, count = y.Count() })
-                .ToList();
+            var sentimentscores = sentimentresponse.documents;
+            var originaldocument = json.documents;
 
-            return allPhrasesCount;
+   
+            var query = sentimentscores.Join(originaldocument,
+                                    s => s.id,
+                                    o => o.id,
+                                    (s, o) => new { id = s.id, text = o.text, score = s.score});
 
+            return query.ToList();
+            //TODO sentiment works and joins well, now I need to aggregate it or something for sentiment overitme?
         }
 
 
