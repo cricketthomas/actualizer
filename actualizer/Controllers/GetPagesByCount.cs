@@ -104,7 +104,6 @@ namespace actualizer.Controllers
 
             var alldata = obj.Select(o => o.comments.Select(c => new  { id = c.id, text = c.text, language = c.language}).ToList());
 
-            var flattenedUniqueValues = alldata.SelectMany(x => x).ToArray();
 
 
         
