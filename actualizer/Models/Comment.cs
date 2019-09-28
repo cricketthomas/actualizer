@@ -36,12 +36,31 @@ namespace actualizer.Models
         public string language { get; set; }
         public int id { get; set; }
         public string text { get; set; }
+
     }
 
     public class Docs
     {
         public List<Document> documents { get; set; }
     }
+
+    public class DocumentWithTime
+    {
+        public string language { get; set; }
+        public int id { get; set; }
+        public string text { get; set; }
+        public DateTime publishedAt { get; set; }
+
+    }
+
+    public class DocsWithTime
+    {
+        public List<DocumentWithTime> documents { get; set; }
+    }
+
+
+
+
 
 
 
@@ -71,6 +90,15 @@ namespace actualizer.Models
         public List<AzureSentiment> documents { get; set; }
     }
 
-//TODO: sentiment overtime.
+
+
+   
+
+
+
+
+
+
+    //TODO: sentiment overtime.
 
 }

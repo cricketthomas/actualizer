@@ -64,6 +64,7 @@ namespace actualizer.Controllers
 
 
         [HttpGet]
+        [Route("general")]
         public async Task<ActionResult<string>> GetAsync(string v, string s, string n, int pageReqCount = 1)  {
             List<ReturnJson> obj = new List<ReturnJson> { };
 
@@ -103,10 +104,6 @@ namespace actualizer.Controllers
             }
 
             var alldata = obj.Select(o => o.comments.Select(c => new  { id = c.id, text = c.text, language = c.language}).ToList());
-
-
-
-        
             return Ok(alldata);
 
         }

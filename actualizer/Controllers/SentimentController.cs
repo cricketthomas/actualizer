@@ -21,11 +21,14 @@ namespace actualizer.Controllers
     public class SentimentController : Controller
     {
         static async Task<string> CallTextAnalyticsAPI(Docs json) {
+
             var client = new HttpClient();
             var queryString = HttpUtility.ParseQueryString(string.Empty);
             // Request headers
-            client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "075e9f44d55d49ffad994b55b979434e");
-            var uri = "https://eastus.api.cognitive.microsoft.com/text/analytics/v2.1/sentiment" + queryString;
+            client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "de4105f3c9f24d739e7915a6ea764d2f");
+            var uri = "https://actualizer.cognitiveservices.azure.com/text/analytics/v2.1/sentiment" + queryString;
+            //
+
             HttpResponseMessage response;
 
             var xxxxx =  Encoding.UTF8.GetBytes(String.Concat(json));
@@ -75,11 +78,15 @@ namespace actualizer.Controllers
 
         // POST api/values
         [HttpPost]
-        public async Task<IList> PostAsync([FromBody] Docs json)
+        public async Task<IList> PostAsync([FromBody] DocsWithTime json)
         //        public async Task<IList> PostAsync([FromBody] Docs json)
 
         {
-            string result = await CallTextAnalyticsAPI(json);
+
+            Docs jsonDoc = JsonConvert.DeserializeObject<Docs>(JsonConvert.SerializeObject(json));
+      
+            
+            string result = await CallTextAnalyticsAPI(jsonDoc);
 
             Sentiment sentimentresponse = JsonConvert.DeserializeObject<Sentiment>(result);
 
@@ -91,7 +98,7 @@ namespace actualizer.Controllers
             var query = sentimentscores.Join(originaldocument,
                                     s => s.id,
                                     o => o.id,
-                                    (s, o) => new { id = s.id, text = o.text, score = s.score});
+                                    (s, o) => new { id = s.id, text = o.text, score = s.score, date = o.publishedAt});
 
             return query.ToList();
             //TODO sentiment works and joins well, now I need to aggregate it or something for sentiment overitme?
