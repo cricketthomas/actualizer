@@ -20,13 +20,14 @@ using System.Collections;
 namespace actualizer.Controllers
 {
 
- 
+
 
 
     [Route("api/[controller]")]
     public class KeyPhraseController : Controller
     {
-        static async Task<string> CallTextAnalyticsAPI(Docs json) {
+        static async Task<string> CallTextAnalyticsAPI(Docs json)
+        {
             var client = new HttpClient();
             var queryString = HttpUtility.ParseQueryString(string.Empty);
             // Request headers
@@ -34,8 +35,8 @@ namespace actualizer.Controllers
             var uri = "https://eastus.api.cognitive.microsoft.com/text/analytics/v2.1/keyPhrases" + queryString;
             HttpResponseMessage response;
 
-            var xxxxx =  Encoding.UTF8.GetBytes(String.Concat(json));
-           
+            var xxxxx = Encoding.UTF8.GetBytes(String.Concat(json));
+
             string output = JsonConvert.SerializeObject(json);
             Console.WriteLine(output);
 
@@ -56,21 +57,21 @@ namespace actualizer.Controllers
                     res = result.Result;
                     Console.WriteLine("xxxxxxxxxxxxxxxxxxxxxxx");
                     Console.WriteLine(res);
-                  
+
                     return res;
                 }
-                
+
 
             }
 
-           
+
 
         }
 
-        
 
 
-     
+
+
         [HttpGet]
         public async Task<ActionResult<string>> GetAsync()
         {
@@ -90,10 +91,7 @@ namespace actualizer.Controllers
 
             var allphrases = p.SelectMany(s => s.keyPhrases).ToList();
 
-            var allPhrasesCount1 = allphrases.GroupBy(x => x)
-                .Where(g => g.Count() > 1 )
-                .Select(y => new { word = y.Key, count = y.Count() })
-                .ToList();
+
 
 
             var allPhrasesCount = allphrases.GroupBy(x => x)

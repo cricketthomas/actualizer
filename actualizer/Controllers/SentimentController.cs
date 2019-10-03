@@ -20,7 +20,8 @@ namespace actualizer.Controllers
     [Route("api/[controller]")]
     public class SentimentController : Controller
     {
-        static async Task<string> CallTextAnalyticsAPI(Docs json) {
+        static async Task<string> CallTextAnalyticsAPI(Docs json)
+        {
 
             var client = new HttpClient();
             var queryString = HttpUtility.ParseQueryString(string.Empty);
@@ -31,8 +32,8 @@ namespace actualizer.Controllers
 
             HttpResponseMessage response;
 
-            var xxxxx =  Encoding.UTF8.GetBytes(String.Concat(json));
-           
+            var xxxxx = Encoding.UTF8.GetBytes(String.Concat(json));
+
             string output = JsonConvert.SerializeObject(json);
             Console.WriteLine(output);
 
@@ -53,21 +54,21 @@ namespace actualizer.Controllers
                     res = result.Result;
                     Console.WriteLine("xxxxxxxxxxxxxxxxxxxxxxx");
                     Console.WriteLine(res);
-                  
+
                     return res;
                 }
-                
+
 
             }
 
-           
+
 
         }
 
-        
 
 
-     
+
+
         [HttpGet]
         public async Task<ActionResult<string>> GetAsync()
         {
@@ -79,13 +80,11 @@ namespace actualizer.Controllers
         // POST api/values
         [HttpPost]
         public async Task<IList> PostAsync([FromBody] DocsWithTime json)
-        //        public async Task<IList> PostAsync([FromBody] Docs json)
-
         {
 
             Docs jsonDoc = JsonConvert.DeserializeObject<Docs>(JsonConvert.SerializeObject(json));
-      
-            
+
+
             string result = await CallTextAnalyticsAPI(jsonDoc);
 
             Sentiment sentimentresponse = JsonConvert.DeserializeObject<Sentiment>(result);
@@ -94,11 +93,11 @@ namespace actualizer.Controllers
             var sentimentscores = sentimentresponse.documents;
             var originaldocument = json.documents;
 
-   
+
             var query = sentimentscores.Join(originaldocument,
                                     s => s.id,
                                     o => o.id,
-                                    (s, o) => new { id = s.id, text = o.text, score = s.score, date = o.publishedAt});
+                                    (s, o) => new { id = s.id, text = o.text, score = s.score, date = o.publishedAt });
 
             return query.ToList();
             //TODO sentiment works and joins well, now I need to aggregate it or something for sentiment overitme?

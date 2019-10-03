@@ -20,7 +20,8 @@ namespace actualizer.Controllers
         List<string> returnObject = new List<string> { };
         //var client = new HttpClient();
 
-        static async Task<string> GetCommentsAsync(string video_id, string lang = "en") {
+        static async Task<string> GetCommentsAsync(string video_id, string lang = "en")
+        {
             string key = "AIzaSyCFDwRa8R7V2g3H-7GzcLkPzedoPIruaVg";
             string u = "https://www.googleapis.com/youtube/v3/commentThreads?key=";
             string url = $"{u}{key}&textFormat=plaintext&part=snippet&videoId={video_id}&maxResults=100";
@@ -32,14 +33,16 @@ namespace actualizer.Controllers
             List<Comments> commentRows = new List<Comments> { };
 
             int index = 0;
-            foreach (var i in rootobject.items) {
+            foreach (var i in rootobject.items)
+            {
                 commentRows.Add(new Comments { id = index, text = i.snippet.topLevelComment.snippet.textDisplay, language = lang });
                 index++;
             }
 
 
             string nextPage = rootobject.nextPageToken;
-            string json = JsonConvert.SerializeObject(new {
+            string json = JsonConvert.SerializeObject(new
+            {
                 video_id,
                 count = commentRows.Count,
                 comments = commentRows,
@@ -54,11 +57,15 @@ namespace actualizer.Controllers
         [HttpGet]
         public async Task<ActionResult<string>> GetAsync(string video_id, string lang)
         {
-            string c = await GetCommentsAsync(video_id: video_id, lang:lang);
-            Console.WriteLine(c);
-            return c;
+            if (!string.IsNullOrWhiteSpace(video_id))
+            {
+                string c = await GetCommentsAsync(video_id: video_id, lang: lang);
+                return c;
+
+            }
+            return "video id field cannot be null or empty";
         }
-    
+
 
 
         // POST api/values/youtubevideo id
@@ -66,23 +73,25 @@ namespace actualizer.Controllers
         [Produces("application/json")]
         public async Task<ActionResult<string>> PostItemAsync([FromBody] string value)
         {
-         
-            try {
+
+            try
+            {
                 var c = await GetCommentsAsync(value);
                 string videoId = value;
                 //return Ok( new Value{ video_id = videoId,  c });
                 return Ok(c);
             }
-            catch {
+            catch
+            {
                 return BadRequest();
             }
         }
 
         //Comment search feature. 
-      // [HttpGet]
+        // [HttpGet]
         //public ActionResult<IEnumerable<string>> SearchComments(string q)
-       // {
-         //   return Ok();
+        // {
+        //   return Ok();
         //}
 
 

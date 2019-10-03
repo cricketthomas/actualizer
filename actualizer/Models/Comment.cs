@@ -27,7 +27,7 @@ namespace actualizer.Models
         public string video_id { get; set; }
         public int count { get; set; }
         public Comments[] comments { get; set; }
-        public string nextPage { get; set; } 
+        public string nextPage { get; set; }
     }
 
     // classes for sending the json to the 
@@ -61,9 +61,6 @@ namespace actualizer.Models
 
 
 
-
-
-
     // Classes for the return object from Azure Text analytics
     public class AzureTextAnalytics
     {
@@ -92,7 +89,7 @@ namespace actualizer.Models
 
 
 
-   
+
 
 
 

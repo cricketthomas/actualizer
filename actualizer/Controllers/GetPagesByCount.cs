@@ -37,25 +37,27 @@ namespace actualizer.Controllers
             int index = lastNumOfComments;
             foreach (var i in rootobject.items)
             {
-                commentRows.Add(new Comments { id = index,
-                text = i.snippet.topLevelComment.snippet.textDisplay,
+                commentRows.Add(new Comments
+                {
+                    id = index,
+                    text = i.snippet.topLevelComment.snippet.textDisplay,
                     language = "en",
-                    publishedAt =  i.snippet.topLevelComment.snippet.publishedAt
-                 });
+                    publishedAt = i.snippet.topLevelComment.snippet.publishedAt
+                });
                 index++;
             }
             string nextPage = rootobject.nextPageToken;
             string json = JsonConvert.SerializeObject(new
             {
                 search,
-                url,
+                //url,
                 video_id,
                 count = commentRows.Count,
                 comments = commentRows,
                 nextPage
             });
-           
-            ReturnObject.Add(new ReturnJson { search= search , url = url, video_id = video_id, comments = commentRows.ToArray(), count = commentRows.Count, nextPage= nextPage });
+
+            ReturnObject.Add(new ReturnJson { search = search, url = url, video_id = video_id, comments = commentRows.ToArray(), count = commentRows.Count, nextPage = nextPage });
 
             return ReturnObject;
 
@@ -65,7 +67,8 @@ namespace actualizer.Controllers
 
         [HttpGet]
         [Route("general")]
-        public async Task<ActionResult<string>> GetAsync(string v, string s, string n, int pageReqCount = 1)  {
+        public async Task<ActionResult<string>> GetAsync(string v, string s, string n, int pageReqCount = 1)
+        {
             List<ReturnJson> obj = new List<ReturnJson> { };
 
             var result = await GetCommentsNextPageAsync(video_id: v, search: s, NextPageToken: n, lastNumOfComments: 0);
@@ -80,9 +83,11 @@ namespace actualizer.Controllers
             }
             else
             {
-                for (var index = 0; index < pageReqCount; index++) {
+                for (var index = 0; index < pageReqCount; index++)
+                {
                     Console.WriteLine(nextPageIdFromQuery);
-                    if (!string.IsNullOrEmpty(nextPageIdFromQuery)) {
+                    if (!string.IsNullOrEmpty(nextPageIdFromQuery))
+                    {
 
                         int lastNumOfCommentInt = results.Select(c => c.count).Last();
                         allCommentCount += lastNumOfCommentInt;
@@ -99,11 +104,11 @@ namespace actualizer.Controllers
                             comments = results.Select(x => x.comments).First(),
                             nextPage = results.Select(x => x.nextPage).First(),
                         });
-                     }
+                    }
                 }
             }
 
-            var alldata = obj.Select(o => o.comments.Select(c => new  { id = c.id, text = c.text, language = c.language}).ToList());
+            var alldata = obj.Select(o => o.comments.Select(c => new { id = c.id, text = c.text, language = c.language }).ToList());
             return Ok(alldata);
 
         }
