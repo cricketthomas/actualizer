@@ -7,17 +7,12 @@
   <ItemGroup>
     <Folder Include="wwwroot\" />
     <Folder Include="Models\" />
+        <PackageReference Include="Microsoft.Azure.CognitiveServices.Language.TextAnalytics" Version="4.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
+    <PackageReference Include="Okta.AspNetCore" Version="1.3.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.App">
-      <IsImplicitlyDefined>true</IsImplicitlyDefined>
-      <PrivateAssets>all</PrivateAssets>
-      <Publish>true</Publish>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Azure.CognitiveServices.Language.TextAnalytics" Version="4.0.0" />
-  </ItemGroup>
-
+  
   <ItemGroup>
     <Compile Remove="Models\Comments %28another copy%29.cs" />
     <Compile Remove="Models\Comments %28copy%29.cs" />
