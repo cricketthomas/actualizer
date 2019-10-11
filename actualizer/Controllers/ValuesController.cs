@@ -7,12 +7,16 @@ using Newtonsoft.Json;
 using System.Net.Http;
 using actualizer.Models;
 using System.Collections;
+using Microsoft.AspNetCore.Authorization;
 
 namespace actualizer.Controllers
 {
 
     [Route("api/[controller]")]
     [ApiController]
+    [Produces("application/json")]
+    [Authorize]
+
     public class ValuesController : ControllerBase
     {
 

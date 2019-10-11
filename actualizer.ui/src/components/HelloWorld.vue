@@ -2,6 +2,7 @@
     <div id="wrapper">
       <div v-if="userClaims"> <h2> Hey {{ userClaims.given_name }}</h2> </div>
       <div v-else> Login..</div>
+      <button @click="test()">print test</button>
       <router-view/>
     </div>
 </template>
@@ -13,8 +14,8 @@ export default {
   data() {
     return {
       msg: "test",
-      userClaims:null,
-
+      userClaims: null,
+    
     }
   },
   async created () {
@@ -23,27 +24,23 @@ export default {
     try {
       this.x = await Object.entries(await this.$auth.getUser()).map(entry => ({ [entry[0]]:  entry[1]} ))
       this.userClaims = this.x.reduce(((k, v) => Object.assign(k, v)), {});
-
-      //const response = await axios.get(`http://localhost:{serverPort}/api/messages`)
+      const response = await axios.get(`https://localhost:5001/api/Count/general/?v=sYQpx5Q5p0Y&s=purple&pageReqCount=1`)
+      console.log(this.response)
     } catch (error) {
       console.error(`Errors! ${error}`)
     }
+  },
+  methods:{
+    async test(){
+        const response = await axios.get(
+        `https://localhost:5001/api/values`
+      ) 
+      console.log(response)
+    }
+
   }
 }
 </script>
 <style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
+
 </style>

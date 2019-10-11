@@ -5,13 +5,16 @@
     <router-link to="/" tag="button" id='home-button'> Home </router-link>
     <button v-if='authenticated' v-on:click='logout' id='logout-button'> Logout </button>
     <button v-else v-on:click='login' id='login-button'> Login </button>
+    <Search/>
     <router-view/>
   </div>
 </template>
 
 <script>
-
+import HelloWorld from './components/HelloWorld.vue'
+import Search from './components/SearchComments.vue'
 export default {
+  
   name: 'app',
   data: function () {
     return {
@@ -35,20 +38,18 @@ export default {
     async logout () {
       await this.$auth.logout()
       await this.isAuthenticated()
-
       // Navigate back to home
       this.$router.push({ path: '/' })
     }
-  }
+  }, 
+    components: {
+    HelloWorld,
+    Search
+  },
 }
 </script>
+
+
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
 </style>
