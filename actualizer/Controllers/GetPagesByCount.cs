@@ -7,7 +7,8 @@ using Newtonsoft.Json;
 using System.Net.Http;
 using actualizer.Models;
 using System.Collections;
-
+using System.Security.Cryptography.X509Certificates;
+using System.Reflection.Metadata;
 
 namespace actualizer.Controllers
 {
@@ -108,8 +109,15 @@ namespace actualizer.Controllers
                 }
             }
 
-            var alldata = obj.Select(o => o.comments.Select(c => new { id = c.id, text = c.text, language = c.language }).ToList());
-            return Ok(alldata);
+
+            var allcomments = obj.SelectMany(o => o.comments.Select(c => new { id = c.id, text = c.text, language = c.language, publishedAt = c.publishedAt }).ToList());
+            var meta = obj.Select(s => new { count = s.count, search = s.search, video_id = s.video_id });
+
+            //var alldata = obj.Select(o => o.comments.Select(c => new { id = c.id, text = c.text, language = c.language }).ToList());
+
+
+            var finalObject = new { documents = allcomments, metadata = meta };
+            return Ok(finalObject);
 
         }
 
