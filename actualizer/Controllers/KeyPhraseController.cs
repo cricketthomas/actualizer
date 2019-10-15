@@ -19,10 +19,6 @@ using System.Collections;
 
 namespace actualizer.Controllers
 {
-
-
-
-
     [Route("api/[controller]")]
     public class KeyPhraseController : Controller
     {
@@ -31,8 +27,9 @@ namespace actualizer.Controllers
             var client = new HttpClient();
             var queryString = HttpUtility.ParseQueryString(string.Empty);
             // Request headers
-            client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "075e9f44d55d49ffad994b55b979434e");
-            var uri = "https://eastus.api.cognitive.microsoft.com/text/analytics/v2.1/keyPhrases" + queryString;
+            client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "de4105f3c9f24d739e7915a6ea764d2f");
+            var uri = "https://actualizer.cognitiveservices.azure.com/text/analytics/v2.1/keyPhrases" + queryString;
+
             HttpResponseMessage response;
 
             var xxxxx = Encoding.UTF8.GetBytes(String.Concat(json));
@@ -55,44 +52,30 @@ namespace actualizer.Controllers
                     // ... Read the string.
                     Task<string> result = x.ReadAsStringAsync();
                     res = result.Result;
-                    Console.WriteLine("xxxxxxxxxxxxxxxxxxxxxxx");
-                    Console.WriteLine(res);
-
                     return res;
                 }
 
-
             }
 
-
-
         }
 
 
 
-
-
-        [HttpGet]
-        public async Task<ActionResult<string>> GetAsync()
-        {
-            //string j = await CallTextAnalyticsAPI(Documents Document);
-            return "hello";
-        }
 
 
         // POST api/values
         [HttpPost]
-        public async Task<IList> PostAsync([FromBody] Docs json)
+        public async Task<IList> PostAsync([FromBody] DocsWithTime json)
         {
-            string result = await CallTextAnalyticsAPI(json);
+
+            Docs jsonDoc = JsonConvert.DeserializeObject<Docs>(JsonConvert.SerializeObject(json));
+
+            string result = await CallTextAnalyticsAPI(jsonDoc);
             TextAnalytics textanalyticsresponse = JsonConvert.DeserializeObject<TextAnalytics>(result);
 
             var p = textanalyticsresponse.documents; //.GroupBy(i => i.keyPhrases);
 
             var allphrases = p.SelectMany(s => s.keyPhrases).ToList();
-
-
-
 
             var allPhrasesCount = allphrases.GroupBy(x => x)
                 .Where(g => g.Count() > 1)

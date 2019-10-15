@@ -59,6 +59,8 @@ namespace actualizer.Controllers
 
         // GET api/values/ --- youtube video id 
         [HttpGet]
+        [Produces("application/json")]
+
         public async Task<ActionResult<string>> GetAsync(string video_id, string lang)
         {
             if (!string.IsNullOrWhiteSpace(video_id))
@@ -74,7 +76,6 @@ namespace actualizer.Controllers
 
         // POST api/values/youtubevideo id
         [HttpPost]
-        [Produces("application/json")]
         public async Task<ActionResult<string>> PostItemAsync([FromBody] string value)
         {
 
@@ -90,14 +91,6 @@ namespace actualizer.Controllers
                 return BadRequest();
             }
         }
-
-        //Comment search feature. 
-        // [HttpGet]
-        //public ActionResult<IEnumerable<string>> SearchComments(string q)
-        // {
-        //   return Ok();
-        //}
-
 
     }
 }

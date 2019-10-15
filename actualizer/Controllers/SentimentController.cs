@@ -58,39 +58,24 @@ namespace actualizer.Controllers
                     return res;
                 }
 
-
             }
-
-
-
-        }
-
-
-
-
-
-        [HttpGet]
-        public async Task<ActionResult<string>> GetAsync()
-        {
-            //string j = await CallTextAnalyticsAPI(Documents Document);
-            return "hello";
         }
 
 
         // POST api/values
         [HttpPost]
+        [Route("general")]
         public async Task<IList> PostAsync([FromBody] DocsWithTime json)
         {
 
             Docs jsonDoc = JsonConvert.DeserializeObject<Docs>(JsonConvert.SerializeObject(json));
 
-
             string result = await CallTextAnalyticsAPI(jsonDoc);
 
             Sentiment sentimentresponse = JsonConvert.DeserializeObject<Sentiment>(result);
 
-
             var sentimentscores = sentimentresponse.documents;
+
             var originaldocument = json.documents;
 
 
@@ -104,5 +89,25 @@ namespace actualizer.Controllers
         }
 
 
+
+        //[HttpPost]
+        //[Route("whole")]
+        //public async Task<IList> WholePostAsync([FromBody] DocsWithTime json)
+        //{
+
+        //    Docs jsonDoc = JsonConvert.DeserializeObject<Docs>(JsonConvert.SerializeObject(json));
+
+        //    string result = await CallTextAnalyticsAPI(jsonDoc);
+
+        //    Sentiment sentimentresponse = JsonConvert.DeserializeObject<Sentiment>(result);
+
+        //    var sentimentscores = sentimentresponse.documents.SelectMany(s => s.t);
+
+
+
+
+        //    return "test";
+        //    //TODO sentiment works and joins well, now I need to aggregate it or something for sentiment overitme?
+        //}
     }
 }
