@@ -103,7 +103,7 @@ namespace actualizer.Controllers
                         {
                             search = results.Select(x => x.search).First(),
                             count = results.Select(x => x.count).First(),
-                            url = results.Select(x => x.url).First(),
+                            //url = results.Select(x => x.url).First(),
                             video_id = results.Select(x => x.video_id).First(),
                             comments = results.Select(x => x.comments).First(),
                             nextPage = results.Select(x => x.nextPage).First(),
