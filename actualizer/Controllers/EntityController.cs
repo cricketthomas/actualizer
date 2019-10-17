@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Threading.Tasks;
 using actualizer.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
+using Newtonsoft.Json;
 
 namespace actualizer.Controllers
 {
@@ -14,7 +15,7 @@ namespace actualizer.Controllers
     public class ActualizerContext : DbContext
     {
 
-        public DbSet<SaveComment> AllSavedComments { get; set; }
+        public DbSet<SavedObjects> SavedObjects { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             => optionsBuilder.UseSqlite("Data Source=Data.db");
@@ -26,17 +27,20 @@ namespace actualizer.Controllers
     }
 
 
-    public class SaveComment
+    public class SavedObjects
     {
-
         [Key]
         public string VideoId { get; set; }
-
         public string UserId { get; set; }
-
-        public List<Comments> Comments { get; set; }
+        public string Object { get; set; }
     }
 
+    public class SaveObject
+    {
+        public string VideoId { get; set; }
+        public string UserId { get; set; }
+        public List<Comments> Comments { get; set; }
+    }
 
 
 
@@ -53,22 +57,41 @@ namespace actualizer.Controllers
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public IActionResult GetById(string id)
         {
-            return "value";
+            using (var db = new ActualizerContext())
+            {
+
+
+                try
+                {
+                    Console.WriteLine("Querying for a JSON Object");
+                    var data = db.SavedObjects
+                        .OrderBy(o => o.VideoId)
+                        .First();
+
+                    return Ok(data.Object);
+                }
+                catch
+                {
+                    return BadRequest("The ID specified cannot be found");
+                }
+            }
+
         }
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody] SaveComment value)
+        public void Post([FromBody] SaveObject value)
         {
 
             using (var db = new ActualizerContext())
             {
                 // Create
+                string commentJson = JsonConvert.SerializeObject(value.Comments, Formatting.Indented);
                 Console.WriteLine("Inserting a new post");
                 Console.WriteLine(value);
-                db.Add(new SaveComment { UserId = value.UserId, Comments = value.Comments, VideoId = value.VideoId });
+                db.Add(new SavedObjects { UserId = value.UserId, Object = commentJson, VideoId = value.VideoId });
                 db.SaveChanges();
                 Console.WriteLine("successful.");
 
