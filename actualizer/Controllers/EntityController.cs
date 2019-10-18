@@ -33,6 +33,7 @@ namespace actualizer.Controllers
         public string VideoId { get; set; }
         public string UserId { get; set; }
         public string Object { get; set; }
+        public DateTime Date { get; set; }
     }
 
     public class SaveObject
@@ -91,7 +92,7 @@ namespace actualizer.Controllers
                 string commentJson = JsonConvert.SerializeObject(value.Comments, Formatting.Indented);
                 Console.WriteLine("Inserting a new post");
                 Console.WriteLine(value);
-                db.Add(new SavedObjects { UserId = value.UserId, Object = commentJson, VideoId = value.VideoId });
+                db.Add(new SavedObjects { UserId = value.UserId, Object = commentJson, VideoId = value.VideoId, Date = DateTime.Now });
                 db.SaveChanges();
                 Console.WriteLine("successful.");
 

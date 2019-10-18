@@ -1,1 +1,6 @@
-module.exports = {}
+module.exports = {
+    transpileDependencies: [
+      'vue-echarts',
+      'resize-detector'
+    ]
+  }
