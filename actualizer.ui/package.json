@@ -11,11 +11,9 @@
     "@okta/okta-vue": "^1.1.1",
     "axios": "^0.19.0",
     "core-js": "^2.6.5",
-    "echarts": "^4.4.0",
     "register-service-worker": "^1.6.2",
     "superagent": "^5.1.0",
     "vue": "^2.6.10",
-    "vue-echarts": "^4.0.4",
     "vue-router": "^3.0.3",
     "vuex": "^3.0.1"
   },

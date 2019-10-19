@@ -4,12 +4,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using actualizer.Controllers;
+using actualizer.Models;
 
 namespace actualizer.Migrations
 {
     [DbContext(typeof(ActualizerContext))]
-    [Migration("20191018020038_InitialCreate")]
+    [Migration("20191019031439_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -18,7 +18,23 @@ namespace actualizer.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.0.0");
 
-            modelBuilder.Entity("actualizer.Controllers.SavedObjects", b =>
+            modelBuilder.Entity("actualizer.Models.RemainingRequests", b =>
+                {
+                    b.Property<string>("Resource")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Resource");
+
+                    b.ToTable("RemainingRequests");
+                });
+
+            modelBuilder.Entity("actualizer.Models.SavedObjects", b =>
                 {
                     b.Property<string>("VideoId")
                         .HasColumnType("TEXT");
@@ -26,7 +42,13 @@ namespace actualizer.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("JSONLength")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Object")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Source")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UserId")

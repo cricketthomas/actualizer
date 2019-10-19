@@ -6,12 +6,6 @@
     <button v-if='authenticated' v-on:click='logout' id='logout-button'> Logout </button>
     <button v-else v-on:click='login' id='login-button'> Login </button>
     <Search/>
-
-<hr>
-<v-chart :options="chartOptionsBar"/>
-<hr>
-
-
     <router-view/>
   </div>
 </template>
@@ -22,32 +16,10 @@ import Search from './components/SearchComments.vue'
 import axios from 'axios';
 
 
-import ECharts from 'vue-echarts'
-import 'echarts/lib/chart/line'
-import 'echarts/lib/component/polar'
-
 export default {
-  components: {
-    'v-chart': ECharts
-  },
   name: 'app',
-  data: function () {
-    
+  data: function () {  
     return {
-      chartOptionsBar: {
-  xAxis: {
-    data: ['Q1', 'Q2', 'Q3', 'Q4']
-  },
-  yAxis: {
-    type: 'value'
-  },
-  series: [
-    {
-      type: 'bar',
-      data: [63, 75, 24, 92]
-    }
-  ]
-},
       authenticated: false
     }
   },

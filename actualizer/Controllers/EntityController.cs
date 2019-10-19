@@ -12,36 +12,6 @@ namespace actualizer.Controllers
 {
 
 
-    public class ActualizerContext : DbContext
-    {
-
-        public DbSet<SavedObjects> SavedObjects { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.UseSqlite("Data Source=Data.db");
-
-        // protected override void OnConfiguring(DbContextOptionsBuilder options)
-        //=> options.UseSqlite("Data Source=comments.db");
-        //}
-
-    }
-
-
-    public class SavedObjects
-    {
-        [Key]
-        public string VideoId { get; set; }
-        public string UserId { get; set; }
-        public string Object { get; set; }
-        public DateTime Date { get; set; }
-    }
-
-    public class SaveObject
-    {
-        public string VideoId { get; set; }
-        public string UserId { get; set; }
-        public List<Comments> Comments { get; set; }
-    }
 
 
 
@@ -90,9 +60,19 @@ namespace actualizer.Controllers
             {
                 // Create
                 string commentJson = JsonConvert.SerializeObject(value.Comments, Formatting.Indented);
+                int JSONLength = value.Comments.Count;
+
                 Console.WriteLine("Inserting a new post");
                 Console.WriteLine(value);
-                db.Add(new SavedObjects { UserId = value.UserId, Object = commentJson, VideoId = value.VideoId, Date = DateTime.Now });
+                db.Add(new SavedObjects
+                {
+                    UserId = value.UserId,
+                    Object = commentJson,
+                    VideoId = value.VideoId,
+                    Date = DateTime.Now,
+                    JSONLength = JSONLength,
+                    Source = value.Source
+                });
                 db.SaveChanges();
                 Console.WriteLine("successful.");
 
