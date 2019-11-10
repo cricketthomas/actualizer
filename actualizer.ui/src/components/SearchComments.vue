@@ -25,7 +25,6 @@
 <script>
 import axios from "axios";
 
-
 export default {
   data() {
     return {
@@ -34,25 +33,32 @@ export default {
       search: "",
       video_id: "",
       count: 1,
-      results:""
-      
+      results: "",
     };
   },
   methods: {
     async searchGET() {
-      axios.defaults.headers.common["Authorization"] = `Bearer ${this.$store.state.BearerToken}`;
+      //TODO: put this in a getter.
 
-      const response = await axios.get(`${this.url}/Search?video_id=${this.video_id}&lang=en&count=${this.count}`);
-      console.log(`${this.url}/Search?video_id=${this.video_id}&lang=en&count=${this.count}`)
+      this.$http.get(`/Search?video_id=${this.video_id}&lang=en&count=${this.count}`)
+      .then(response => {
+        this.results = response.data;
+      })
+      .catch(e => {
+        console.error(e);
+      });
+
+      console.log(
+        `${this.url}/Search?video_id=${this.video_id}&lang=en&count=${this.count}`
+      );
       this.results = response;
       console.log(response);
     },
     updateTodo() {
-      this.$store.commit("updateTodo", this.updatedTodo);
-      this.$store.dispatch("updateTodo");
-      // updates todo in the component
-      this.$store.dispatch("getTodo");
-    }
+      this.$store.commit("updateTodo", this.updatedTodo);
+      this.$store.dispatch("updateTodo"); // updates todo in the component
+      this.$store.dispatch("getTodo");
+    }
   }
 };
 </script>

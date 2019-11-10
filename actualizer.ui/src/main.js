@@ -4,13 +4,29 @@ import store from './store';
 import router from './router';
 import './registerServiceWorker';
 import Chart from 'vue2-frappe';
-import axios from 'axios'
+import axios from 'axios';
 
 
 Vue.use(Chart);
 
 Vue.config.productionTip = false;
 
+var token = JSON.parse(localStorage.getItem('okta-token-storage')).accessToken.accessToken;
+
+if(token == undefined || token == null){
+  token = "";
+}
+
+const base = axios.create({
+  baseURL: 'https://localhost:5001/api',
+  headers: {
+    Authorization: `Bearer ${token}`
+  }
+});
+
+
+
+Vue.prototype.$http = base
 
 new Vue({
   store,

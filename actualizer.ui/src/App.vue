@@ -33,9 +33,7 @@ export default {
     };
   },
   created() {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${this.$store.state.BearerToken}`;
     this.isAuthenticated();
-    console.log("store says: " + this.$store.state.BearerToken);
   },
 
   watch: {
@@ -45,7 +43,7 @@ export default {
   methods: {
     async isAuthenticated() {
       this.authenticated = await this.$auth.isAuthenticated();
-
+      
       if (!this.$store.state.userClaims) {
         this.$store.commit({
           type: "UpdateBearer",
