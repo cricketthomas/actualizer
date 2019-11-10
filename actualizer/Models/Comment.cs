@@ -8,10 +8,9 @@ using Newtonsoft.Json;
 using System.Net.Http;
 using System.Linq;
 using System.Collections.Generic;
-namespace actualizer.Models
-{
-    public class Comments
-    {
+
+namespace actualizer.Models {
+    public class Comments {
         public int id { get; set; }
         public string text { get; set; }
         public string language { get; set; }
@@ -20,8 +19,7 @@ namespace actualizer.Models
     }
 
 
-    public class ReturnJson
-    {
+    public class ReturnJson {
         public string search { get; set; }
         public string url { get; set; }
         public string video_id { get; set; }
@@ -31,21 +29,18 @@ namespace actualizer.Models
     }
 
     // classes for sending the json to the 
-    public class Document
-    {
+    public class Document {
         public string language { get; set; }
         public int id { get; set; }
         public string text { get; set; }
 
     }
 
-    public class Docs
-    {
+    public class Docs {
         public List<Document> documents { get; set; }
     }
 
-    public class DocumentWithTime
-    {
+    public class DocumentWithTime {
         public string language { get; set; }
         public int id { get; set; }
         public string text { get; set; }
@@ -53,8 +48,7 @@ namespace actualizer.Models
 
     }
 
-    public class DocsWithTime
-    {
+    public class DocsWithTime {
         public List<DocumentWithTime> documents { get; set; }
     }
 
@@ -62,28 +56,24 @@ namespace actualizer.Models
 
 
     // Classes for the return object from Azure Text analytics
-    public class AzureTextAnalytics
-    {
+    public class AzureTextAnalytics {
         public int id { get; set; }
         public List<string> keyPhrases { get; set; }
     }
 
-    public class TextAnalytics
-    {
+    public class TextAnalytics {
         public List<AzureTextAnalytics> documents { get; set; }
     }
 
 
 
     // Classes for the return object from Azure for sentment
-    public class AzureSentiment
-    {
+    public class AzureSentiment {
         public int id { get; set; }
         public double score { get; set; }
     }
 
-    public class Sentiment
-    {
+    public class Sentiment {
         public List<AzureSentiment> documents { get; set; }
     }
 

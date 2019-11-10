@@ -11,11 +11,9 @@ using Newtonsoft.Json;
 
 
 
-namespace actualizer.Models
-{
+namespace actualizer.Models {
     // This class/table stores the values called from the youtube API or returned json from the Azure API
-    public class SavedObjects
-    {
+    public class SavedObjects {
         [Key]
         public string VideoId { get; set; }
         public string UserId { get; set; }
@@ -26,8 +24,7 @@ namespace actualizer.Models
     }
 
 
-    public class RemainingRequests
-    {
+    public class RemainingRequests {
         [Key]
         public string Resource { get; set; }
         public int Count { get; set; }
@@ -36,8 +33,7 @@ namespace actualizer.Models
     }
 
     //This is the create fnction that acually holds the tables or creates the actual tables. 
-    public class ActualizerContext : DbContext
-    {
+    public class ActualizerContext : DbContext {
 
         public DbSet<SavedObjects> SavedObjects { get; set; }
 
@@ -53,8 +49,7 @@ namespace actualizer.Models
 
 
     // This is just a class that specifies the input object. 
-    public class SaveObject
-    {
+    public class SaveObject {
         public string VideoId { get; set; }
         public string UserId { get; set; }
         public string Source { get; set; }

@@ -12,23 +12,24 @@ using actualizer.Models;
 using Newtonsoft.Json;
 using System.Linq;
 using System.Collections;
+using actualizer.Utils;
 
-namespace actualizer.Controllers
-{
+namespace actualizer.Controllers {
 
 
     [Route("api/[controller]")]
-    public class SentimentController : Controller
-    {
-        static async Task<string> CallTextAnalyticsAPI(Docs json)
-        {
+    public class SentimentController : Controller {
+
+
+
+        static async Task<string> CallTextAnalyticsAPI(Docs json) {
 
             var client = new HttpClient();
             var queryString = HttpUtility.ParseQueryString(string.Empty);
             // Request headers
-            client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "de4105f3c9f24d739e7915a6ea764d2f");
+            client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "1d70014e2d4247689f609fc795143f99");
             var uri = "https://actualizer.cognitiveservices.azure.com/text/analytics/v2.1/sentiment" + queryString;
-            //
+
 
             HttpResponseMessage response;
 
@@ -41,14 +42,12 @@ namespace actualizer.Controllers
             Console.WriteLine("byte data");
             Console.WriteLine(byteData);
 
-            using (var content = new ByteArrayContent(byteData))
-            {
+            using (var content = new ByteArrayContent(byteData)) {
                 content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                 response = await client.PostAsync(uri, content);
 
                 string res = "";
-                using (HttpContent x = response.Content)
-                {
+                using (HttpContent x = response.Content) {
                     // ... Read the string.
                     Task<string> result = x.ReadAsStringAsync();
                     res = result.Result;
@@ -61,14 +60,14 @@ namespace actualizer.Controllers
             }
         }
 
-
         // POST api/values
         [HttpPost]
         [Route("general")]
-        public async Task<IList> PostAsync([FromBody] DocsWithTime json)
-        {
+        public async Task<IList> PostAsync([FromBody] DocsWithTime json) {
 
             Docs jsonDoc = JsonConvert.DeserializeObject<Docs>(JsonConvert.SerializeObject(json));
+
+            string test = await Helpers.CallTextAnalyticsAPI(json: jsonDoc, RequestType: "sentiment");
 
             string result = await CallTextAnalyticsAPI(jsonDoc);
 

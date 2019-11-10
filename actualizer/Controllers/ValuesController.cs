@@ -15,7 +15,7 @@ namespace actualizer.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Produces("application/json")]
-    [Authorize]
+    //[Authorize]
 
     public class ValuesController : ControllerBase
     {
