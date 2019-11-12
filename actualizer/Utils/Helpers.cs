@@ -6,15 +6,18 @@ using actualizer.Models;
 using System.Web;
 using System.Text;
 using System.Net.Http.Headers;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc;
+
 
 namespace actualizer.Utils {
     public static class Helpers {
-
-
+        private static readonly HttpClient client = new HttpClient();
 
 
         public static async Task<string> CallTextAnalyticsAPI(Docs json, string RequestType) {
-            var client = new HttpClient();
             var queryString = HttpUtility.ParseQueryString(string.Empty);
             // Request headers
             client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "1d70014e2d4247689f609fc795143f99");
@@ -45,6 +48,51 @@ namespace actualizer.Utils {
 
             }
         }
+
+
+
+
+
+        public static async Task<List<ReturnJson>> GetCommentsNextPageAsync(string video_id, string search, int lastNumOfComments, string NextPageToken = null) {
+            //void means returns nothing
+            string key = "AIzaSyCFDwRa8R7V2g3H-7GzcLkPzedoPIruaVg";
+            string u = "https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&maxResults=100";
+            string url = $"{u}&pageToken={NextPageToken}&searchTerms={search}&textFormat=plainText&videoId={video_id}&key={key}";
+
+            var response = await client.GetAsync(url);
+            var content = await response.Content.ReadAsStringAsync();
+            RootObject rootobject = JsonConvert.DeserializeObject<RootObject>(content);
+            List<Comments> commentRows = new List<Comments> { };
+            List<ReturnJson> ReturnObject = new List<ReturnJson> { };
+
+            int index = lastNumOfComments;
+            foreach (var i in rootobject.items) {
+                commentRows.Add(new Comments {
+                    id = index,
+                    text = i.snippet.topLevelComment.snippet.textDisplay,
+                    language = "en",
+                    publishedAt = i.snippet.topLevelComment.snippet.publishedAt
+                });
+                index++;
+            }
+            string nextPage = rootobject.nextPageToken;
+            string json = JsonConvert.SerializeObject(new {
+                search,
+                //url,
+                video_id,
+                count = commentRows.Count,
+                comments = commentRows,
+                nextPage
+            });
+
+            ReturnObject.Add(new ReturnJson { search = search, url = url, video_id = video_id, comments = commentRows.ToArray(), count = commentRows.Count, nextPage = nextPage });
+
+            return ReturnObject;
+
+        }
+
+
+
 
 
 

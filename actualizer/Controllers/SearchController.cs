@@ -13,14 +13,14 @@ using Microsoft.AspNetCore.Authorization;
 namespace actualizer.Controllers {
     [Produces("application/json")]
     [Route("api/[controller]")]
-    [Authorize]
+    //[Authorize]
 
     public class SearchController : Controller {
         private static readonly HttpClient client = new HttpClient();
         List<string> returnObject = new List<string> { };
         //var client = new HttpClient();
 
-        static async Task<string> GetCommentsNextPageAsync(string video_id, string search, string lang, int count) {//void means returns nothing
+        static async Task<string> SearchComments(string video_id, string search, string lang, int count) {//void means returns nothing
 
             string key = "AIzaSyCFDwRa8R7V2g3H-7GzcLkPzedoPIruaVg";
             string u = "https://www.googleapis.com/youtube/v3/commentThreads?key=";
@@ -40,7 +40,6 @@ namespace actualizer.Controllers {
             string nextPage = rootobject.nextPageToken;
             string json = JsonConvert.SerializeObject(new {
                 search,
-                url,
                 video_id,
                 count = commentRows.Count,
                 comments = commentRows,
@@ -52,7 +51,8 @@ namespace actualizer.Controllers {
 
         [HttpGet]
         public async Task<ActionResult<string>> GetAsync(string video_id, string search, string lang = "en", int count = 20) {
-            string c = await GetCommentsNextPageAsync(video_id: video_id, search: search, lang: lang, count: count);
+            string c = await SearchComments(video_id: video_id, search: search, lang: lang, count: count);
+
             return Ok(c);
         }
     }

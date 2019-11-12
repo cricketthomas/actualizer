@@ -12,13 +12,14 @@ using Newtonsoft.Json;
 using System.Linq;
 using System.Collections;
 using actualizer.Utils;
+
 namespace actualizer.Controllers {
     [Route("api/[controller]")]
     public class TextAnalyticsController : Controller {
 
 
         // POST TextAnalytics/keyphrase
-        [Route("keyphrase")]
+        [Route("keyphrases")]
         [HttpPost]
         public async Task<IList> PostKeyPhraseAsync([FromBody] DocsWithTime json) {
 
