@@ -43,6 +43,7 @@
     <Compile Remove="Migrations\20191016040431_change_name.cs" />
     <Compile Remove="Migrations\20191016040431_change_name.Designer.cs" />
     <Compile Remove="Controllers\SentimentController.cs" />
+    <Compile Remove="Controllers\SearchController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="readme.md" />

@@ -63,7 +63,7 @@ namespace actualizer.Controllers {
             var query = sentimentscores.Join(originaldocument,
                                     s => s.id,
                                     o => o.id,
-                                    (s, o) => new { id = s.id, text = o.text, score = s.score, date = o.publishedAt });
+                                    (s, o) => new { id = s.id, text = o.text, score = s.score, likeCount = o.likeCount, date = o.publishedAt });
 
             return query.ToList();
             //TODO sentiment works and joins well, now I need to aggregate it or something for sentiment overitme?

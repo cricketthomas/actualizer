@@ -14,27 +14,36 @@ using actualizer.Utils;
 namespace actualizer.Controllers {
     [Route("api/[controller]")]
 
-    public class CountController : Controller {
+    public class CommentsController : Controller {
+
+
+
+
+        [Produces("application/json")]
+        [Route("search")]
+        [HttpGet]
+        public async Task<ActionResult<string>> GetSearchComments(string video_id, string search, string lang = "en", int count = 20) {
+            var c = await Helpers.SearchComments(video_id: video_id, search: search, lang: lang, count: count);
+
+            return Ok(c);
+        }
+
+
+
+
+
 
 
         [HttpGet]
-        [Route("individual")]
+        [Route("bulk")]
         [Produces("application/json")]
 
-        public async Task<ActionResult<string>> GetAsync(string v, string s, string n, int pageReqCount = 1) {
+        public async Task<ActionResult<string>> GetAsync(string video_id, string search, string nextPageToken, int pageReqCount = 1) {
 
-
-
-            if (!string.IsNullOrWhiteSpace(v)) {
-
-
-
-
-
+            if (!string.IsNullOrWhiteSpace(video_id)) {
                 List<ReturnJson> obj = new List<ReturnJson> { };
 
-
-                var result = await Helpers.GetCommentsNextPageAsync(video_id: v, search: s, NextPageToken: n, lastNumOfComments: 0);
+                var result = await Helpers.GetCommentsNextPageAsync(video_id: video_id, search: search, NextPageToken: nextPageToken, lastNumOfComments: 0);
 
                 var results = result.Cast<ReturnJson>();
                 var nextPageIdFromQuery = results.Select(p => p.nextPage).First();
@@ -56,8 +65,8 @@ namespace actualizer.Controllers {
                             allCommentCount += lastNumOfCommentInt;
 
                             result = await Helpers.GetCommentsNextPageAsync(
-                                video_id: v,
-                                search: s,
+                                video_id: video_id,
+                                search: search,
                                 NextPageToken: nextPageIdFromQuery,
                                 lastNumOfComments: allCommentCount
                             );
@@ -79,15 +88,13 @@ namespace actualizer.Controllers {
 
 
                 var allcomments = obj.SelectMany(o => o.comments.Select(c =>
-                new { id = c.id, text = c.text, language = c.language, publishedAt = c.publishedAt }).ToList());
+                new { id = c.id, text = c.text, language = c.language, publishedAt = c.publishedAt, likeCount = c.likeCount }).ToList());
 
                 int? sum = obj.Sum(s => s.count);
 
                 var meta = obj.Select(s => new { count = sum, search = s.search, video_id = s.video_id }).FirstOrDefault();
                 //var alldata = obj.Select(o => o.comments.Select(c => new { id = c.id, text = c.text, language = c.language }).ToList());
-
                 var finalObject = new { documents = allcomments, metadata = meta };
-
 
                 return Ok(finalObject);
             }
