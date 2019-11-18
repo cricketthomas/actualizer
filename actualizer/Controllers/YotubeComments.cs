@@ -10,6 +10,7 @@ using System.Collections;
 using System.Security.Cryptography.X509Certificates;
 using System.Reflection.Metadata;
 using actualizer.Utils;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 
 namespace actualizer.Controllers {
     [Route("api/[controller]")]
@@ -22,78 +23,51 @@ namespace actualizer.Controllers {
         [Produces("application/json")]
         [Route("search")]
         [HttpGet]
-        public async Task<ActionResult<string>> GetSearchComments(string video_id, string search, string lang = "en", int count = 20) {
-            var c = await Helpers.SearchComments(video_id: video_id, search: search, lang: lang, count: count);
+        public async Task<ActionResult<string>> GetSearchComments(string video_id, string search, string lang = "en", int count = 25) {
+            var results = await Helpers.SearchComments(video_id: video_id, search: search, lang: lang, count: count);
 
-            return Ok(c);
+            return Ok(results);
         }
-
-
-
-
-
 
 
         [HttpGet]
         [Route("bulk")]
         [Produces("application/json")]
 
-        public async Task<ActionResult<string>> GetAsync(string video_id, string search, string nextPageToken, int pageReqCount = 1) {
+        public async Task<ActionResult<string>> GetAsync(string video_id, string search, string nextPageToken) {
 
             if (!string.IsNullOrWhiteSpace(video_id)) {
                 List<ReturnJson> obj = new List<ReturnJson> { };
 
-                var result = await Helpers.GetCommentsNextPageAsync(video_id: video_id, search: search, NextPageToken: nextPageToken, lastNumOfComments: 0);
+                string nextPageIdFromQuery = null;
+                int allCommentCount = 0;
+                int index = 0;
+                do {
+                    var result = await Helpers.GetCommentsNextPageAsync(
+                        video_id: video_id, search: search,
+                        NextPageToken: nextPageIdFromQuery, lastNumOfComments: allCommentCount);
 
-                var results = result.Cast<ReturnJson>();
-                var nextPageIdFromQuery = results.Select(p => p.nextPage).First();
-                Console.WriteLine(nextPageIdFromQuery);
-                int allCommentCount = -100; //HACK. Its this value so the index starts a 0, im sure i couldve done better but this works. 
+                    var results = result.Cast<ReturnJson>();
 
-                if (pageReqCount == 1 || string.IsNullOrEmpty(nextPageIdFromQuery)) {
-                    var singleMeta = results.Select(sm => new { count = sm.count, video_id = sm.video_id, search = sm.search });
-                    var singleObject = new { documents = results.Select(s => s.comments.ToList()), metadata = singleMeta };
+                    nextPageIdFromQuery = results.Select(p => p.nextPage).First();
 
-                    return Ok(singleObject);
-                } else {
-                    for (var index = 0; index < pageReqCount; index++) {
-                        Console.WriteLine(nextPageIdFromQuery);
-                        if (!string.IsNullOrEmpty(nextPageIdFromQuery)) {
+                    obj.Add(new ReturnJson {
+                        search = results.Select(x => x.search).First(),
+                        count = results.Select(x => x.count).First(),
+                        //url = results.Select(x => x.url).First(),
+                        video_id = results.Select(x => x.video_id).First(),
+                        comments = results.Select(x => x.comments).First(),
+                        nextPage = results.Select(x => x.nextPage).First(),
+                    });
+                    allCommentCount += results.Select(c => c.count).Last();
 
-                            int lastNumOfCommentInt = results.Select(c => c.count).Last();
-
-                            allCommentCount += lastNumOfCommentInt;
-
-                            result = await Helpers.GetCommentsNextPageAsync(
-                                video_id: video_id,
-                                search: search,
-                                NextPageToken: nextPageIdFromQuery,
-                                lastNumOfComments: allCommentCount
-                            );
-
-                            Console.WriteLine(nextPageIdFromQuery);
-                            results = result.Cast<ReturnJson>();
-                            nextPageIdFromQuery = results.Select(p => p.nextPage).First();
-                            obj.Add(new ReturnJson {
-                                search = results.Select(x => x.search).First(),
-                                count = results.Select(x => x.count).First(),
-                                //url = results.Select(x => x.url).First(),
-                                video_id = results.Select(x => x.video_id).First(),
-                                comments = results.Select(x => x.comments).First(),
-                                nextPage = results.Select(x => x.nextPage).First(),
-                            });
-                        }
-                    }
-                }
-
+                } while (!string.IsNullOrEmpty(nextPageIdFromQuery) && index < 20);
 
                 var allcomments = obj.SelectMany(o => o.comments.Select(c =>
                 new { id = c.id, text = c.text, language = c.language, publishedAt = c.publishedAt, likeCount = c.likeCount }).ToList());
 
                 int? sum = obj.Sum(s => s.count);
-
                 var meta = obj.Select(s => new { count = sum, search = s.search, video_id = s.video_id }).FirstOrDefault();
-                //var alldata = obj.Select(o => o.comments.Select(c => new { id = c.id, text = c.text, language = c.language }).ToList());
                 var finalObject = new { documents = allcomments, metadata = meta };
 
                 return Ok(finalObject);

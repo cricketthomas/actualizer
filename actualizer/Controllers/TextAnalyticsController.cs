@@ -41,10 +41,7 @@ namespace actualizer.Controllers {
                 .Select(y => new { word = y.Key, count = y.Count() })
                 .ToList();
 
-
             return allPhrasesCount.ToList();
-
-
         }
 
 
