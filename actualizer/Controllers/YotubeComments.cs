@@ -23,19 +23,26 @@ namespace actualizer.Controllers {
         [Produces("application/json")]
         [Route("search")]
         [HttpGet]
-        public async Task<ActionResult<string>> GetSearchComments(string video_id, string search, string lang = "en", int count = 25) {
-            var results = await Helpers.SearchComments(video_id: video_id, search: search, lang: lang, count: count);
-
-            return Ok(results);
+        public async Task<ActionResult<ReturnJson>> GetSearchComments(string video_id, string search, string lang = "en", int count = 25) {
+            try {
+                var results = await Helpers.SearchComments(video_id: video_id, search: search, lang: lang, count: count);
+                results.Cast<ReturnJson>();
+                return Ok(results);
+            } catch {
+                return BadRequest("Please enter a video id");
+            }
         }
+
+
 
 
         [HttpGet]
         [Route("bulk")]
         [Produces("application/json")]
 
-        public async Task<ActionResult<string>> GetAsync(string video_id, string search, string nextPageToken) {
+        public async Task<ActionResult<ReturnJson>> GetAsync(string video_id, string search, string nextPageToken) {
 
+            // get all the comments while they are less than the comment restriction i imposed. Use SQL lite for the restriction eventually. 
             if (!string.IsNullOrWhiteSpace(video_id)) {
                 List<ReturnJson> obj = new List<ReturnJson> { };
 
@@ -63,8 +70,14 @@ namespace actualizer.Controllers {
 
                 } while (!string.IsNullOrEmpty(nextPageIdFromQuery) && index < 20);
 
-                var allcomments = obj.SelectMany(o => o.comments.Select(c =>
-                new { id = c.id, text = c.text, language = c.language, publishedAt = c.publishedAt, likeCount = c.likeCount }).ToList());
+                // Return the comments neatly.
+                var allcomments = obj.SelectMany(o => o.comments.Select(c => new {
+                    id = c.id,
+                    text = c.text,
+                    language = c.language,
+                    publishedAt = c.publishedAt,
+                    likeCount = c.likeCount
+                }).ToList());
 
                 int? sum = obj.Sum(s => s.count);
                 var meta = obj.Select(s => new { count = sum, search = s.search, video_id = s.video_id }).FirstOrDefault();
@@ -72,63 +85,9 @@ namespace actualizer.Controllers {
 
                 return Ok(finalObject);
             }
-            return "video id field cannot be null or empty";
+            return BadRequest("Please enter a video id");
         }
 
     }
-
-
-
-
-    //[HttpGet]
-    //[Route("whole")]
-    //public async Task<ActionResult<string>> GetWholeAsync(string v, string s, string n, int pageReqCount = 1) {
-    //    List<ReturnJson> obj = new List<ReturnJson> { };
-
-    //    var result = await Helpers.GetCommentsNextPageAsync(video_id: v, search: s, NextPageToken: n, lastNumOfComments: 0);
-    //    var results = result.Cast<ReturnJson>();
-    //    var nextPageIdFromQuery = results.Select(p => p.nextPage).First();
-    //    Console.WriteLine(nextPageIdFromQuery);
-    //    int allCommentCount = -100; //HACK. Its this value so the index starts a 0, im sure i couldve done better but this works. 
-
-    //    if (pageReqCount == 1 || string.IsNullOrEmpty(nextPageIdFromQuery)) {
-    //        return Ok(result);
-    //    } else {
-    //        for (var index = 0; index < pageReqCount; index++) {
-    //            Console.WriteLine(nextPageIdFromQuery);
-    //            if (!string.IsNullOrEmpty(nextPageIdFromQuery)) {
-
-    //                int lastNumOfCommentInt = results.Select(c => c.count).Last();
-    //                allCommentCount += lastNumOfCommentInt;
-    //                result = await Helpers.GetCommentsNextPageAsync(video_id: v, search: s, NextPageToken: nextPageIdFromQuery, lastNumOfComments: allCommentCount);
-    //                Console.WriteLine(nextPageIdFromQuery);
-    //                results = result.Cast<ReturnJson>();
-    //                nextPageIdFromQuery = results.Select(p => p.nextPage).First();
-    //                obj.Add(new ReturnJson {
-    //                    search = results.Select(x => x.search).First(),
-    //                    count = results.Select(x => x.count).First(),
-    //                    url = results.Select(x => x.url).First(),
-    //                    video_id = results.Select(x => x.video_id).First(),
-    //                    comments = results.Select(x => x.comments).First(),
-    //                    nextPage = results.Select(x => x.nextPage).First(),
-    //                });
-    //            }
-    //        }
-    //    }
-
-
-    //    var allcomments = obj.SelectMany(o => o.comments.Select(c => new { id = c.id, text = c.text, language = c.language }).ToList());
-
-    //    var a = allcomments.SelectMany(s => s.text).ToArray();
-    //    string concatComments = String.Join("", a.ToArray());
-
-    //    var whole = new { id = 0, text = concatComments, language = allcomments.Select(s => s.language).FirstOrDefault() };
-    //    var meta = obj.Select(s => new { count = s.count, search = s.search, video_id = s.video_id });
-    //    //var alldata = obj.Select(o => o.comments.Select(c => new { id = c.id, text = c.text, language = c.language }).ToList());
-    //    var finalObject = new { documents = whole, metadata = meta };
-    //    return Ok(finalObject);
-
-    //}
-
 
 }
