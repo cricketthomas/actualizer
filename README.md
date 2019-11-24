@@ -1,9 +1,24 @@
-# Comment Actualizer - a tool to view and analyze youtube comments and maybe make some reports?
+# Comment Actualizer - a very simple tool to view and analyze youtube comments.
+### Just playing around with .NET core and VueJS.
 
-## API Functional requirements/controllers
 
-1. Make a request for the first 100 comments of any youtube video. 
-2. Make requests for the next 100 comments of a youtube vido using the nextpagetoken to pass in to attain the other comments. 
-3. Make request for comments that match a certain parameter, allow to view comment data (e.g. likes, replies counts) and link to comment.
-       https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&maxResults=100&searchTerms=dog&textFormat=plainText&videoId=XXzbyUCtL2o&key=[YOUR_API_KEY]
-4. Allow users to send JSON to controller to analyze sentiment. -- need to use VaderSharp for this..
+#### Functionality (some of which may not exist):
+1. Login with Okta and other social websites. This allows you to view data you saved to the SQLite file..lol.
+2. Request comment indinividually or up to 20 pages or 2000 comments. Per request.
+3. Analyze comments using the Azure Cognitive API, for sentiment, key phrases and entity extraction. 
+       - Peruse through the comments and the response data.. -- crap idea
+       - View the aggreegated data in charts. Overall sentiment, sentiment overtime, sentiment and comment like count, key phrases                  aggreagations and be able to make a wordcloud for the key phrases.
+       - Print out a nice little dashboard.
+4. Request comments with a search parameter then search through those comments.
+
+
+```
+TODO:
+Frontend:
+1. Use vue composition api/hooks to reuse components for fetching the data.
+2. Resuse for the custom frappe charts wrapper I will need to make for this. 
+
+Backend:
+Allow users to request different type of aggregations of the comments from the /api/comments/bulk. So they can request different sorting or summarizations?
+
+This app is being built. poorly.```
