@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Okta.AspNetCore;
 using Microsoft.OpenApi.Models;
-
+using actualizer.Authorization;
 namespace actualizer {
     public class Startup {
         public Startup(IConfiguration configuration) {
@@ -23,6 +23,12 @@ namespace actualizer {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddMvc(option => option.EnableEndpointRouting = false);
 
+            services.AddAuthorization(options => {
+                options.AddPolicy("CanCallTextAnalyticsApi", policy =>
+                    policy.AddRequirements(new PermissionRequirement("CanCallTextAnalyticsApi")));
+            });
+
+
             services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Actualizer", Version = "v1" });
             });
@@ -37,10 +43,6 @@ namespace actualizer {
             });
 
 
-            //// Configure your policies
-            //services.AddAuthorization(options =>
-            //      options.AddPolicy("Something",
-            //      policy => policy.RequireClaim("Permission", "CanViewPage", "CanViewAnything")));
 
 
             services.AddCors(options => {

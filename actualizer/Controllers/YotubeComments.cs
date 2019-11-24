@@ -22,7 +22,10 @@ namespace actualizer.Controllers {
 
     public class CommentsController : Controller {
 
-        [Authorize]
+
+
+
+        [Authorize(Policy = "CanCallTextAnalyticsApi")]
         [Produces("application/json")]
         [Route("search")]
         [HttpGet]
@@ -32,7 +35,7 @@ namespace actualizer.Controllers {
 
             var uid = User.Claims.FirstOrDefault(c => c.Type == "uid")?.Value;
 
-            var role = OktaClientHelper.GetProfileDetails(uid: uid).Result;
+            var role = await OktaClientHelper.GetProfileDetails(uid: uid).Result;
 
 
             Console.WriteLine("*****************************************");
