@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Okta.Sdk;
 
 
 namespace actualizer.Utils {
@@ -122,10 +123,6 @@ namespace actualizer.Utils {
             });
             return json;
         }
-
-
-
-
 
     }
 }

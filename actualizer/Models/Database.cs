@@ -32,12 +32,20 @@ namespace actualizer.Models {
 
     }
 
+    //public class PermissionsModel {
+    //    [Key]
+    //    public string u
+
+    //}
+
     //This is the create fnction that acually holds the tables or creates the actual tables. 
     public class ActualizerContext : DbContext {
 
         public DbSet<SavedObjects> SavedObjects { get; set; }
 
         public DbSet<RemainingRequests> RemainingRequests { get; set; }
+
+        //public DbSet<PermissionsModel> PermissionsModel { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             => optionsBuilder.UseSqlite("Data Source=Data.db");

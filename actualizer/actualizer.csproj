@@ -25,6 +25,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.0.0" />
     <PackageReference Include="Okta.AspNetCore" Version="1.3.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0-rc4" />
+    <PackageReference Include="Okta.Sdk" Version="1.4.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -45,6 +46,13 @@
     <Compile Remove="Controllers\SentimentController.cs" />
     <Compile Remove="Controllers\SearchController.cs" />
     <Compile Remove="Controllers\ValuesController.cs" />
+    <Compile Remove="Utils\Okta.cs" />
+    <Compile Remove="Services\OktaServices.cs" />
+    <Compile Remove="Services\GetOktaInfo.cs" />
+    <Compile Remove="Services\IOktaService.cs" />
+    <Compile Remove="Services\OktaTodoItemService.cs" />
+    <Compile Remove="Services\ITodoItemService.cs" />
+    <Compile Remove="Models\OktaModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="readme.md" />

@@ -11,8 +11,13 @@ using System.Security.Cryptography.X509Certificates;
 using System.Reflection.Metadata;
 using actualizer.Utils;
 using Microsoft.EntityFrameworkCore.Query.Internal;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Okta.Sdk;
+using Okta.Sdk.Configuration;
 
 namespace actualizer.Controllers {
+
     [Route("api/[controller]")]
 
     public class CommentsController : Controller {
@@ -20,10 +25,24 @@ namespace actualizer.Controllers {
 
 
 
+        [Authorize]
         [Produces("application/json")]
         [Route("search")]
         [HttpGet]
         public async Task<ActionResult<ReturnJson>> GetSearchComments(string video_id, string search, string lang = "en", int count = 25) {
+
+
+
+            var uid = User.Claims.FirstOrDefault(c => c.Type == "uid")?.Value;
+
+            var role = OktaClientHelper.GetProfileDetails(uid: uid).Result;
+
+
+            Console.WriteLine("*****************************************");
+            Console.WriteLine(role);
+            Console.WriteLine("*****************************************");
+
+            //Console.WriteLine(userClaims.ToList());
             try {
                 var results = await Helpers.SearchComments(video_id: video_id, search: search, lang: lang, count: count);
                 results.Cast<ReturnJson>();
@@ -31,6 +50,7 @@ namespace actualizer.Controllers {
             } catch {
                 return BadRequest("Please enter a video id");
             }
+
         }
 
 
@@ -41,6 +61,8 @@ namespace actualizer.Controllers {
         [Produces("application/json")]
 
         public async Task<ActionResult<ReturnJson>> GetAsync(string video_id, string search, string nextPageToken) {
+
+
 
             // get all the comments while they are less than the comment restriction i imposed. Use SQL lite for the restriction eventually. 
             if (!string.IsNullOrWhiteSpace(video_id)) {

@@ -11,7 +11,12 @@ Vue.use(Chart);
 
 Vue.config.productionTip = false;
 
-var token = JSON.parse(localStorage.getItem('okta-token-storage')).accessToken.accessToken;
+try{
+  var token = JSON.parse(localStorage.getItem('okta-token-storage')).accessToken.accessToken;
+
+}catch{
+  console.info("no token in local storage");
+}
 
 if(token == undefined || token == null){
   token = "";

@@ -1,18 +1,18 @@
 <template>
   <div id="wrapper">
     <fieldset>
-      <form @submit.prevent="searchGET()">
+      <form @submit.prevent="SearchComments()">
         <label>
           Enter a search term:
-          <input type="text" id="search" v-model="search" required />
+          <input type="text" id="search" v-model="query.search" required />
         </label>
         <label>
           Enter Video ID:
-          <input type="text" id="video_id" v-model="video_id" />
+          <input type="text" id="video_id" v-model="query.video_id" />
         </label>
         <label>
           Count:
-          <input type="number" id="count" v-model="count" />
+          <input type="number" id="count" v-model="query.count" />
         </label>
         <button>Submit</button>
       </form>
@@ -30,29 +30,34 @@ export default {
     return {
       url: this.$store.state.baseURL,
       userClaims: null,
-      search: "",
-      video_id: "",
-      count: 1,
       results: "",
+      query: {
+        search: "",
+        video_id: "",
+        count: 1
+      }
     };
   },
   methods: {
-    async searchGET() {
+    async SearchComments() {
       //TODO: put this in a getter.
 
-      this.$http.get(`/Search?video_id=${this.video_id}&lang=en&count=${this.count}`)
-      .then(response => {
-        this.results = response.data;
-      })
-      .catch(e => {
-        console.error(e);
-      });
+      this.$http
+        .get(
+          `comments/search?video_id=${this.query.video_id}&search=${this.query.search}&lang=en&count=${this.query.count}`
+        )
+        .then(response => {
+          this.results = response.data;
+        })
+        .catch(e => {
+          console.error(e);
+        });
 
       console.log(
-        `${this.url}/Search?video_id=${this.video_id}&lang=en&count=${this.count}`
+        `${this.url}/comments/search?video_id=${this.video_id}&lang=en&count=${this.count}`
       );
-      this.results = response;
-      console.log(response);
+      //this.results = response;
+      //console.log(response);
     },
     updateTodo() {
       this.$store.commit("updateTodo", this.updatedTodo);
