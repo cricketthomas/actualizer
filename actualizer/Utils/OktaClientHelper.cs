@@ -24,4 +24,5 @@ namespace actualizer.Utils {
             return role;
         }
     }
+
 }

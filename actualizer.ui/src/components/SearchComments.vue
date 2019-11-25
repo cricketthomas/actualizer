@@ -34,7 +34,7 @@ export default {
       query: {
         search: "",
         video_id: "",
-        count: 1
+        count: 10
       }
     };
   },

@@ -7,6 +7,10 @@ using Microsoft.Extensions.Hosting;
 using Okta.AspNetCore;
 using Microsoft.OpenApi.Models;
 using actualizer.Authorization;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.AspNetCore.Http;
+
 namespace actualizer {
     public class Startup {
         public Startup(IConfiguration configuration) {
@@ -27,6 +31,9 @@ namespace actualizer {
                 options.AddPolicy("CanCallTextAnalyticsApi", policy =>
                     policy.AddRequirements(new PermissionRequirement("CanCallTextAnalyticsApi")));
             });
+
+            services.AddSingleton<IAuthorizationHandler, PermissionRequirementHandler>();
+            //services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 
             services.AddSwaggerGen(c => {
