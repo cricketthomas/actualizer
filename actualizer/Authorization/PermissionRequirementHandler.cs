@@ -5,58 +5,48 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Okta.Sdk;
-using Okta.Sdk.Configuration;
 using Microsoft.AspNetCore.Mvc.Filters;
+using actualizer.Utils;
+using Microsoft.AspNetCore.Authentication;
 
 namespace actualizer.Authorization {
 
     public class PermissionRequirementHandler : AuthorizationHandler<PermissionRequirement> {
 
+        protected override async Task<Task> HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement) {
+            if (context.Resource is AuthorizationFilterContext authContext) {
+                var uid = context.User.Claims.FirstOrDefault(c => c.Type == "uid")?.Value;
+                if (string.IsNullOrWhiteSpace(uid)) {
+                    return Task.CompletedTask;
+                } else {
+                    var x = await OktaClientHelper.GetProfileDetails(uid);
 
-        //IHttpContextAccessor _httpContextAccessor = null;
+                    context.Succeed(requirement);
+                }
 
-        //public PermissionRequirementHandler(IHttpContextAccessor httpContextAccessor) {
-        //    _httpContextAccessor = httpContextAccessor;
+            }
+            return Task.CompletedTask;
+        }
+
+
+        //protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement) {
+
+        //    if (context.Resource is AuthorizationFilterContext authContext) {
+        //        if (string.IsNullOrWhiteSpace(context.User.Claims.FirstOrDefault(c => c.Type == "uid")?.Value)) {
+        //            return Task.CompletedTask;
+        //        }
+
+        //        var uid = context.User.Claims.FirstOrDefault(c => c.Type == "uid")?.Value;
+        //        var AdminRights = await OktaClientHelper.GetProfileDetails(uid);
+
+        //        if (AdminRights == requirement) {
+        //            context.Succeed(requirement);
+        //        }
+
+        //    }
+        //    return Task.CompletedTask;
         //}
 
 
-        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement) {
-
-            //HttpContext httpContext = _httpContextAccessor.HttpContext; // Access context here
-
-
-            if (context.Resource is AuthorizationFilterContext authContext) {
-                Console.WriteLine(authContext);
-
-                Console.WriteLine(context);
-
-                var uid = context.User.Claims.FirstOrDefault(c => c.Type == "uid")?.Value;
-
-                var x = context.User.Claims.FirstOrDefault(s => s.Type == "uid")?.Value;
-            }
-
-
-            if (!context.User.HasClaim(c => c.Type == ClaimTypes.Email)) {
-
-                Console.WriteLine("AuthHandler*****************************************AuthHandler");
-
-
-                Console.WriteLine("AuthHandler*****************************************AuthHandler");
-
-
-                return Task.CompletedTask;
-
-            }
-
-            var email = context.User.FindFirst(c => c.Type == ClaimTypes.Email);
-            var domain = email.Value.Split('@')[1];
-            if (domain == requirement.Permission) {
-                context.Succeed(requirement);
-            }
-
-
-            return Task.CompletedTask;
-        }
     }
 }
