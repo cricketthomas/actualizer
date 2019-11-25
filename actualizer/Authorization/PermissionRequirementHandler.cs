@@ -13,39 +13,23 @@ namespace actualizer.Authorization {
 
     public class PermissionRequirementHandler : AuthorizationHandler<PermissionRequirement> {
 
-        protected override async Task<Task> HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement) {
-            if (context.Resource is AuthorizationFilterContext authContext) {
-                var uid = context.User.Claims.FirstOrDefault(c => c.Type == "uid")?.Value;
-                if (string.IsNullOrWhiteSpace(uid)) {
-                    return Task.CompletedTask;
-                } else {
-                    var x = await OktaClientHelper.GetProfileDetails(uid);
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement) {
 
+            if (context.Resource is AuthorizationFilterContext authContext) {
+                if (string.IsNullOrWhiteSpace(context.User.Claims.FirstOrDefault(c => c.Type == "uid")?.Value)) {
+                    return Task.CompletedTask;
+                }
+
+                var uid = context.User.Claims.FirstOrDefault(c => c.Type == "uid")?.Value;
+                var AdminRights = await OktaClientHelper.GetProfileDetails(uid);
+
+                if (AdminRights == requirement) {
                     context.Succeed(requirement);
                 }
 
             }
             return Task.CompletedTask;
         }
-
-
-        //protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement) {
-
-        //    if (context.Resource is AuthorizationFilterContext authContext) {
-        //        if (string.IsNullOrWhiteSpace(context.User.Claims.FirstOrDefault(c => c.Type == "uid")?.Value)) {
-        //            return Task.CompletedTask;
-        //        }
-
-        //        var uid = context.User.Claims.FirstOrDefault(c => c.Type == "uid")?.Value;
-        //        var AdminRights = await OktaClientHelper.GetProfileDetails(uid);
-
-        //        if (AdminRights == requirement) {
-        //            context.Succeed(requirement);
-        //        }
-
-        //    }
-        //    return Task.CompletedTask;
-        //}
 
 
     }
