@@ -2,14 +2,14 @@
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using actualizer.Policy;
 using FlexibleConfiguration.Abstractions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Okta.Sdk;
-using actualizer.Security.Policy;
 
-namespace actualizer.Security.claims {
+namespace actualizer.Security.claims.transformation {
     public class UserTransformer : IClaimsTransformation {
 
         private readonly IOktaClient _oktaClient;

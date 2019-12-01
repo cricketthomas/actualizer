@@ -30,14 +30,13 @@ namespace actualizer.Controllers {
         public async Task<ActionResult<ReturnJson>> GetSearchComments(string video_id, string search, string lang = "en", int count = 25) {
 
 
-            Console.WriteLine(HttpContext.User);
-            var uid = User.Claims.FirstOrDefault(c => c.Type == "uid")?.Value;
+            //Console.WriteLine(HttpContext.User);
+            //var uid = User.Claims.FirstOrDefault(c => c.Type == "uid")?.Value;
 
-            var role = await OktaClientHelper.GetProfileDetails(uid: uid).Result;
+            //var role = await OktaClientHelper.GetProfileDetails(uid: uid).Result;
 
 
             Console.WriteLine("*****************************************");
-            Console.WriteLine(role);
             Console.WriteLine("*****************************************");
 
             //Console.WriteLine(userClaims.ToList());

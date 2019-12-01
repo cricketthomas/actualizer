@@ -10,6 +10,7 @@ using Okta.Sdk;
 using Okta.Sdk.Configuration;
 using Microsoft.AspNetCore.Authentication;
 using actualizer.Security.claims;
+using actualizer.Security.claims.transformation;
 
 namespace actualizer {
     public class Startup {
