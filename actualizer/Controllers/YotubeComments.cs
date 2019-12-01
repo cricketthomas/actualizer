@@ -22,9 +22,6 @@ namespace actualizer.Controllers {
 
     public class CommentsController : Controller {
 
-
-
-
         [Authorize]
         [Produces("application/json")]
         [Route("search")]
