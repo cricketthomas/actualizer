@@ -1,0 +1,41 @@
+﻿using System;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using FlexibleConfiguration.Abstractions;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Okta.Sdk;
+using actualizer.Security.Policy;
+
+namespace actualizer.Security.claims {
+    public class UserTransformer : IClaimsTransformation {
+
+        private readonly IOktaClient _oktaClient;
+        IHttpContextAccessor _httpContextAccessor;
+
+        public UserTransformer(IConfiguration config, IHttpContextAccessor httpContextAccessor, IOktaClient oktaClient) {
+            _httpContextAccessor = httpContextAccessor;
+            this._oktaClient = oktaClient;
+
+        }
+        public async Task<ClaimsPrincipal> TransformAsync(ClaimsPrincipal p) {
+            var claimsIdentity = p.Identity as ClaimsIdentity;
+            string _CanMakeAnalyticsRequests = "CanMakeAnalyticsRequests";
+
+            var uid = claimsIdentity.Claims.FirstOrDefault(c => c.Type == "uid").Value;
+            var user = await _oktaClient.Users.GetUserAsync(uid);
+
+            var permissions = user.Profile["permissions"];
+
+            if (permissions.ToString() == _CanMakeAnalyticsRequests) {
+                claimsIdentity.AddClaim(new Claim(Claims.CanMakeAnalyticsRequests, string.Empty));
+            }
+            return p;
+
+        }
+
+
+    }
+}

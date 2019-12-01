@@ -6,14 +6,16 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Okta.AspNetCore;
 using Microsoft.OpenApi.Models;
-using actualizer.Authorization;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.AspNetCore.Http;
+using Okta.Sdk;
+using Okta.Sdk.Configuration;
+using Microsoft.AspNetCore.Authentication;
+using actualizer.Security.claims;
 
 namespace actualizer {
     public class Startup {
+
         public Startup(IConfiguration configuration) {
+
             Configuration = configuration;
         }
 
@@ -27,18 +29,22 @@ namespace actualizer {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddMvc(option => option.EnableEndpointRouting = false);
 
-            services.AddAuthorization(options => {
-                options.AddPolicy("CanCallTextAnalyticsApi", policy =>
-                    policy.AddRequirements(new PermissionRequirement("CanCallTextAnalyticsApi")));
-            });
 
-            services.AddSingleton<IAuthorizationHandler, PermissionRequirementHandler>();
+
             //services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 
             services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Actualizer", Version = "v1" });
             });
+
+
+            var client = new OktaClient(new OktaClientConfiguration {
+                OktaDomain = "https://dev-839928.okta.com",
+                Token = "00v9TMD0d5oAq7tssPHRFtlmRwQ7wh2V1FLOrU9g2C"
+            });
+
+            services.AddSingleton<IOktaClient, OktaClient>();
 
             services.AddAuthentication(options => {
                 options.DefaultAuthenticateScheme = OktaDefaults.ApiAuthenticationScheme;
@@ -49,8 +55,11 @@ namespace actualizer {
                 OktaDomain = "https://dev-839928.okta.com"
             });
 
+            services.AddSingleton<IClaimsTransformation, UserTransformer>();
 
-
+            services.AddAuthorization(options => {
+                options.AddPolicy("CanMakeAnalyticsRequests", policy => policy.RequireClaim("CanMakeAnalyticsRequests"));
+            });
 
             services.AddCors(options => {
                 options.AddPolicy("VueCorsPolicy", builder => {
@@ -61,6 +70,7 @@ namespace actualizer {
                       .WithOrigins("http://localhost:8080");
                 });
             });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -77,10 +87,17 @@ namespace actualizer {
             } else {
                 app.UseHsts();
             }
+
+
             app.UseCors("VueCorsPolicy");
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseMvc();
+
+
+
+
+
         }
     }
 }
