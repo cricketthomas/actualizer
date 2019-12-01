@@ -56,7 +56,7 @@ namespace actualizer {
                 OktaDomain = "https://dev-839928.okta.com"
             });
 
-            services.AddSingleton<IClaimsTransformation, UserTransformer>();
+            services.AddTransient<IClaimsTransformation, UserTransformer>();
 
             services.AddAuthorization(options => {
                 options.AddPolicy("CanMakeAnalyticsRequests", policy => policy.RequireClaim("CanMakeAnalyticsRequests"));
