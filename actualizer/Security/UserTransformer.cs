@@ -3,9 +3,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using actualizer.Policy;
-using FlexibleConfiguration.Abstractions;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Okta.Sdk;
 
@@ -15,7 +13,7 @@ namespace actualizer.Security.claims.transformation {
         private readonly IOktaClient _oktaClient;
         IHttpContextAccessor _httpContextAccessor;
 
-        public UserTransformer(IConfiguration config, IHttpContextAccessor httpContextAccessor, IOktaClient oktaClient) {
+        public UserTransformer(IHttpContextAccessor httpContextAccessor, IOktaClient oktaClient) {
             _httpContextAccessor = httpContextAccessor;
             this._oktaClient = oktaClient;
 

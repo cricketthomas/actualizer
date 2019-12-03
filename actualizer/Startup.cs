@@ -2,15 +2,16 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Okta.AspNetCore;
 using Microsoft.OpenApi.Models;
 using Okta.Sdk;
 using Okta.Sdk.Configuration;
 using Microsoft.AspNetCore.Authentication;
-using actualizer.Security.claims;
 using actualizer.Security.claims.transformation;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.AspNetCore.Http;
 
 namespace actualizer {
     public class Startup {
@@ -34,6 +35,7 @@ namespace actualizer {
 
             //services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Actualizer", Version = "v1" });
@@ -41,11 +43,11 @@ namespace actualizer {
 
 
             var client = new OktaClient(new OktaClientConfiguration {
-                OktaDomain = "https://dev-839928.okta.com",
-                Token = "00v9TMD0d5oAq7tssPHRFtlmRwQ7wh2V1FLOrU9g2C"
+                OktaDomain = "https://dev-839928.okta.com/",
+                Token = "00jwXF0-ir7_Vn7HbUWb7LEeArC3MpJJEDVkRbVQwn"
             });
 
-            services.AddSingleton<IOktaClient, OktaClient>();
+
 
             services.AddAuthentication(options => {
                 options.DefaultAuthenticateScheme = OktaDefaults.ApiAuthenticationScheme;
@@ -53,14 +55,15 @@ namespace actualizer {
                 options.DefaultSignInScheme = OktaDefaults.ApiAuthenticationScheme;
             })
             .AddOktaWebApi(new OktaWebApiOptions() {
-                OktaDomain = "https://dev-839928.okta.com"
+                OktaDomain = "https://dev-839928.okta.com/"
             });
 
-            services.AddTransient<IClaimsTransformation, UserTransformer>();
+            //services.AddTransient<IClaimsTransformation, UserTransformer>();
+            services.AddSingleton<IOktaClient, OktaClient>();
 
-            services.AddAuthorization(options => {
-                options.AddPolicy("CanMakeAnalyticsRequests", policy => policy.RequireClaim("CanMakeAnalyticsRequests"));
-            });
+            //services.AddAuthorization(options => {
+            //    options.AddPolicy("CanMakeAnalyticsRequests", policy => policy.RequireClaim("CanMakeAnalyticsRequests"));
+            //});
 
             services.AddCors(options => {
                 options.AddPolicy("VueCorsPolicy", builder => {
