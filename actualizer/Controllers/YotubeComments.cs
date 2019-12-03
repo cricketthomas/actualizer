@@ -26,7 +26,7 @@ namespace actualizer.Controllers {
         [HttpGet]
         [Route("search")]
         [Produces("application/json")]
-        // [Authorize(Policy = "CanMakeAnalyticsRequests")]
+        [Authorize(Policy = "CanMakeAnalyticsRequests")]
         public async Task<ActionResult<ReturnJson>> GetSearchComments(string video_id, string search, string lang = "en", int count = 25) {
 
 

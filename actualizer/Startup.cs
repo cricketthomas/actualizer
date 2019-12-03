@@ -42,10 +42,10 @@ namespace actualizer {
             });
 
 
-            var client = new OktaClient(new OktaClientConfiguration {
-                OktaDomain = "https://dev-839928.okta.com/",
-                Token = "00jwXF0-ir7_Vn7HbUWb7LEeArC3MpJJEDVkRbVQwn"
-            });
+            //var client = new OktaClient(new OktaClientConfiguration {
+            //    OktaDomain = "https://dev-839928.okta.com/",
+            //    Token = "00jwXF0-ir7_Vn7HbUWb7LEeArC3MpJJEDVkRbVQwn"
+            //});
 
 
 
@@ -58,12 +58,13 @@ namespace actualizer {
                 OktaDomain = "https://dev-839928.okta.com/"
             });
 
-            //services.AddTransient<IClaimsTransformation, UserTransformer>();
-            services.AddSingleton<IOktaClient, OktaClient>();
+            //services.AddSingleton<IOktaClient, OktaClient>();
 
-            //services.AddAuthorization(options => {
-            //    options.AddPolicy("CanMakeAnalyticsRequests", policy => policy.RequireClaim("CanMakeAnalyticsRequests"));
-            //});
+            services.AddTransient<IClaimsTransformation, UserTransformer>();
+
+            services.AddAuthorization(options => {
+                options.AddPolicy("CanMakeAnalyticsRequests", policy => policy.RequireClaim("CanMakeAnalyticsRequests"));
+            });
 
             services.AddCors(options => {
                 options.AddPolicy("VueCorsPolicy", builder => {
