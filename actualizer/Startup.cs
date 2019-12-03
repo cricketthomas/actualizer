@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Okta.AspNetCore;
 using Microsoft.OpenApi.Models;
 using Okta.Sdk;
+using Okta.AspNetCore;
 using Okta.Sdk.Configuration;
 using Microsoft.AspNetCore.Authentication;
 using actualizer.Security.claims.transformation;
@@ -33,8 +33,6 @@ namespace actualizer {
 
 
 
-            //services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddSwaggerGen(c => {
@@ -47,7 +45,7 @@ namespace actualizer {
             //    Token = "00jwXF0-ir7_Vn7HbUWb7LEeArC3MpJJEDVkRbVQwn"
             //});
 
-
+            //services.AddSingleton<IOktaClient, OktaClient>();
 
             services.AddAuthentication(options => {
                 options.DefaultAuthenticateScheme = OktaDefaults.ApiAuthenticationScheme;
@@ -58,9 +56,6 @@ namespace actualizer {
                 OktaDomain = "https://dev-839928.okta.com/"
             });
 
-            //services.AddSingleton<IOktaClient, OktaClient>();
-
-            services.AddTransient<IClaimsTransformation, UserTransformer>();
 
             services.AddAuthorization(options => {
                 options.AddPolicy("CanMakeAnalyticsRequests", policy => policy.RequireClaim("CanMakeAnalyticsRequests"));
@@ -75,6 +70,8 @@ namespace actualizer {
                       .WithOrigins("http://localhost:8080");
                 });
             });
+
+            services.AddTransient<IClaimsTransformation, UserTransformer>();
 
         }
 

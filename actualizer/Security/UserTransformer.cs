@@ -8,17 +8,17 @@ using Microsoft.AspNetCore.Http;
 using Okta.Sdk;
 using Okta.AspNetCore;
 using Okta.Sdk.Configuration;
+using Microsoft.AspNetCore.Hosting;
 
 namespace actualizer.Security.claims.transformation {
     public class UserTransformer : IClaimsTransformation {
 
-        private readonly IOktaClient _oktaClient;
         IHttpContextAccessor _httpContextAccessor;
+        private readonly IOktaClient _oktaClient;
 
         public UserTransformer(IHttpContextAccessor httpContextAccessor) {//, IOktaClient oktaClient) {
             _httpContextAccessor = httpContextAccessor;
-
-            // this._oktaClient = oktaClient;
+            //this._oktaClient = oktaClient;
 
         }
         public async Task<ClaimsPrincipal> TransformAsync(ClaimsPrincipal p) {
@@ -27,7 +27,6 @@ namespace actualizer.Security.claims.transformation {
                 OktaDomain = "https://dev-839928.okta.com/",
                 Token = "00jwXF0-ir7_Vn7HbUWb7LEeArC3MpJJEDVkRbVQwn"
             });
-
 
             var claimsIdentity = p.Identity as ClaimsIdentity;
             string _CanMakeAnalyticsRequests = "CanMakeAnalyticsRequests";
