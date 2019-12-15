@@ -9,6 +9,10 @@
     <Folder Include="Models\" />
     <Folder Include="Migrations\" />
     <Folder Include="Utils\" />
+    <Folder Include="Security\" />
+    <Folder Include="Security\Policy\" />
+    <Folder Include="Security\Policy\Claims\" />
+    <Folder Include="Security\Policy\Policies\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -53,6 +57,11 @@
     <Compile Remove="Services\OktaTodoItemService.cs" />
     <Compile Remove="Services\ITodoItemService.cs" />
     <Compile Remove="Models\OktaModel.cs" />
+    <Compile Remove="Authorization\UserTransformer.cs" />
+    <Compile Remove="GroupsToRolesTransformer.cs" />
+    <Compile Remove="Authorization\PermissionRequirement.cs" />
+    <Compile Remove="Authorization\GroupsToRolesTransformer.cs" />
+    <Compile Remove="Authorization\ClaimsTransformationContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="readme.md" />

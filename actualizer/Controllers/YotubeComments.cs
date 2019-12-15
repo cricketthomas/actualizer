@@ -22,21 +22,21 @@ namespace actualizer.Controllers {
 
     public class CommentsController : Controller {
 
-        [Authorize]
-        [Produces("application/json")]
-        [Route("search")]
+
         [HttpGet]
+        [Route("search")]
+        [Produces("application/json")]
+        [Authorize(Policy = "CanMakeAnalyticsRequests")]
         public async Task<ActionResult<ReturnJson>> GetSearchComments(string video_id, string search, string lang = "en", int count = 25) {
 
 
+            //Console.WriteLine(HttpContext.User);
+            //var uid = User.Claims.FirstOrDefault(c => c.Type == "uid")?.Value;
 
-            var uid = User.Claims.FirstOrDefault(c => c.Type == "uid")?.Value;
-
-            var role = OktaClientHelper.GetProfileDetails(uid: uid).Result;
+            //var role = await OktaClientHelper.GetProfileDetails(uid: uid).Result;
 
 
             Console.WriteLine("*****************************************");
-            Console.WriteLine(role);
             Console.WriteLine("*****************************************");
 
             //Console.WriteLine(userClaims.ToList());
@@ -59,6 +59,7 @@ namespace actualizer.Controllers {
 
         public async Task<ActionResult<ReturnJson>> GetAsync(string video_id, string search, string nextPageToken) {
 
+            Console.WriteLine(HttpContext.User);
 
 
             // get all the comments while they are less than the comment restriction i imposed. Use SQL lite for the restriction eventually. 

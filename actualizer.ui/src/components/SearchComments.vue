@@ -12,7 +12,7 @@
         </label>
         <label>
           Count:
-          <input type="number" id="count" v-model="query.count" />
+          <input type="number" id="count" v-model.number="query.count" />
         </label>
         <button>Submit</button>
       </form>
@@ -34,7 +34,7 @@ export default {
       query: {
         search: "",
         video_id: "",
-        count: 1
+        count: 10
       }
     };
   },
