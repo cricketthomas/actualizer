@@ -10,7 +10,7 @@ import axios from 'axios';
 Vue.use(Chart);
 
 Vue.config.productionTip = false;
-
+//todo add interceptor then put that in the prototype.
 try{
   var token = JSON.parse(localStorage.getItem('okta-token-storage')).accessToken.accessToken;
 

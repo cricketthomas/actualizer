@@ -7,6 +7,7 @@ using actualizer.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System.Security.Claims;
 
 namespace actualizer.Controllers {
 
@@ -51,11 +52,11 @@ namespace actualizer.Controllers {
                 // Create
                 string commentJson = JsonConvert.SerializeObject(value.Comments, Formatting.Indented);
                 int JSONLength = value.Comments.Count;
-
+                //var uid = User.Claims.FirstOrDefault(c => c.Type == "uid").Value;
                 Console.WriteLine("Inserting a new post");
                 Console.WriteLine(value);
                 db.Add(new SavedObjects {
-                    UserId = value.UserId,
+                    UserId = "remove this.",
                     Object = commentJson,
                     VideoId = value.VideoId,
                     Date = DateTime.Now,

@@ -69,7 +69,7 @@ namespace actualizer.Models {
 
 
 
-    // Classes for the return object from Azure for sentment
+    // Classes for the return object from Azure for sentiment
     public class AzureSentiment {
         public int id { get; set; }
         public double score { get; set; }
@@ -82,12 +82,37 @@ namespace actualizer.Models {
 
 
 
+    // Classes for the return object from Azure entity extraction
+
+    public class Match {
+        public double? wikipediaScore { get; set; }
+        public double? entityTypeScore { get; set; }
+        public string text { get; set; }
+        public int offset { get; set; }
+        public int length { get; set; }
+    }
+
+    public class Entity {
+        public string name { get; set; }
+        public List<Match> matches { get; set; }
+        public string wikipediaLanguage { get; set; }
+        public string wikipediaId { get; set; }
+        public string wikipediaUrl { get; set; }
+        public string bingId { get; set; }
+        public string type { get; set; }
+        public object subType { get; set; }
+    }
+
+    public class AzureEntities {
+        public int id { get; set; }
+        public List<Entity> entities { get; set; }
+    }
+
+    public class Entities {
+        public List<AzureEntities> documents { get; set; }
+        public List<object> errors { get; set; }
+    }
 
 
-
-
-
-
-    //TODO: sentiment overtime.
 
 }

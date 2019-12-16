@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using System.Linq;
 using System.Collections;
 using actualizer.Utils;
+using System.Diagnostics.Eventing.Reader;
 
 namespace actualizer.Controllers {
     [Route("api/[controller]")]
@@ -60,10 +61,47 @@ namespace actualizer.Controllers {
             var query = sentimentscores.Join(originaldocument,
                                     s => s.id,
                                     o => o.id,
-                                    (s, o) => new { id = s.id, text = o.text, score = s.score, likeCount = o.likeCount, date = o.publishedAt });
+                                    (s, o) => new {
+                                        id = s.id,
+                                        text = o.text,
+                                        score = s.score,
+                                        likeCount = o.likeCount,
+                                        date = o.publishedAt,
+                                        dayname = o.publishedAt.DayOfWeek.ToString(),
+                                        month = o.publishedAt.Month.ToString()
+                                    });
+
 
             return query.ToList();
-            //TODO sentiment works and joins well, now I need to aggregate it or something for sentiment overitme?
+        }
+
+
+        // POST TextAnalytics/entities
+        [Route("entities")]
+        [HttpPost]
+        public async Task<IList> GetEntities([FromBody] DocsWithTime json) {
+
+
+            Docs jsonDoc = JsonConvert.DeserializeObject<Docs>(JsonConvert.SerializeObject(json));
+            string result = await Helpers.CallTextAnalyticsAPI(json: jsonDoc, RequestType: "entities");
+
+            Entities entityresponse = JsonConvert.DeserializeObject<Entities>(result);
+
+            var entitiesmatches = entityresponse.documents;
+            var originaldocument = json.documents;
+
+            var query = entitiesmatches.Join(originaldocument,
+                                             e => e.id,
+                                             o => o.id,
+                                             (e, o) => new {
+                                                 id = e.id,
+                                                 text = o.text,
+                                                 likeCount = o.likeCount,
+                                                 date = o.publishedAt,
+                                                 entities = e.entities
+                                             });
+
+            return query.ToList();
         }
 
     }
