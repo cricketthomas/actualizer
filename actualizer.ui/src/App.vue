@@ -43,7 +43,7 @@ export default {
   methods: {
     async isAuthenticated() {
       this.authenticated = await this.$auth.isAuthenticated();
-      
+      console.log(await this.$auth.getUser());
       if (!this.$store.state.userClaims) {
         this.$store.commit({
           type: "UpdateBearer",
@@ -51,9 +51,10 @@ export default {
         });
         this.$store.commit({
           type: "UpdateClaims",
-          userClaims: await Object.entries(await this.$auth.getUser())
-            .map(entry => ({ [entry[0]]: entry[1] }))
-            .reduce((k, v) => Object.assign(k, v), {})
+          userClaims: await this.$auth.getUser()
+        //   userClaims: await Object.entries(await this.$auth.getUser())
+        //     .map(entry => ({ [entry[0]]: entry[1] }))
+        //     .reduce((k, v) => Object.assign(k, v), {})
         });
       }
     },

@@ -72,6 +72,7 @@ namespace actualizer {
             });
 
             services.AddTransient<IClaimsTransformation, UserTransformer>();
+            services.AddMemoryCache();
 
         }
 

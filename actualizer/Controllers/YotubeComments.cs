@@ -28,17 +28,8 @@ namespace actualizer.Controllers {
         [Produces("application/json")]
         [Authorize(Policy = "CanMakeAnalyticsRequests")]
         public async Task<ActionResult<ReturnJson>> GetSearchComments(string video_id, string search, string lang = "en", int count = 25) {
-
-
-            //Console.WriteLine(HttpContext.User);
             //var uid = User.Claims.FirstOrDefault(c => c.Type == "uid")?.Value;
-
             //var role = await OktaClientHelper.GetProfileDetails(uid: uid).Result;
-
-
-            Console.WriteLine("*****************************************");
-            Console.WriteLine("*****************************************");
-
             //Console.WriteLine(userClaims.ToList());
             try {
                 var results = await Helpers.SearchComments(video_id: video_id, search: search, lang: lang, count: count);
