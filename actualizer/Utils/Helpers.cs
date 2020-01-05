@@ -27,11 +27,7 @@ namespace actualizer.Utils {
             HttpResponseMessage response;
 
             string output = JsonConvert.SerializeObject(json);
-            Console.WriteLine(output);
-
             byte[] byteData = Encoding.UTF8.GetBytes(output);
-            Console.WriteLine("byte data");
-            Console.WriteLine(byteData);
 
             using (var content = new ByteArrayContent(byteData)) {
                 content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
@@ -42,7 +38,6 @@ namespace actualizer.Utils {
                     // ... Read the string.
                     Task<string> result = x.ReadAsStringAsync();
                     res = result.Result;
-                    Console.WriteLine(res);
 
                     return res;
                 }
