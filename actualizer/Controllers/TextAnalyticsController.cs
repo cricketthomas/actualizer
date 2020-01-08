@@ -13,10 +13,20 @@ using System.Linq;
 using System.Collections;
 using actualizer.Utils;
 using System.Diagnostics.Eventing.Reader;
+using Microsoft.Extensions.Configuration;
 
 namespace actualizer.Controllers {
     [Route("api/[controller]")]
     public class TextAnalyticsController : Controller {
+
+        private readonly IConfiguration _configuration;
+
+        public TextAnalyticsController(IConfiguration configuration) {
+            _configuration = configuration;
+        }
+
+
+
 
 
         // POST TextAnalytics/keyphrase
@@ -28,7 +38,7 @@ namespace actualizer.Controllers {
 
             //string result = await CallTextAnalyticsAPI(jsonDoc);
 
-            string result = await Helpers.CallTextAnalyticsAPI(json: jsonDoc, RequestType: "keyphrases");
+            string result = await Helpers.CallTextAnalyticsAPI(json: jsonDoc, RequestType: "keyphrases", azure_key: _configuration["azure_key"]);
 
 
             TextAnalytics textanalyticsresponse = JsonConvert.DeserializeObject<TextAnalytics>(result);
@@ -52,7 +62,7 @@ namespace actualizer.Controllers {
         public async Task<IList> PostSentimentAsync([FromBody] DocsWithTime json) {
 
             Docs jsonDoc = JsonConvert.DeserializeObject<Docs>(JsonConvert.SerializeObject(json));
-            string result = await Helpers.CallTextAnalyticsAPI(json: jsonDoc, RequestType: "sentiment");
+            string result = await Helpers.CallTextAnalyticsAPI(json: jsonDoc, RequestType: "sentiment", azure_key: _configuration["azure_key"]);
             //string result = await CallTextAnalyticsAPI(jsonDoc);
             Sentiment sentimentresponse = JsonConvert.DeserializeObject<Sentiment>(result);
             var sentimentscores = sentimentresponse.documents;
@@ -83,7 +93,7 @@ namespace actualizer.Controllers {
 
 
             Docs jsonDoc = JsonConvert.DeserializeObject<Docs>(JsonConvert.SerializeObject(json));
-            string result = await Helpers.CallTextAnalyticsAPI(json: jsonDoc, RequestType: "entities");
+            string result = await Helpers.CallTextAnalyticsAPI(json: jsonDoc, RequestType: "entities", azure_key: _configuration["azure_key"]);
 
             Entities entityresponse = JsonConvert.DeserializeObject<Entities>(result);
 
@@ -91,15 +101,15 @@ namespace actualizer.Controllers {
             var originaldocument = json.documents;
 
             var query = entitiesmatches.Join(originaldocument,
-                                             e => e.id,
-                                             o => o.id,
-                                             (e, o) => new {
-                                                 id = e.id,
-                                                 text = o.text,
-                                                 likeCount = o.likeCount,
-                                                 date = o.publishedAt,
-                                                 entities = e.entities
-                                             });
+                            e => e.id,
+                            o => o.id,
+                            (e, o) => new {
+                                id = e.id,
+                                text = o.text,
+                                likeCount = o.likeCount,
+                                date = o.publishedAt,
+                                entities = e.entities
+                            });
 
             return query.ToList();
         }

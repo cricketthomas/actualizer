@@ -15,12 +15,21 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Okta.Sdk;
 using Okta.Sdk.Configuration;
+using Microsoft.Extensions.Configuration;
 
 namespace actualizer.Controllers {
 
     [Route("api/[controller]")]
 
     public class CommentsController : Controller {
+
+
+
+        private readonly IConfiguration _configuration;
+
+        public CommentsController(IConfiguration configuration) {
+            _configuration = configuration;
+        }
 
 
         [HttpGet]
@@ -32,7 +41,7 @@ namespace actualizer.Controllers {
             //var role = await OktaClientHelper.GetProfileDetails(uid: uid).Result;
             //Console.WriteLine(userClaims.ToList());
             try {
-                var results = await Helpers.SearchComments(video_id: video_id, search: search, lang: lang, count: count);
+                var results = await Helpers.SearchComments(video_id: video_id, search: search, lang: lang, count: count, youtube_key: _configuration["youtube_key"]);
                 results.Cast<ReturnJson>();
                 return Ok(results);
             } catch {
@@ -63,7 +72,8 @@ namespace actualizer.Controllers {
                 do {
                     var result = await Helpers.GetCommentsNextPageAsync(
                         video_id: video_id, search: search,
-                        NextPageToken: nextPageIdFromQuery, lastNumOfComments: allCommentCount);
+                        NextPageToken: nextPageIdFromQuery, lastNumOfComments: allCommentCount,
+                        youtube_key: _configuration["youtube_key"]);
 
                     var results = result.Cast<ReturnJson>();
 

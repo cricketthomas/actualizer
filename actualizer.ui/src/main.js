@@ -5,8 +5,10 @@ import router from './router';
 import './registerServiceWorker';
 import Chart from 'vue2-frappe';
 import axios from 'axios';
+import Buefy from 'buefy'
+import 'buefy/dist/buefy.css'
 
-
+Vue.use(Buefy)
 Vue.use(Chart);
 
 Vue.config.productionTip = false;

@@ -11,20 +11,25 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Okta.Sdk;
-
+using Microsoft.Extensions.Configuration;
+using System.Globalization;
 
 namespace actualizer.Utils {
-    public static class Helpers {
+    public class Helpers {
+
         private static readonly HttpClient client = new HttpClient();
 
 
-        public static async Task<string> CallTextAnalyticsAPI(Docs json, string RequestType) {
+        public static async Task<string> CallTextAnalyticsAPI(Docs json, string RequestType, string azure_key) {
+
             var queryString = HttpUtility.ParseQueryString(string.Empty);
             // Request headers
-            client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "1d70014e2d4247689f609fc795143f99");
+
+            client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", azure_key);
             var uri = $"https://actualizer.cognitiveservices.azure.com/text/analytics/v2.1/" + RequestType + queryString;
             Console.WriteLine(uri);
             HttpResponseMessage response;
+
 
             string output = JsonConvert.SerializeObject(json);
             byte[] byteData = Encoding.UTF8.GetBytes(output);
@@ -49,11 +54,10 @@ namespace actualizer.Utils {
 
 
 
-        public static async Task<List<ReturnJson>> GetCommentsNextPageAsync(string video_id, string search, int lastNumOfComments, string NextPageToken = null) {
+        public static async Task<List<ReturnJson>> GetCommentsNextPageAsync(string video_id, string search, int lastNumOfComments, string youtube_key, string NextPageToken = null) {
             //void means returns nothing
-            string key = "AIzaSyCFDwRa8R7V2g3H-7GzcLkPzedoPIruaVg";
             string u = "https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&maxResults=100";
-            string url = $"{u}&pageToken={NextPageToken}&searchTerms={search}&textFormat=plainText&videoId={video_id}&key={key}";
+            string url = $"{u}&pageToken={NextPageToken}&searchTerms={search}&textFormat=plainText&videoId={video_id}&key={youtube_key}";
 
             var response = await client.GetAsync(url);
             var content = await response.Content.ReadAsStringAsync();
@@ -89,12 +93,11 @@ namespace actualizer.Utils {
         }
 
 
-        public static async Task<string> SearchComments(string video_id, string search, string lang, int count) {//void means returns nothing
+        public static async Task<string> SearchComments(string video_id, string search, string lang, int count, string youtube_key) {
+            //void means returns nothing
             //List<string> returnObject = new List<string> { };
-
-            string key = "AIzaSyCFDwRa8R7V2g3H-7GzcLkPzedoPIruaVg";
             string u = "https://www.googleapis.com/youtube/v3/commentThreads?key=";
-            string url = $"{u}{key}&textFormat=plaintext&part=snippet&videoId={video_id}&maxResults={count}&searchTerms={search}";
+            string url = $"{u}{youtube_key}&textFormat=plaintext&part=snippet&videoId={video_id}&maxResults={count}&searchTerms={search}";
 
             var response = await client.GetAsync(url);
             var content = await response.Content.ReadAsStringAsync();

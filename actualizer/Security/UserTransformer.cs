@@ -10,6 +10,7 @@ using Okta.AspNetCore;
 using Okta.Sdk.Configuration;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
 
 namespace actualizer.Security.claims.transformation {
     public class UserTransformer : IClaimsTransformation {
@@ -17,14 +18,16 @@ namespace actualizer.Security.claims.transformation {
         IHttpContextAccessor _httpContextAccessor;
         private readonly IOktaClient _oktaClient;
         private readonly IMemoryCache _cache;
+        private readonly IConfiguration _configuration;
 
-        public UserTransformer(IHttpContextAccessor httpContextAccessor, IMemoryCache cache) {//, IOktaClient oktaClient) {
+        public UserTransformer(IHttpContextAccessor httpContextAccessor, IMemoryCache cache, IConfiguration configuration) {//, IOktaClient oktaClient) {
             _httpContextAccessor = httpContextAccessor;
             //this._oktaClient = oktaClient;
             _cache = cache;
+            _configuration = configuration;
+
 
         }
-
 
         public async Task<ClaimsPrincipal> TransformAsync(ClaimsPrincipal p) {
 
@@ -40,7 +43,7 @@ namespace actualizer.Security.claims.transformation {
 
                 var client = new OktaClient(new OktaClientConfiguration {
                     OktaDomain = "https://dev-839928.okta.com/",
-                    Token = "00jwXF0-ir7_Vn7HbUWb7LEeArC3MpJJEDVkRbVQwn"
+                    Token = _configuration["okta_token"]
                 });
 
                 var claimsIdentity = p.Identity as ClaimsIdentity;
@@ -56,7 +59,7 @@ namespace actualizer.Security.claims.transformation {
                     claimsIdentity.AddClaim(new Claim(Claims.CanMakeAnalyticsRequests, string.Empty));
                 }
                 //todo make configuarble.
-                var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(200));
+                var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(500));
 
                 _cache.Set(cacheKey, p, cacheEntryOptions);
 
