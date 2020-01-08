@@ -9,7 +9,7 @@ using actualizer.Models;
 using System.Collections;
 using System.Security.Cryptography.X509Certificates;
 using System.Reflection.Metadata;
-using actualizer.Utils;
+using actualizer.ExternalAPI.YoutubeAPI;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -41,7 +41,7 @@ namespace actualizer.Controllers {
             //var role = await OktaClientHelper.GetProfileDetails(uid: uid).Result;
             //Console.WriteLine(userClaims.ToList());
             try {
-                var results = await Helpers.SearchComments(video_id: video_id, search: search, lang: lang, count: count, youtube_key: _configuration["youtube_key"]);
+                var results = await YoutubeAPI.SearchComments(video_id: video_id, search: search, lang: lang, count: count, youtube_key: _configuration["youtube_key"]);
                 results.Cast<ReturnJson>();
                 return Ok(results);
             } catch {
@@ -70,7 +70,7 @@ namespace actualizer.Controllers {
                 int allCommentCount = 0;
                 int index = 0;
                 do {
-                    var result = await Helpers.GetCommentsNextPageAsync(
+                    var result = await YoutubeAPI.GetCommentsNextPageAsync(
                         video_id: video_id, search: search,
                         NextPageToken: nextPageIdFromQuery, lastNumOfComments: allCommentCount,
                         youtube_key: _configuration["youtube_key"]);

@@ -14,44 +14,13 @@ using Okta.Sdk;
 using Microsoft.Extensions.Configuration;
 using System.Globalization;
 
-namespace actualizer.Utils {
-    public class Helpers {
 
+namespace actualizer.ExternalAPI.YoutubeAPI {
+    public class YoutubeAPI {
         private static readonly HttpClient client = new HttpClient();
 
-
-        public static async Task<string> CallTextAnalyticsAPI(Docs json, string RequestType, string azure_key) {
-
-            var queryString = HttpUtility.ParseQueryString(string.Empty);
-            // Request headers
-
-            client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", azure_key);
-            var uri = $"https://actualizer.cognitiveservices.azure.com/text/analytics/v2.1/" + RequestType + queryString;
-            Console.WriteLine(uri);
-            HttpResponseMessage response;
-
-
-            string output = JsonConvert.SerializeObject(json);
-            byte[] byteData = Encoding.UTF8.GetBytes(output);
-
-            using (var content = new ByteArrayContent(byteData)) {
-                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                response = await client.PostAsync(uri, content);
-
-                string res = "";
-                using (HttpContent x = response.Content) {
-                    // ... Read the string.
-                    Task<string> result = x.ReadAsStringAsync();
-                    res = result.Result;
-
-                    return res;
-                }
-
-            }
+        public YoutubeAPI() {
         }
-
-
-
 
 
         public static async Task<List<ReturnJson>> GetCommentsNextPageAsync(string video_id, string search, int lastNumOfComments, string youtube_key, string NextPageToken = null) {
@@ -121,6 +90,5 @@ namespace actualizer.Utils {
             });
             return json;
         }
-
     }
 }
