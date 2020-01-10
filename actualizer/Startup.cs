@@ -12,6 +12,8 @@ using actualizer.Security.claims.transformation;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using actualizer.Infastructure.Data.Actualizer.db;
 
 namespace actualizer {
     public class Startup {
@@ -27,6 +29,7 @@ namespace actualizer {
         public void ConfigureServices(IServiceCollection services) {
 
 
+            services.AddDbContext<ActualizerContext>(options => options.UseSqlite("Data Source=Data.db"));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddMvc(option => option.EnableEndpointRouting = false);

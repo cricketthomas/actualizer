@@ -27,7 +27,7 @@ namespace actualizer.Controllers {
         // GET api/values/5
         [HttpGet("{id}")]
         public IActionResult GetById(string id) {
-            using (var db = new ActualizerContext()) {
+            using (var db = new ActualizerDbContext()) {
 
 
                 try {
@@ -48,7 +48,7 @@ namespace actualizer.Controllers {
         [HttpPost]
         public void Post([FromBody] SaveObject value) {
 
-            using (var db = new ActualizerContext()) {
+            using (var db = new ActualizerDbContext()) {
                 // Create
                 string commentJson = JsonConvert.SerializeObject(value.Comments, Formatting.Indented);
                 int JSONLength = value.Comments.Count;

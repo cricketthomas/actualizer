@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Identity;
 using Okta.Sdk;
 using Okta.Sdk.Configuration;
 using Microsoft.Extensions.Configuration;
+using actualizer.Infastructure.Data.Actualizer.db;
 
 namespace actualizer.Controllers {
 
@@ -23,12 +24,13 @@ namespace actualizer.Controllers {
 
     public class CommentsController : Controller {
 
-
+        private readonly ActualizerContext _db;
 
         private readonly IConfiguration _configuration;
 
-        public CommentsController(IConfiguration configuration) {
+        public CommentsController(IConfiguration configuration, ActualizerContext db) {
             _configuration = configuration;
+            _db = db;
         }
 
 
@@ -40,6 +42,8 @@ namespace actualizer.Controllers {
             //var uid = User.Claims.FirstOrDefault(c => c.Type == "uid")?.Value;
             //var role = await OktaClientHelper.GetProfileDetails(uid: uid).Result;
             //Console.WriteLine(userClaims.ToList());
+            var data = _db.SavedObjects.OrderBy(o => o.VideoId).First();
+
             try {
                 var results = await YoutubeAPI.SearchComments(video_id: video_id, search: search, lang: lang, count: count, youtube_key: _configuration["youtube_key"]);
                 results.Cast<ReturnJson>();
@@ -69,6 +73,7 @@ namespace actualizer.Controllers {
                 string nextPageIdFromQuery = null;
                 int allCommentCount = 0;
                 int index = 0;
+
                 do {
                     var result = await YoutubeAPI.GetCommentsNextPageAsync(
                         video_id: video_id, search: search,

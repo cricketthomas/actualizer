@@ -6,58 +6,53 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using actualizer.Models;
 
-namespace actualizer.Migrations
-{
-    [DbContext(typeof(ActualizerContext))]
+namespace actualizer.Migrations {
+    [DbContext(typeof(ActualizerDbContext))]
     [Migration("20191019031439_InitialCreate")]
-    partial class InitialCreate
-    {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
-        {
+    partial class InitialCreate {
+        protected override void BuildTargetModel(ModelBuilder modelBuilder) {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.0.0");
 
-            modelBuilder.Entity("actualizer.Models.RemainingRequests", b =>
-                {
-                    b.Property<string>("Resource")
-                        .HasColumnType("TEXT");
+            modelBuilder.Entity("actualizer.Models.RemainingRequests", b => {
+                b.Property<string>("Resource")
+                    .HasColumnType("TEXT");
 
-                    b.Property<int>("Count")
-                        .HasColumnType("INTEGER");
+                b.Property<int>("Count")
+                    .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("TEXT");
+                b.Property<DateTime>("Date")
+                    .HasColumnType("TEXT");
 
-                    b.HasKey("Resource");
+                b.HasKey("Resource");
 
-                    b.ToTable("RemainingRequests");
-                });
+                b.ToTable("RemainingRequests");
+            });
 
-            modelBuilder.Entity("actualizer.Models.SavedObjects", b =>
-                {
-                    b.Property<string>("VideoId")
-                        .HasColumnType("TEXT");
+            modelBuilder.Entity("actualizer.Models.SavedObjects", b => {
+                b.Property<string>("VideoId")
+                    .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("TEXT");
+                b.Property<DateTime>("Date")
+                    .HasColumnType("TEXT");
 
-                    b.Property<int>("JSONLength")
-                        .HasColumnType("INTEGER");
+                b.Property<int>("JSONLength")
+                    .HasColumnType("INTEGER");
 
-                    b.Property<string>("Object")
-                        .HasColumnType("TEXT");
+                b.Property<string>("Object")
+                    .HasColumnType("TEXT");
 
-                    b.Property<string>("Source")
-                        .HasColumnType("TEXT");
+                b.Property<string>("Source")
+                    .HasColumnType("TEXT");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("TEXT");
+                b.Property<string>("UserId")
+                    .HasColumnType("TEXT");
 
-                    b.HasKey("VideoId");
+                b.HasKey("VideoId");
 
-                    b.ToTable("SavedObjects");
-                });
+                b.ToTable("SavedObjects");
+            });
 #pragma warning restore 612, 618
         }
     }

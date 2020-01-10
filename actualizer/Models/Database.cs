@@ -39,7 +39,7 @@ namespace actualizer.Models {
     //}
 
     //This is the create fnction that acually holds the tables or creates the actual tables. 
-    public class ActualizerContext : DbContext {
+    public class ActualizerDbContext : DbContext {
 
         public DbSet<SavedObjects> SavedObjects { get; set; }
 
