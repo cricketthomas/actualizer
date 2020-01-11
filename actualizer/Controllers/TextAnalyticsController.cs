@@ -12,8 +12,10 @@ using Newtonsoft.Json;
 using System.Linq;
 using System.Collections;
 using actualizer.ExternalAPI.TextAnalytics;
+using actualizer.ExternalAPI.TextAnalyticsAPI.Vader;
 using System.Diagnostics.Eventing.Reader;
 using Microsoft.Extensions.Configuration;
+using System.Globalization;
 
 namespace actualizer.Controllers {
     [Route("api/[controller]")]
@@ -32,7 +34,7 @@ namespace actualizer.Controllers {
         // POST TextAnalytics/keyphrase
         [Route("keyphrases")]
         [HttpPost]
-        public async Task<IList> PostKeyPhraseAsync([FromBody] DocsWithTime json) {
+        public async Task<ActionResult<IList>> PostKeyPhraseAsync([FromBody] DocsWithTime json) {
 
             Docs jsonDoc = JsonConvert.DeserializeObject<Docs>(JsonConvert.SerializeObject(json));
 
@@ -59,7 +61,7 @@ namespace actualizer.Controllers {
         // POST TextAnalytics/sentiment
         [Route("sentiment")]
         [HttpPost]
-        public async Task<IList> PostSentimentAsync([FromBody] DocsWithTime json) {
+        public async Task<ActionResult<IList>> PostSentimentAsync([FromBody] DocsWithTime json) {
 
             Docs jsonDoc = JsonConvert.DeserializeObject<Docs>(JsonConvert.SerializeObject(json));
             string result = await TextAnalticsAPI.CallTextAnalyticsAPI(json: jsonDoc, RequestType: "sentiment", azure_key: _configuration["azure_key"]);
@@ -77,19 +79,35 @@ namespace actualizer.Controllers {
                                         score = s.score,
                                         likeCount = o.likeCount,
                                         date = o.publishedAt,
-                                        dayname = o.publishedAt.DayOfWeek.ToString(),
+                                        dayName = o.publishedAt.DayOfWeek.ToString(),
                                         month = o.publishedAt.Month.ToString()
                                     });
 
+            var DayAggregate = query.GroupBy(d => d.dayName).Select(g => new {
+                Day = g.Key,
+                Scores = g.Select(s => s.score),
+                Avg = (g.Sum(g => g.score) / g.Select(s => s.score).Count())
+            });
 
-            return query.ToList();
+            var MonthAggregate = query.GroupBy(d => d.month).Select(g => new {
+                Month = g.Key,
+                SentimentScores = g.Select(s => s.score),
+                Avg = (g.Sum(g => g.score) / g.Select(s => s.score).Count())
+            });
+
+            var LikeAggregate = query.GroupBy(l => l.likeCount).Select(s => new {
+                LikeCount = s.Key,
+                SentimentScore = s.Select(s => s.score)
+            });//does this make sense?
+
+            return Ok(new { textanalyticsbase = query.ToList(), MonthAggregate = MonthAggregate.ToList(), DayAggregate = DayAggregate.ToList(), LikeAggregate = LikeAggregate.ToList() });
         }
 
 
         // POST TextAnalytics/entities
         [Route("entities")]
         [HttpPost]
-        public async Task<IList> GetEntities([FromBody] DocsWithTime json) {
+        public async Task<ActionResult<IList>> GetEntities([FromBody] DocsWithTime json) {
 
 
             Docs jsonDoc = JsonConvert.DeserializeObject<Docs>(JsonConvert.SerializeObject(json));
@@ -111,8 +129,54 @@ namespace actualizer.Controllers {
                                 entities = e.entities
                             });
 
-            return query.ToList();
+            return Ok(query.ToList());
         }
 
+
+
+
+        // POST TextAnalytics/sentiment
+        [Route("vader")]
+        [HttpPost]
+        public async Task<ActionResult<IList>> PostVaderAsync([FromBody] DocsWithTime json) {
+
+            Docs jsonDoc = JsonConvert.DeserializeObject<Docs>(JsonConvert.SerializeObject(json));
+
+            var vaders = VaderSentiment.VaderSentimentAnalytics(jsonDoc);
+
+            var originaldocument = json.documents;
+
+            var query = vaders.Join(originaldocument,
+                                    s => s.id,
+                                    o => o.id,
+                                    (s, o) => new {
+                                        id = s.id,
+                                        text = o.text,
+                                        score = s.score,
+                                        likeCount = o.likeCount,
+                                        date = o.publishedAt,
+                                        dayName = o.publishedAt.DayOfWeek.ToString(),
+                                        month = o.publishedAt.Month.ToString()
+                                    });
+
+            var DayAggregate = query.GroupBy(d => d.dayName).Select(g => new {
+                Day = g.Key,
+                Scores = g.Select(s => s.score),
+                Avg = (g.Sum(g => g.score) / g.Select(s => s.score).Count())
+            });
+
+            var MonthAggregate = query.GroupBy(d => d.month).Select(g => new {
+                Month = g.Key,
+                SentimentScores = g.Select(s => s.score),
+                Avg = (g.Sum(g => g.score) / g.Select(s => s.score).Count())
+            });
+
+            var LikeAggregate = query.GroupBy(l => l.likeCount).Select(s => new {
+                LikeCount = s.Key,
+                SentimentScore = s.Select(s => s.score)
+            });//does this make sense?
+
+            return Ok(query.ToList());
+        }
     }
 }
