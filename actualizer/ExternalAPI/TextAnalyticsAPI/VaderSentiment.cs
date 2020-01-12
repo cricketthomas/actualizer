@@ -22,7 +22,7 @@ namespace actualizer.ExternalAPI.TextAnalyticsAPI.Vader {
             public string[] WordsWithoutStopWords { get; set; }
         }
 
-        public static async Task<List<AzureSentiment>> VaderSentimentAnalytics(Docs json, string score_type, bool stopword = false) {
+        public static async Task<List<AzureSentiment>> VaderSentimentAnalytics(Docs json, string score_type, bool stopword) {
 
 
             SentimentIntensityAnalyzer analyzer = new SentimentIntensityAnalyzer();
@@ -58,25 +58,23 @@ namespace actualizer.ExternalAPI.TextAnalyticsAPI.Vader {
                     var cleanedText = string.Join(" ", prediction.WordsWithoutStopWords);
                     var score = analyzer.PolarityScores(cleanedText);
                     var type = new Hashtable {
-                        { "Compound", score.Compound },
-                        { "Neutral", score.Neutral },
-                        { "Positive", score.Positive },
-                        { "Negative", score.Negative }
+                        { "compound", score.Compound },
+                        { "neutral", score.Neutral },
+                        { "positive", score.Positive },
+                        { "negative", score.Negative }
 
                     };
-                    var x = (double)type[score_type];
-                    azureSentiments.Add(new AzureSentiment { id = item.id, score = score.Compound });
+                    azureSentiments.Add(new AzureSentiment { id = item.id, score = (double)type[score_type] });
 
                 } else {
                     var score = analyzer.PolarityScores(item.text);
                     var type = new Hashtable {
-                        { "Compound", score.Compound },
-                        { "Neutral", score.Neutral },
-                        { "Positive", score.Positive },
-                        { "Negative", score.Negative }
+                        { "compound", score.Compound },
+                        { "neutral", score.Neutral },
+                        { "positive", score.Positive },
+                        { "negative", score.Negative }
                     };
-                    var x = (double)type[score_type];
-                    azureSentiments.Add(new AzureSentiment { id = item.id, score = score.Compound });
+                    azureSentiments.Add(new AzureSentiment { id = item.id, score = (double)type[score_type] });
                 }
 
             }

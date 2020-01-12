@@ -139,13 +139,13 @@ namespace actualizer.Controllers {
 
 
         // POST TextAnalytics/sentiment
-        [Route("vader")]
+        [Route("vader/{score_type}/{stopword}")]
         [HttpPost]
-        public async Task<ActionResult<IList>> PostVaderAsync([FromBody] DocsWithTime json) {
+        public async Task<ActionResult<IList>> PostVaderAsync([FromBody] DocsWithTime json, string score_type = "compound", bool stopword = false) {
 
             Docs jsonDoc = JsonConvert.DeserializeObject<Docs>(JsonConvert.SerializeObject(json));
 
-            var vaders = await VaderSentiment.VaderSentimentAnalytics(json: jsonDoc, score_type: "Positive", stopword: false);
+            var vaders = await VaderSentiment.VaderSentimentAnalytics(json: jsonDoc, score_type: score_type, stopword: stopword);
 
             var originaldocument = json.documents;
 
