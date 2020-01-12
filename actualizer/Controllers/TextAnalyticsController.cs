@@ -16,15 +16,18 @@ using actualizer.ExternalAPI.TextAnalyticsAPI.Vader;
 using System.Diagnostics.Eventing.Reader;
 using Microsoft.Extensions.Configuration;
 using System.Globalization;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace actualizer.Controllers {
     [Route("api/[controller]")]
     public class TextAnalyticsController : Controller {
 
         private readonly IConfiguration _configuration;
+        private readonly IMemoryCache _cache;
 
-        public TextAnalyticsController(IConfiguration configuration) {
+        public TextAnalyticsController(IConfiguration configuration, IMemoryCache cache) {
             _configuration = configuration;
+            _cache = cache;
         }
 
 
@@ -142,7 +145,7 @@ namespace actualizer.Controllers {
 
             Docs jsonDoc = JsonConvert.DeserializeObject<Docs>(JsonConvert.SerializeObject(json));
 
-            var vaders = VaderSentiment.VaderSentimentAnalytics(jsonDoc);
+            var vaders = await VaderSentiment.VaderSentimentAnalytics(json: jsonDoc, score_type: "Positive", stopword: false);
 
             var originaldocument = json.documents;
 
@@ -173,10 +176,11 @@ namespace actualizer.Controllers {
 
             var LikeAggregate = query.GroupBy(l => l.likeCount).Select(s => new {
                 LikeCount = s.Key,
-                SentimentScore = s.Select(s => s.score)
+                SentimentScore = s.Select(s => s.score),
+                Avg = (s.Sum(s => s.score) / s.Select(s => s.score).Count())
             });//does this make sense?
 
-            return Ok(query.ToList());
+            return Ok(new { textanalyticsbase = query.ToList(), MonthAggregate = MonthAggregate.ToList(), DayAggregate = DayAggregate.ToList(), LikeAggregate = LikeAggregate.ToList() });
         }
     }
 }

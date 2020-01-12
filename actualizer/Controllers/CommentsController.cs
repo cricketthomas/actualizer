@@ -17,6 +17,8 @@ using Okta.Sdk;
 using Okta.Sdk.Configuration;
 using Microsoft.Extensions.Configuration;
 using actualizer.Infastructure.Data.Actualizer.db;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.AspNetCore.DataProtection.KeyManagement.Internal;
 
 namespace actualizer.Controllers {
 
@@ -27,10 +29,12 @@ namespace actualizer.Controllers {
         private readonly ActualizerContext _db;
 
         private readonly IConfiguration _configuration;
+        private readonly IMemoryCache _cache;
 
-        public CommentsController(IConfiguration configuration, ActualizerContext db) {
+        public CommentsController(IConfiguration configuration, ActualizerContext db, IMemoryCache cache) {
             _configuration = configuration;
             _db = db;
+            _cache = cache;
         }
 
 
@@ -63,11 +67,16 @@ namespace actualizer.Controllers {
 
         public async Task<ActionResult<ReturnJson>> GetAsync(string video_id, string search, string nextPageToken) {
 
-            Console.WriteLine(HttpContext.User);
-
-
-            // get all the comments while they are less than the comment restriction i imposed. Use SQL lite for the restriction eventually. 
             if (!string.IsNullOrWhiteSpace(video_id)) {
+
+                var cacheKey = string.Join(",", search, video_id);
+                dynamic cached_object;
+
+                if (_cache.TryGetValue(cacheKey, out cached_object)) {
+                    return Ok(cached_object);
+                }
+
+                // get all the comments while they are less than the comment restriction i imposed. Use SQL lite for the restriction eventually. 
                 List<ReturnJson> obj = new List<ReturnJson> { };
 
                 string nextPageIdFromQuery = null;
@@ -93,7 +102,7 @@ namespace actualizer.Controllers {
                         nextPage = results.Select(x => x.nextPage).First(),
                     });
                     allCommentCount += results.Select(c => c.count).Last();
-
+                    index++;
                 } while (!string.IsNullOrEmpty(nextPageIdFromQuery) && index < 20);
 
                 // Return the comments neatly.
@@ -109,7 +118,14 @@ namespace actualizer.Controllers {
                 var meta = obj.Select(s => new { count = sum, search = s.search, video_id = s.video_id }).FirstOrDefault();
                 var finalObject = new { documents = allcomments, metadata = meta };
 
+                cached_object = finalObject;
+
+                var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(500));
+                _cache.Set(cacheKey, finalObject, cacheEntryOptions);
+
                 return Ok(finalObject);
+
+
             }
             return BadRequest("Please enter a video id");
         }
