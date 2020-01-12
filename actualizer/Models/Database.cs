@@ -53,15 +53,20 @@ namespace actualizer.Models {
 
 
 
-
-
+    public class Metadata {
+        public int count { get; set; }
+        public string search { get; set; }
+        public string video_id { get; set; }
+    }
 
     // This is just a class that specifies the input object. 
     public class SaveObject {
         public string VideoId { get; set; }
         public string UserId { get; set; }
         public string Source { get; set; }
-        public List<Comments> Comments { get; set; }
+        public List<Comments> Documents { get; set; }
+        public Metadata metadata { get; set; }
+
     }
 
 }
