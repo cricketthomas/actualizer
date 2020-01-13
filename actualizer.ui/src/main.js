@@ -31,6 +31,21 @@ const base = axios.create({
   }
 });
 
+// const Actualizerconfig = axios.create({
+//   baseURL: 'https://localhost:5001/api'
+// });
+
+// async function MakeInterceptor(config){
+//   axios.interceptors.request.use(function (config) {
+//     config.headers.Authorization = `Bearer ${Vue.prototype.$auth.getAccessToken()}`;
+//     return config;
+//   }, function (error) {
+//     return Promise.reject(error);
+//   });
+// }
+
+
+// Vue.prototype.$http = MakeInterceptor(Actualizerconfig);
 
 
 Vue.prototype.$http = base

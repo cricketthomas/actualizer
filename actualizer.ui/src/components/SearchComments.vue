@@ -50,9 +50,6 @@ export default {
           console.error(e);
         });
 
-      console.log(
-        `${this.url}/comments/search?video_id=${this.video_id}&lang=en&count=${this.count}`
-      );
       //this.results = response;
       //console.log(response);
     },
