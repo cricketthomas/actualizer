@@ -26,7 +26,7 @@
 
 <script>
 import axios from "axios";
-import { store } from "../store.js";
+import { store } from "@/store/index.js";
 import { mapState } from "vuex";
 
 export default {
