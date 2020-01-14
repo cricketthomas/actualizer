@@ -14,7 +14,7 @@
             <b-navbar-item tag="div">
                 <div class="buttons">
                     <a class="button is-primary">
-                        <strong v-if="authenticated" v-on:click="logout" id="logout-button"> sign out, {{ this.$store.state.userClaims.given_name }} </strong>
+                        <strong v-if="authenticated" v-on:click="logout" id="logout-button"> sign out</strong>
                         <strong v-else v-on:click="login" id="login-button">log in</strong>
                     </a>
                 </div>

@@ -23,8 +23,6 @@
 </template>
 
 <script>
-import axios from "axios";
-
 export default {
   data() {
     return {
@@ -32,8 +30,8 @@ export default {
       userClaims: null,
       results: "",
       query: {
-        search: "",
-        video_id: "",
+        search: "love",
+        video_id: "SsKT0s5J8ko",
         count: 10
       }
     };
@@ -42,7 +40,7 @@ export default {
     async SearchComments() {
       //TODO: put this in a getter.
 
-      this.$http.get(`comments/search?video_id=${this.query.video_id}&search=${this.query.search}&lang=en&count=${this.query.count}`)
+      this.$http.get(`comments/search?video_id=${this.query.video_id}&search=${this.query.search}&count=${this.query.count}`)
         .then(response => {
           this.results = response.data;
         })
