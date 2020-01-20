@@ -16,6 +16,7 @@
                 </label>
                 <button>Submit</button>
             </form>
+            <button @click="storeGetComments()">test comments in store</button>
         </fieldset>
         {{ results }}
     </div>
@@ -51,6 +52,13 @@ export default {
 
             //this.results = response;
             //console.log(response);
+        },
+        storeGetComments(){
+             this.$store.dispatch('basicSearch',{
+                video_id:this.query.video_id,
+                search: this.query.search,
+                count: this.query.count
+            })
         }
     }
 };
