@@ -7,11 +7,11 @@ const state = {
 }
 const actions = {
     basicSearch({ commit }, payload){
-   api(`comments/search?video_id=${payload.video_id}&search=${payload.search}&count=${payload.count}`)
-     .then(response => {commit('SAVE_BASIC', JSON.parse(response.data) )})
-     .catch(error => {
-         throw new Error(`API ${error}`);
-     });
+    api.get(`comments/search?video_id=${payload.video_id}&search=${payload.search}&count=${payload.count}`)
+        .then(response => {commit('SAVE_BASIC', JSON.parse(response.data) )})
+        .catch(error => {
+            throw new Error(`API ${error}`);
+        });
     }
 };
 const mutations = {
