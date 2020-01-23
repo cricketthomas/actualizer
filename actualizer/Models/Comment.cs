@@ -27,7 +27,6 @@ namespace actualizer.Models {
         public int count { get; set; }
         public Comments[] comments { get; set; }
         public string nextPage { get; set; }
-
         public static implicit operator ReturnJson(string v) {
             throw new NotImplementedException();
         }

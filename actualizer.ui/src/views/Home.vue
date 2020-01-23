@@ -7,14 +7,14 @@
 
 <script>
 // @ is an alias to /src
-import UserClaims from '@/components/UserClaims.vue';
+import explorer from '@/components/explorer.vue';
 import Navbar from '@/components/navbar.vue';
 import Search from '@/components/SearchComments.vue';
 
 export default {
   name: 'home',
   components: {
-    UserClaims,
+    explorer,
     Navbar,
     Search
   }

@@ -6,8 +6,10 @@ import './registerServiceWorker';
 import Buefy from 'buefy';
 import 'buefy/dist/buefy.css';
 import api from "./api/axios";
+import VueApexCharts from 'vue-apexcharts';
 
 Vue.use(Buefy);
+Vue.use(VueApexCharts);
 
 Vue.config.productionTip = false;
 

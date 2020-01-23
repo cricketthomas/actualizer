@@ -1,17 +1,20 @@
 <template>
     <div id="app">
         <navbar />
+        <explorer />
         <router-view />
     </div>
 </template>
 
 <script>
 import navbar from '@/components/navbar.vue';
-import axios from 'axios';
+import explorer from '@/components/explorer.vue';
+
 export default {
     name: 'app',
     components: {
-        navbar
+        navbar,
+        explorer
     }
 };
 </script>
