@@ -13,19 +13,27 @@ import { mapGetters } from 'vuex';
 
 export default {
     name: 'CommentExplorer',
+    props: [], //make this take props
     data() {
         return {
             searchbox: ''
         };
     },
     computed: {
-        filteredComments(){
-        let search = (this.searchbox || "").toLowerCase().trim();
-        let commentsArray = this.BasicComments.comments.map(comment => comment.text.toLowerCase());
-        return commentsArray.filter(stringVal => stringVal.indexOf(search) > -1 )
+        filteredComments() {
+            if (this.simpleComments) {
+                let search = (this.searchbox || '').toLowerCase().trim();
+                let filtered = this.simpleComments.comments.filter(values => {
+                    return values.text.indexOf(search) > -1;
+                });
+                return filtered;
+            }
+            return null;
         },
+        //return commentsArray.filter(stringVal => stringVal.indexOf(search) > -1 )
+
         ...mapGetters({
-            BasicComments: 'commentsObj'
+            simpleComments: 'commentsObj'
         })
     }
 };

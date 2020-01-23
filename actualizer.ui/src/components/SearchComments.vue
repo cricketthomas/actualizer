@@ -31,7 +31,7 @@ export default {
             query: {
                 search: 'love',
                 video_id: 'SsKT0s5J8ko',
-                count: 10
+                count: 2
             }
         };
     },
