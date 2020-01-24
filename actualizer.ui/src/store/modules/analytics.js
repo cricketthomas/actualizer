@@ -7,7 +7,9 @@ const state = {
 };
 
 const actions = {
-    VaderSentiment({ commit }, payload) {
+    VaderSentiment({
+        commit
+    }, payload) {
         // eslint-disable-next-line no-irregular-whitespace
         api.post(`TextAnalytics​/vader​/${payload.score_type}​/${payload.stopword}`)
             .then(response => {
@@ -16,7 +18,7 @@ const actions = {
             .catch(error => {
                 throw new Error(`API ${error}`);
             });
-    }
+}
 };
 const mutations = {
     SAVE_VADER(state, vaderResponse) {

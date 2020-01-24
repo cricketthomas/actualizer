@@ -24,7 +24,9 @@ export default {
             if (this.simpleComments) {
                 let search = (this.searchbox || '').toLowerCase().trim();
                 let filtered = this.simpleComments.comments.filter(values => {
-                    return values.text.indexOf(search) > -1;
+                    let textsearch =  (values.text || "" ).toLowerCase();
+                    let IdSearch = values.id
+                    return  textsearch.indexOf(search) > -1 || IdSearch == parseInt(search);
                 });
                 return filtered;
             }
