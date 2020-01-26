@@ -16,25 +16,30 @@ Vue.use(Auth, {
 });
 
 
-const router =  new Router({
+const router = new Router({
   mode: 'history',
 
-  routes: [
-    {
+  routes: [{
       path: "/",
       name: "home",
-      component: Home
+      component: Home,
+      meta: {
+        requiresAuth: false
+      }
     },
-    { path: '/implicit/callback', component: Auth.handleCallback() },
+    {
+      path: '/implicit/callback',
+      component: Auth.handleCallback()
+    },
 
     {
       path: "/about",
       name: "about",
       component: About,
-      meta:{
+      meta: {
         requiresAuth: true
       }
-     
+
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
@@ -42,7 +47,7 @@ const router =  new Router({
       //   import(/* webpackChunkName: "about" */ "./views/About.vue")
     }
   ]
-  
+
 });
 router.beforeEach(Vue.prototype.$auth.authRedirectGuard());
 

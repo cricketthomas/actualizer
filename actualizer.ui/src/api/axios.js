@@ -3,7 +3,7 @@ import Vue from 'vue';
 
 const axiosInstance = axios.create({
     baseURL: "https://localhost:5001/api/",
-    timeout: 90000,
+    timeout: 30000
 });
 
 axiosInstance.interceptors.request.use(async config => {
@@ -16,10 +16,11 @@ axiosInstance.interceptors.request.use(async config => {
 
 
 axiosInstance.interceptors.response.use(async config => {
+    console.log(config)
             return config;
         },
         error => {
-           Vue.prototype.$buefy.snackbar.open({
+            Vue.prototype.$buefy.snackbar.open({
                 duration: 5000,
                 message: `Somethings up..${error}`,
                 type: 'is-danger',

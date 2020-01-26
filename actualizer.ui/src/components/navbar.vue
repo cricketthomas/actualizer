@@ -24,3 +24,13 @@
     </div>
 </template>
 
+<script>
+export default {
+    name: "navbar",
+    props:{
+        authenticated: Boolean,
+        logout: Function,
+        login: Function
+    }
+}
+</script>

@@ -64,7 +64,7 @@ namespace actualizer.Controllers {
         [HttpGet]
         [Route("bulk")]
         [Produces("application/json")]
-
+        //TODO: Add to the database, the maximum call amount, such as 10 pages. I think 5,000 commnets is a good start. 
         public async Task<ActionResult<ReturnJson>> GetAsync(string video_id, string search, string nextPageToken) {
 
             if (!string.IsNullOrWhiteSpace(video_id)) {
@@ -76,7 +76,7 @@ namespace actualizer.Controllers {
                     return Ok(cached_object);
                 }
 
-                // get all the comments while they are less than the comment restriction i imposed. Use SQL lite for the restriction eventually. 
+                // get all the comments while they are less than the comment restriction i imposed. Use SQL lite for the restriction eventually. Certainly could be done per user. 
                 List<ReturnJson> obj = new List<ReturnJson> { };
 
                 string nextPageIdFromQuery = null;
@@ -103,7 +103,7 @@ namespace actualizer.Controllers {
                     });
                     allCommentCount += results.Select(c => c.count).Last();
                     index++;
-                } while (!string.IsNullOrEmpty(nextPageIdFromQuery) && index < 20);
+                } while (!string.IsNullOrEmpty(nextPageIdFromQuery) && index < 5);
 
                 // Return the comments neatly.
                 var allcomments = obj.SelectMany(o => o.comments.Select(c => new {
