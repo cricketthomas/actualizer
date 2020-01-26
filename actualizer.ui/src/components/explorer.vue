@@ -23,7 +23,7 @@ export default {
         filteredComments() {
             if (this.results) {
                 let search = (this.searchbox || '').toLowerCase().trim();
-                let filtered = this.results.comments.filter(values => {
+                let filtered = this.results.documents.filter(values => {
                     let textsearch =  (values.text || "" ).toLowerCase();
                     let IdSearch = values.id
                     return  textsearch.indexOf(search) > -1 || IdSearch == parseInt(search);

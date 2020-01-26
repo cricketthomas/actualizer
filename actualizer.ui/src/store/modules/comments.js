@@ -3,24 +3,30 @@ import api from '@/api/axios.js';
 // this is the controller that calls and updates the comments store.
 const state = {
     isLoading: false,
-    results: {},
+    results: null,
 }
 const actions = {
-    search({ commit }, payload) {
+    search({
+        commit
+    }, payload) {
         state.isLoading = true;
         let uri = `comments/${payload.searchType}?video_id=${payload.video_id}&search=${payload.search}&count=${payload.count}`;
-        if(payload.searchType === 'bulk'){
+        if (payload.searchType === 'bulk') {
             uri = `comments/${payload.searchType}?video_id=${payload.video_id}&search=${payload.search}`;
         }
-        console.log(uri)
+        api.get(uri).then(response => {
+            commit('SAVE_COMMENTS', response.data);
 
-        api.get(uri).then(response => { commit('SAVE_COMMENTS', JSON.parse(response.data)); 
-            }).catch(error => { throw new Error(`API ${error}`); });
+        }).catch(error => {
+            this.state.isLoading = false;
+            throw new Error(`API ${error}`);
+        });
     },
 };
 const mutations = {
-    SAVE_COMMENTS(state, comments) {
-        state.results = comments;
+    SAVE_COMMENTS(state, data) {
+        
+        state.results = data;
         state.isLoading = false;
     }
 };

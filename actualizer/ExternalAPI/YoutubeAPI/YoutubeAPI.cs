@@ -62,7 +62,7 @@ namespace actualizer.ExternalAPI.YoutubeAPI {
         }
 
 
-        public static async Task<string> SearchComments(string video_id, string search, string lang, int count, string youtube_key) {
+        public static async Task<ReturnJson> SearchComments(string video_id, string search, string lang, int count, string youtube_key) {
             //void means returns nothing
             //List<string> returnObject = new List<string> { };
             string u = "https://www.googleapis.com/youtube/v3/commentThreads?key=";
@@ -83,12 +83,14 @@ namespace actualizer.ExternalAPI.YoutubeAPI {
             string json = JsonConvert.SerializeObject(new {
                 search,
                 video_id,
+                //url,
                 count = commentRows.Count,
                 comments = commentRows,
                 nextPage,
 
             });
-            return json;
+            return new ReturnJson { search = search, url = url, video_id = video_id, comments = commentRows.ToArray(), count = commentRows.Count, nextPage = nextPage };
+
         }
     }
 }

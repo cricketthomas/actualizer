@@ -19,6 +19,12 @@ namespace actualizer.Models {
 
     }
 
+    public class SingleComment {
+
+
+
+    }
+
 
     public class ReturnJson {
         public string search { get; set; }

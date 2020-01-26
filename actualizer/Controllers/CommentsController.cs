@@ -46,12 +46,12 @@ namespace actualizer.Controllers {
             //var uid = User.Claims.FirstOrDefault(c => c.Type == "uid")?.Value;
             //var role = await OktaClientHelper.GetProfileDetails(uid: uid).Result;
             //Console.WriteLine(userClaims.ToList());
-            var data = _db.SavedObjects.OrderBy(o => o.VideoId).First();
+            //var data = _db.SavedObjects.OrderBy(o => o.VideoId).First();
 
             try {
                 var results = await YoutubeAPI.SearchComments(video_id: video_id, search: search, lang: lang, count: count, youtube_key: _configuration["youtube_key"]);
-                results.Cast<ReturnJson>();
-                return Ok(results);
+
+                return Ok(new { documents = results.comments, metadata = new { count = results.count, search = results.search, video_id = results.video_id } });
             } catch {
                 return BadRequest("Please enter a video id");
             }
