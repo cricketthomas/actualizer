@@ -1,7 +1,8 @@
 <template>
     <div class="DefaultContainer">
-        <Explorer />
         <Search />
+        <Explorer />
+
     </div>
 </template>
 
