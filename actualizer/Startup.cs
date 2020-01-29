@@ -98,11 +98,13 @@ namespace actualizer {
             app.UseCors("VueCorsPolicy");
             app.UseHttpsRedirection();
             app.UseAuthentication();
-            app.UseMvc();
+            app.UseRouting();
 
+            app.UseAuthorization();
 
-
-
+            app.UseEndpoints(endpoints => {
+                endpoints.MapControllers();
+            });
 
         }
     }
