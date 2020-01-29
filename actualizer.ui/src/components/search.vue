@@ -2,8 +2,6 @@
     <div id="wrapper">
         <div class="container">
             <form @submit.prevent="GetComments">
-
-
                 <div class="block">
                     <b-radio v-model="query.searchType" name="name" native-value="search">
                         Search
@@ -13,8 +11,6 @@
                         Bulk
                     </b-radio>
                 </div>
-
-
                 <b-field>
                     <b-input id="search" v-model="query.search" placeholder="Search.."> </b-input>
                 </b-field>
@@ -28,7 +24,6 @@
             </form>
             <b-button id="getCommentsBtn" @click="GetComments()">fetch comments</b-button>
         </div>
-        <b-loading :is-full-page="isFullPage" :active.sync="isLoading" :can-cancel="true"></b-loading>
     </div>
 </template>
 
@@ -45,7 +40,7 @@ export default {
                 searchType: 'search',
                 search: 'love',
                 video_id: 'SsKT0s5J8ko',
-                count: 2
+                count: 5
             }
         };
     },

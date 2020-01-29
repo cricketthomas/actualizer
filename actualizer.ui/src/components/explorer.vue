@@ -10,12 +10,11 @@
         <!-- <div class="container">
             <b-table :data="results.documents" :columns="columns"> </b-table>
         </div> -->
-        <keep-alive>
+        <keep-alive v-if="results">
             <div class="container">
                 <b-table
                     :data="filteredComments"
                     :paginated="isPaginated"
-                    
                     :per-page="perPage"
                     :current-page.sync="currentPage"
                     :pagination-simple="isPaginationSimple"
