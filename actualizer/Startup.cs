@@ -31,8 +31,9 @@ namespace actualizer {
 
             services.AddDbContext<ActualizerContext>(options => options.UseSqlite("Data Source=Data.db"));
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
-            services.AddMvc(option => option.EnableEndpointRouting = false);
+            //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            //services.AddMvc(option => option.EnableEndpointRouting = false);
+            services.AddControllers();
 
 
 
