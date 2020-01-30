@@ -24,13 +24,11 @@ export default {
         ...mapState({
             user: 'user',
             loading: 'loading'
-
         }),
  
     },
     methods: {
         toggleLoading() {
-            console.log('dispatching loading..')
             this.$store.dispatch('loading');
         }
     },
