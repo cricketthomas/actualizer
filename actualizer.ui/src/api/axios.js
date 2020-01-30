@@ -11,9 +11,9 @@ axiosInstance.interceptors.request.use(async config => {
         config.headers.Authorization = `Bearer ${ await Vue.prototype.$auth.getAccessToken() }`;
         store.dispatch('ChangeLoading');
         return config;
-
     },
     function (error) {
+        store.dispatch('ChangeLoading');
         return Promise.reject(error);
     });
 
@@ -22,15 +22,13 @@ axiosInstance.interceptors.request.use(async config => {
 
 
 axiosInstance.interceptors.response.use(async config => {
-                store.dispatch('ChangeLoading');
-
+            store.dispatch('ChangeLoading');
             return config;
         },
         error => {
             // stop the loading screen bro..
-           // store.state.loading.isLoading = false
-            this.$store.dispatch('ChangeLoading');
-
+            store.dispatch('ChangeLoading');
+           
             let errorCode = parseInt(error.toString().match(/(\d+)/)[0])
             let specialMessage = '';
             switch (errorCode) {
