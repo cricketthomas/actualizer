@@ -15,6 +15,7 @@ const actions = {
         api.get(uri).then(response => {
             commit('SAVE_COMMENTS', response.data);
 
+
         }).catch(error => {
             //this.state.isLoading = false;
             throw new Error(`API ${error}`);

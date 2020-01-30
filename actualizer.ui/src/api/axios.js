@@ -8,21 +8,28 @@ const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use(async config => {
-        config.headers.Authorization = `Bearer ${await Vue.prototype.$auth.getAccessToken() }`;
+        config.headers.Authorization = `Bearer ${ await Vue.prototype.$auth.getAccessToken() }`;
+        store.dispatch('ChangeLoading');
         return config;
 
     },
-    error => Promise.reject(error));
+    function (error) {
+        return Promise.reject(error);
+    });
+
 
 
 
 
 axiosInstance.interceptors.response.use(async config => {
+                store.dispatch('ChangeLoading');
+
             return config;
         },
         error => {
             // stop the loading screen bro..
-            store.state.comments.isLoading = false
+           // store.state.loading.isLoading = false
+            this.$store.dispatch('ChangeLoading');
 
             let errorCode = parseInt(error.toString().match(/(\d+)/)[0])
             let specialMessage = '';

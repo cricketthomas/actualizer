@@ -29,7 +29,7 @@ export default {
     },
     methods: {
         toggleLoading() {
-            this.$store.dispatch('loading');
+            this.$store.dispatch('ChangeLoading');
         }
     },
     components: { Explorer, Search }

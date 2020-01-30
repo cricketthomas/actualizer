@@ -3,7 +3,7 @@ const state = {
 }
 
 const actions = {
-    loading({ commit }) {
+    ChangeLoading({ commit }) {
         console.log(`current state is ${state.isLoading}`)
         commit('TOGGLE_LOADING');
     }
