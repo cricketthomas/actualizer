@@ -104,7 +104,7 @@ export default {
     border-radius: 0.25em;
     //margin: auto;
     padding: 2em;
-    width: 50vw;
+    width: 55vw;
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -115,6 +115,9 @@ export default {
     }
     .searchtype-message {
         float: right;
+    }
+    input {
+        background-color: red;
     }
 }
 
@@ -127,7 +130,7 @@ export default {
     border-radius: 0.25em;
     //margin: auto;
     padding: 2em;
-    width: 80vw;
+    width: 85vw;
     display: block;
     margin-left: auto;
     margin-right: auto;
