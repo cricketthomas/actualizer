@@ -1,28 +1,47 @@
 <template>
-    <div id="wrapper">
-        <div class="container">
-            <form @submit.prevent="GetComments">
-                <div class="block">
-                    <b-radio v-model="query.searchType" name="name" native-value="search">
-                        Search
-                    </b-radio>
+    <div id="wrapper" class="container is-centered">
+        <div class="columns">
+            <form @submit.prevent="GetComments" class="form">
+                <div class="columns">
+                    <div class="column is-half">
+                        <!-- <b-tooltip
+                        label="Simple Search get you 0-100, while bulk search keeps querying the youtube api, until it reaches a max of 1000 comments"
+                        :animated="true"
+                        :multilined="true"
+                        size="is-medium">                    
+                        </b-tooltip>-->
+                        <div class="field-label is-normal">
+                        <label for="radio" class="label">Search Type</label>
+                        <b-radio v-model="query.searchType" name="name" native-value="search">Simple Search</b-radio>
+                        <b-radio v-model="query.searchType" name="name" native-value="bulk">Bulk Search</b-radio>
+                    </div>
+                        </div>
 
-                    <b-radio v-model="query.searchType" name="name" native-value="bulk">
-                        Bulk
-                    </b-radio>
+                <div class="column is-half">
+                    <div class="field-label is-normal">
+                        <label for="inputs" class="label">Search Params</label>
+                        <b-field>
+                            <b-input id="search" v-model="query.search" placeholder="Search.."> </b-input>
+                        </b-field>
+                        <b-field>
+                            <b-input type="text" id="video_id" v-model="query.video_id" placeholder="enter a video id">
+                            </b-input>
+                        </b-field>
+                        <b-field v-show="query.searchType === 'search'">
+                            <b-input type="number" id="count" v-model.number="query.count" placeholder="0-25">
+                            </b-input>
+                        </b-field>
+                    </div>            
+                    </div>
                 </div>
-                <b-field>
-                    <b-input id="search" v-model="query.search" placeholder="Search.."> </b-input>
-                </b-field>
-                <b-field>
-                    <b-input type="text" id="video_id" v-model="query.video_id" placeholder="enter a video id">
-                    </b-input>
-                </b-field>
-                <b-field v-show="query.searchType === 'search'">
-                    <b-input type="number" id="count" v-model.number="query.count" placeholder="0-25"> </b-input>
-                </b-field>
+                <div class="columns is-mobile">
+                    <div class="column is-half is-offset-one-quarter">
+                        <b-button id="getCommentsBtn" @click="GetComments()">get comments</b-button>
+                    </div>
+                </div>
+
             </form>
-            <b-button id="getCommentsBtn" @click="GetComments()">fetch comments</b-button>
+        
         </div>
     </div>
 </template>
@@ -62,5 +81,7 @@ export default {
 };
 </script>
 <style scoped>
+
+
 </style>
 

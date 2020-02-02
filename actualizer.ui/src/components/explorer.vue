@@ -1,17 +1,19 @@
 <template>
     <div>
         <hr />
-        <input type="text" name="searchbox" id="searchbox" v-model="searchbox" />
-        <!-- <div v-for="(comment, key) in filteredComments" v-bind:key="key">
-            <p>{{ comment }}</p>
-            <hr />
-        </div>  -->
-        <!-- make this a paginated sortable table. -->
-        <!-- <div class="container">
-            <b-table :data="results.documents" :columns="columns"> </b-table>
-        </div> -->
-        <keep-alive v-if="results">
-            <div class="container">
+        <div class="container">
+            <b-field>
+                <b-input
+                    type="text"
+                    name="searchbox"
+                    id="searchbox"
+                    v-model="searchbox"
+                    placeholder="filter by commnets text.."
+                    autocomplete="false"
+                ></b-input>
+            </b-field>
+
+            <keep-alive v-if="results">
                 <b-table
                     :data="filteredComments"
                     :paginated="isPaginated"
@@ -26,26 +28,17 @@
                     aria-previous-label="Previous page"
                     aria-page-label="Page"
                     aria-current-label="Current page">
+
                     <template slot-scope="results">
-                        <b-table-column field="id" label="ID" width="40" sortable numeric>
-                            {{ results.row.id }}
-                        </b-table-column>
-
-                        <b-table-column field="text" label="comment text" sortable >
-                            {{ results.row.text }}
-                        </b-table-column>
-
-                        <b-table-column field="publishedAt" label="date" sortable centered>
-                            {{ new Date(results.row.publishedAt).toLocaleDateString() }}
-                        </b-table-column>
-
-                        <b-table-column field="likeCount" label="likes" sortable numeric>
-                            {{ results.row.likeCount }}
-                        </b-table-column>
+                        <b-table-column field="id" label="Id" width="40" sortable numeric> {{ results.row.id }} </b-table-column>
+                        <b-table-column field="text" label="Comment" sortable>{{ results.row.text }} </b-table-column>
+                        <b-table-column field="publishedAt" label="Date" sortable centered> {{ new Date(results.row.publishedAt).toLocaleDateString() }} </b-table-column>
+                        <b-table-column field="likeCount" label="Likes" sortable numeric> {{ results.row.likeCount }}</b-table-column>
                     </template>
+                    
                 </b-table>
-            </div>
-        </keep-alive>
+            </keep-alive>
+        </div>
     </div>
 </template>
 
@@ -58,11 +51,6 @@ export default {
     data() {
         return {
             searchbox: '',
-            columns: [
-                { field: 'id', label: 'id', width: '20', numeric: true },
-                { field: 'publishedAt', label: 'date', searchable: false },
-                { field: 'text', label: 'comment', searchable: true }
-            ],
             isPaginated: true,
             isPaginationSimple: true,
             paginationPosition: 'bottom',
@@ -78,7 +66,8 @@ export default {
             if (this.results) {
                 let search = (this.searchbox || '').toLowerCase().trim();
                 let filtered = this.results.documents.filter(values => {
-                    let textsearch = (values.text || '').toLowerCase();
+                    let textsearch = (values.text.trim() || '').toLowerCase();
+                    textsearch = textsearch.replace(/\s{2,}/g,'');
                     let IdSearch = values.id;
                     return textsearch.indexOf(search) > -1 || IdSearch == parseInt(search);
                 });

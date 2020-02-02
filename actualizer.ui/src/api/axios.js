@@ -49,9 +49,9 @@ axiosInstance.interceptors.response.use(async config => {
                     break;
             }
             Vue.prototype.$buefy.toast.open({
-                duration: 4000,
+                duration: 3000,
                 message: `${specialMessage}`,
-                position: 'is-bottom-left',
+                position: 'is-bottom',
                 type: 'is-danger'
             })
         }

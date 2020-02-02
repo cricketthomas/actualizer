@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b-navbar>
+        <b-navbar id="nav">
             <template slot="brand">
                 <b-navbar-item tag="router-link" :to="{ path: '/' }">
                     <img src="/img/icons/actualizer_web.png" alt="actualizer logo"
