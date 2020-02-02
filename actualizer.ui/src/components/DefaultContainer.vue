@@ -99,16 +99,17 @@ $link-invert: $primary-invert;
 $link-focus-border: $primary;
 
 // Import Bulma and Buefy styles
-@import '~bulma';
-@import '~buefy/src/scss/buefy';
+
 
 .loading {
     backdrop-filter: blur(1px);
     background-color: rgba(0, 157, 255, 0.2);
     .icon {
-        color: navy;
+        color: gray;
     }
 }
+@import '~bulma';
+@import '~buefy/src/scss/buefy';
 
 // my style
 </style>

@@ -1,11 +1,11 @@
 import api from '@/api/axios.js';
 
 const state = {
-    userClaims: {},
-    authenticated: false
+    userClaims: {}
 };
 const getters = {};
 const actions = {}
+
 const mutations = {
     UpdateClaims(state, payload) {
         state.userClaims = payload.userClaims

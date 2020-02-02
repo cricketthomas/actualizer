@@ -71,7 +71,7 @@ namespace actualizer {
                       .AllowAnyHeader()
                       .AllowAnyMethod()
                       .AllowCredentials()
-                      .WithOrigins("http://localhost:8080");
+                      .WithOrigins("http://localhost:8080", "https://5fcc42aa.ngrok.io");
                 });
             });
 
