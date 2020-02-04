@@ -1,5 +1,5 @@
 <template>
-    <div class="DefaultContainer">
+    <div class="DefaultContainer into-invert">
         <b-button @click="toggleLoading">toogle loading</b-button>
         <b-loading class="loading" :is-full-page="isFullPage" :active.sync="loading.isLoading" :can-cancel="false">
             <b-icon id="icon" pack="fas" icon="sync-alt" size="is-large" custom-class="fa-spin"> </b-icon>
@@ -50,59 +50,48 @@ $twitter: #4099ff;
 $twitter-invert: findColorInvert($twitter);
 
 // Setup $colors to use as bulma classes (e.g. 'is-twitter')
-$black: hsl(0, 0%, 96%);
-$black-bis: hsl(0, 0%, 93%);
-$black-ter: hsl(0, 0%, 86%);
-$grey-darker: hsl(0, 0%, 79%);
-$grey-dark: hsl(0, 0%, 71%);
-$grey: hsl(0, 0%, 52%);
-$grey-light: hsl(0, 0%, 29%);
-$grey-lighter: hsl(0, 0%, 14%);
-$white-ter: hsl(0, 0%, 4%);
-$white-bis: hsl(0, 0%, 2%);
-$white: hsl(0, 0%, 0%);
-// $colors: (
-//     'white': (
-//         $white,
-//         $black
-//     ),
-//     'black': (
-//         $black,
-//         $white
-//     ),
-//     'light': (
-//         $light,
-//         $light-invert
-//     ),
-//     'dark': (
-//         $dark,
-//         $dark-invert
-//     ),
-//     'primary': (
-//         $primary,
-//         $primary-invert
-//     ),
-//     'info': (
-//         $info,
-//         $info-invert
-//     ),
-//     'success': (
-//         $success,
-//         $success-invert
-//     ),
-//     'warning': (
-//         $warning,
-//         $warning-invert
-//     ),
-//     'danger': (
-//         $danger,
-//         $danger-invert
-//     ),
-//     'twitter': (
-//         $twitter,
-//         $twitter-invert
-//     )
-// );
+$colors: (
+    'white': (
+        $white,
+        $black
+    ),
+    'black': (
+        $black,
+        $white
+    ),
+    'light': (
+        $light,
+        $light-invert
+    ),
+    'dark': (
+        $dark,
+        $dark-invert
+    ),
+    'primary': (
+        $primary,
+        $primary-invert
+    ),
+    'info': (
+        $info,
+        $info-invert
+    ),
+    'success': (
+        $success,
+        $success-invert
+    ),
+    'warning': (
+        $warning,
+        $warning-invert
+    ),
+    'danger': (
+        $danger,
+        $danger-invert
+    ),
+    'twitter': (
+        $twitter,
+        $twitter-invert
+    )
+);
 
 // Links
 $link: $primary;

@@ -38,8 +38,7 @@
                                         type="text"
                                         id="video_id"
                                         v-model="query.video_id"
-                                        placeholder="enter a video id"
-                                    >
+                                        placeholder="enter a video id">
                                     </b-input>
                                 </b-field>
                                 <b-field v-show="query.searchType === 'Simple'">
@@ -51,7 +50,7 @@
                     </div>
                     <div class="columns is-mobile">
                         <div class="column is-half is-offset-one-fifth">
-                            <b-button id="getCommentsBtn" @click="GetComments()">get comments</b-button>
+                            <b-button id="getCommentsBtn" @click="GetComments()" class="is-primary">get comments</b-button>
                         </div>
                     </div>
                 </form>
@@ -97,15 +96,16 @@ export default {
 <style scoped lang="scss">
 
 .form-wrapper {
-    background-color: rgb(252, 251, 251);
-    border-top: 1px solid lightgray;
-    border-left: 1px solid lightgray;
-    box-shadow: 3px 2px 1px 1px gray;
+    background-color: rgb(7, 53, 66);
+    border-top: 1px solid rgb(16, 18, 18);
+    border-left: 1px solid rgb(16, 18, 18);
+    box-shadow: 3px 2px 1px 1px rgb(16, 18, 18);
     border-radius: 0.25em;
     //margin: auto;
     padding: 2em;
     width: 55vw;
     display: block;
+    margin-bottom: 2em;
     margin-left: auto;
     margin-right: auto;
     .form-container {
@@ -123,10 +123,10 @@ export default {
 
 @media screen and (max-width:700px){
 .form-wrapper {
-    background-color: rgb(252, 251, 251);
-    border-top: 1px solid lightgray;
-    border-left: 1px solid lightgray;
-    box-shadow: 3px 2px 1px 1px gray;
+    background-color: rgb(7, 53, 66);
+    border-top: 1px solid black;
+    border-left: 1px solid black;
+    box-shadow: 3px 2px 1px 1px black;
     border-radius: 0.25em;
     //margin: auto;
     padding: 2em;

@@ -1,6 +1,5 @@
 <template>
     <div>
-        <hr />
         <div class="container">
             <b-field>
                 <b-input
@@ -38,39 +37,40 @@
                         </b-table-column>
                         <b-table-column field="text" label="Comment" sortable>
                             {{ `${results.row.text.substring(0, 140)}...` }}
-                            <!-- <template>
+                         <template>
                                 <a @click="toggle(results.row)">
                                 </a>
-                            </template> -->
+                            </template> 
                         </b-table-column>
 
                         <b-table-column field="publishedAt" label="Date" sortable centered>
                             {{ new Date(results.row.publishedAt).toLocaleDateString() }}
                         </b-table-column>
                         <b-table-column field="likeCount" label="Likes" sortable numeric>
-                            {{ results.row.likeCount }}</b-table-column>
+                            {{ results.row.likeCount }}</b-table-column
+                        >
                     </template>
 
-                    
                     <template slot="detail" slot-scope="results">
-                        <article class="media">
-                            <!-- <figure class="media-left">
-                                <p class="image is-64x64">
-                                    <img src="/static/img/placeholder-128x128.png" />
-                                </p>
-                            </figure> -->
-                            <div class="media-content">
-                                <div class="content">
-                                    <p>
-                                        <small>User Name: Blah</small>
-                                        <br />
-                                      {{results.row.text}}
-                                    </p>
+                        <div class="box">
+                            <article class="media">
+                                <div class="media-left">
+                                  <figure class="image is-64x64">
+                                        <img src="https://bulma.io/images/placeholders/128x128.png" alt="Image" />
+                                    </figure> 
                                 </div>
-                            </div>
-                        </article>
+                                <div class="media-content">
+                                    <div class="content">
+                                        <p>
+                                            <small>User Name: Blah</small>
+                                            <br />
+                                            {{ results.row.text }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
                     </template>
-
 
                 </b-table>
             </keep-alive>
@@ -124,3 +124,8 @@ export default {
     }
 };
 </script>
+<style lang="scss">
+    .test{
+        background-color: red
+    }
+</style>

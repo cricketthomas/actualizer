@@ -5,6 +5,9 @@ import router from './router';
 import './registerServiceWorker';
 import Buefy from 'buefy';
 import 'buefy/dist/buefy.css';
+import '../node_modules/bulmaswatch/solar/bulmaswatch.min.css';
+
+///Users/cricket / Documents / GitHub / actualizer / actualizer.ui / node_modules / bulmaswatch / darkly / bulmaswatch.min.css
 import VueApexCharts from 'vue-apexcharts';
 
 Vue.use(Buefy, {
