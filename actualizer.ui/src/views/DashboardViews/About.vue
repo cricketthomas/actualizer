@@ -24,7 +24,7 @@
       </p>
       <br />
       <p>
-        Finally, I through it in Azure, with the frontend and Backend being built through Azure DevOps, then deployed to
+        Finally, I threw it in Azure, with the frontend and Backend being built through Azure DevOps, then deployed to
         Azure App Service windows (for node and IIS) and Azure App Service Linux for .Net
       </p>
     </div>
