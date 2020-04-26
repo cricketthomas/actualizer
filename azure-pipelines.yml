@@ -1,0 +1,29 @@
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '10.x'
+  displayName: 'Install Node.js'
+
+- script: |
+    cd ./actualizer.ui
+    npm cache clean --force
+    npm install
+    npm run build_azure
+  displayName: 'npm install and build'
+
+- task: CopyFiles@2
+  inputs:
+    Contents: |
+      **/dist/** 
+      !**/node_modules/**
+    TargetFolder: '$(Build.DefaultWorkingDirectory)'
+
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: '$(Build.DefaultWorkingDirectory)' 
+    artifactName: dist

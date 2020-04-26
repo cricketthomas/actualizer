@@ -1,21 +1,38 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+<TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
     <Folder Include="wwwroot\" />
     <Folder Include="Models\" />
+    <Folder Include="Migrations\" />
+    <Folder Include="ExternalAPI\" />
+    <Folder Include="Security\" />
+    <Folder Include="Security\Policy\" />
+    <Folder Include="Security\Policy\Claims\" />
+    <Folder Include="Security\Policy\Policies\" />
+    <Folder Include="ExternalAPI\YoutubeAPI\" />
+    <Folder Include="ExternalAPI\TextAnalyticsAPI\" />
+    <Folder Include="Infastructure\" />
+    <Folder Include="Infastructure\Data\" />
+    <Folder Include="Infastructure\Data\Actualizer.db\" />
+    <Folder Include="ExternalAPI\MicrosoftML\" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.App" Version="$(AspNetCoreAppRuntimeFrameworkVersion)">
-      <IsImplicitlyDefined>true</IsImplicitlyDefined>
-      <PrivateAssets>All</PrivateAssets>
-      <Publish>true</Publish>
+    <PackageReference Include="Microsoft.Azure.CognitiveServices.Language.TextAnalytics" Version="4.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.3">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.3" />
+    <PackageReference Include="Okta.AspNetCore" Version="3.1.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.3.3" />
+    <PackageReference Include="Okta.Sdk" Version="2.0.0" />
+    <PackageReference Include="CodingUpAStorm.VaderSharp" Version="1.0.4" />
+    <PackageReference Include="Microsoft.ML" Version="1.4.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,5 +41,43 @@
     <Compile Remove="Models\PageInfo.cs" />
     <Compile Remove="Models\Comments %28copy%29.cs" />
     <Compile Remove="Models\Comments.cs" />
+    <Compile Remove="Controllers\PageController.cs" />
+    <Compile Remove="Controllers\EmptyClass.cs" />
+    <Compile Remove="Controllers\ApiKeyServiceClientCredentials.cs" />
+    <Compile Remove="Models\Save.cs" />
+    <Compile Remove="Migrations\20191016005047_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\ActualizerContextModelSnapshot.cs" />
+    <Compile Remove="Migrations\20191016040250_Fix.cs" />
+    <Compile Remove="Migrations\20191016040431_change_name.cs" />
+    <Compile Remove="Migrations\20191016040431_change_name.Designer.cs" />
+    <Compile Remove="Controllers\SentimentController.cs" />
+    <Compile Remove="Controllers\SearchController.cs" />
+    <Compile Remove="Controllers\ValuesController.cs" />
+    <Compile Remove="Utils\Okta.cs" />
+    <Compile Remove="Services\OktaServices.cs" />
+    <Compile Remove="Services\GetOktaInfo.cs" />
+    <Compile Remove="Services\IOktaService.cs" />
+    <Compile Remove="Services\OktaTodoItemService.cs" />
+    <Compile Remove="Services\ITodoItemService.cs" />
+    <Compile Remove="Models\OktaModel.cs" />
+    <Compile Remove="Authorization\UserTransformer.cs" />
+    <Compile Remove="GroupsToRolesTransformer.cs" />
+    <Compile Remove="Authorization\PermissionRequirement.cs" />
+    <Compile Remove="Authorization\GroupsToRolesTransformer.cs" />
+    <Compile Remove="Authorization\ClaimsTransformationContext.cs" />
+    <Compile Remove="ActualizerDb\ActualizerDb.cs" />
+    <Compile Remove="Models\Database.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="readme.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="stopwords.json" />
+    <Content Remove="mono_crash.42f6ec106.0.json" />
+    <Content Remove="mono_crash.42f6ec106.1.json" />
+    <Content Remove="appsettings.json" />
+    <Content Remove="appsettings.Development.json" />
+    <Content Remove="appsettings.json" />
+    <Content Remove="appsettings.Development.json" />
   </ItemGroup>
 </Project>

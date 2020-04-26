@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using System.Net.Http;
 using System.Linq;
 using System.Collections.Generic;
-namespace actualizer.Models
-{
-       
+
+namespace actualizer.Models {
+
     public class RootObject {
         public string kind { get; set; }
         public string etag { get; set; }
+        public string nextPageToken { get; set; }
         public PageInfo pageInfo { get; set; }
         public List<Item> items { get; set; }
     }
@@ -27,7 +27,7 @@ namespace actualizer.Models
         public string value { get; set; }
     }
 
-    public class Snippet2  {
+    public class Snippet2 {
         public string authorDisplayName { get; set; }
         public string authorProfileImageUrl { get; set; }
         public string authorChannelUrl { get; set; }
@@ -42,7 +42,7 @@ namespace actualizer.Models
         public DateTime updatedAt { get; set; }
     }
 
-    public class TopLevelComment  {
+    public class TopLevelComment {
         public string kind { get; set; }
         public string etag { get; set; }
         public string id { get; set; }

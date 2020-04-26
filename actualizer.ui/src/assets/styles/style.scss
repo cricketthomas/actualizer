@@ -1,0 +1,118 @@
+@import "https://fonts.googleapis.com/css?family=Tangerine:bold,bolditalic|Inconsolata:italic|Droid+Sans"; 
+
+$background-nav-color: #1f2424;
+
+#app {
+  //max-width: 100%;
+  //max-height: 100%;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+html {
+  scrollbar-color: transparent !important;
+  scrollbar-width: none;
+  font-size: 16px !important;
+}
+
+body {
+  font-size: 16px !important;
+  background-color: $background-nav-color !important;
+}
+
+.dashboard {
+  margin-top: 2.5rem;
+  margin-bottom: 5rem;
+}
+
+::-webkit-scrollbar {
+  display: none;
+  width: 0px;
+  background: transparent;
+  scrollbar-width: none;
+}
+
+.topNavBar {
+  background-color: $background-nav-color !important;
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.377);
+  border-bottom-left-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+  border-top: transparent #1f2424 200px !important; //hack, currently theres some overflow.
+}
+
+.loading {
+  backdrop-filter: blur(1px);
+  background-color: rgba(8, 9, 9, 0.2);
+
+  .icon {
+    color: rgb(0, 0, 255);
+  }
+}
+
+.needs-spacing {
+  display: flex;
+  align-content: space-between;
+  justify-content: space-between;
+  font-size: 15pt;
+}
+
+.status-bar-hack {
+  position: fixed !important;
+  width: 100% !important;
+  height: 10rem !important;
+  margin-top: -10rem !important;
+  z-index: 2000 !important;
+  background-color: $background-nav-color;
+}
+
+$bordercolor: #5e6d6f;
+
+.form-with-border {
+  margin-top: .72rem;
+  background-color: hsl(171, 8%, 17%);
+  border-top: 1px solid$bordercolor;
+  border-left: 1px solid $bordercolor;
+  box-shadow: 3px 2px 1px 1px $bordercolor;
+  border-radius: 0.25em;
+}
+.analytics-container {
+  margin-top: .72rem;
+  //background-color: hsl(171, 8%, 17%);
+  border-top: 1px solid $bordercolor;
+  border-left: 1px solid $bordercolor;
+  box-shadow: 2px 2px 1px 1px $bordercolor;
+  border-radius: 0.25em;
+}
+// https://www.warrenchandler.com/2019/04/02/stop-iphones-from-zooming-in-on-form-fields/
+/*** iPhone and iOS Form Input Zoom Fixes ***/
+
+/* disable auto-zoom on iphone input field focus */
+
+@media screen and (max-width: 600px) {
+  *::-webkit-scrollbar {
+    width: 0px;
+    scrollbar-color: transparent;
+  }
+
+  input[type='color'],
+  input[type='date'],
+  input[type='datetime'],
+  input[type='datetime-local'],
+  input[type='email'],
+  input[type='month'],
+  input[type='number'],
+  input[type='password'],
+  input[type='search'],
+  input[type='tel'],
+  input[type='text'],
+  input[type='time'],
+  input[type='url'],
+  input[type='week'],
+  select,
+  textarea,
+  textarea:focus,
+  select:focus {
+    font-size: 16px;
+    //transform: scale(0.75);
+  }
+}
