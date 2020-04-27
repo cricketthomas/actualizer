@@ -1,13 +1,16 @@
-# Actualizer - a simple Vue PWA to fetch youtube comments!
-
+# [Actualizer](https://actualizer.azurewebsites.net/)
+## A simple Vue PWA to fetch youtube comments! [check it out](https://actualizer.azurewebsites.net/)
 
 ## Screenshots:
-
-
-
-
-
-
+Summary/Landing page: 
+<hr>
+<img src="screenshots/Screen%20Shot%202020-04-26%20at%207.01.41%20PM.png" width="400px" alt="Landing page"/>
+<br>
+<div style="display:inline;">
+<img src="screenshots/Screenshot 2020-04-26 at 7.00.04 PM.jpeg" width="260px" alt="search mobile page"/>
+<img src="screenshots/Screenshot%202020-04-26%20at%207.00.45%20PM.jpeg" width="260px" alt="sentiment mobile page"/>
+<img src="screenshots/Screenshot%202020-04-26%20at%207.01.08%20PM.jpeg" width="260px" alt="word cloud mobile page"/>
+</div>
 
 This is a small tool to fetch youtube comments, you also get sentiment from Vader NLP, and get commonly used words (and make a word cloud!).
 
