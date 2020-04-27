@@ -109,7 +109,7 @@ namespace actualizer.Controllers {
                     allCommentCount += results.Select(c => c.count).Last();
                     index++;
 
-                } while (!string.IsNullOrEmpty(nextPageIdFromQuery) && index < Int32.Parse(maxComments));
+                } while (!string.IsNullOrEmpty(nextPageIdFromQuery) && index < 10);
 
                 // Return the comments neatly.
                 var allcomments = obj.SelectMany(o => o.comments.Select(c => new {
