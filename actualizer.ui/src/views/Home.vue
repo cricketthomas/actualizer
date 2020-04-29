@@ -1,11 +1,11 @@
 <template>
   <div class="home">
     <router-link to="dashboard/search">
-      <section class="is-fullheight">
+      <section class="is-fullheight" style="transform: translateY(50%);">
         <div class="hero-head">
           <div class="container has-text-centered">
             <div class="is-flex has-centered-text main-header">
-              <img class="main-img" src="@/assets/actualizerheader.png" alt="Actualizer logo" />
+              <h1 class="main-logo title is-1">Actualizer</h1>
             </div>
             <div>
               <h3 class="title is-5">search youtube comments in bulk.</h3>
@@ -13,26 +13,23 @@
             </div>
           </div>
         </div>
-        <div class="hero-body main-body" v-if="stats">
-          <div>
-            <div class="stats-block">
-              <p class="title is-3">
-                Total Searches: <span ref="totalsearches">{{ countUp(stats.totalSearches, 'totalsearches') }}</span>
+        <div class="hero-body ">
+          <div v-if="stats">
+            <div class="columns has-text-centered is-flex main-body">
+              <p class="title is-3 column is-3 stats">
+                Total Searches: <span ref="totalsearches"> {{ countUp(stats.totalSearches, 'totalsearches') }} </span>
+              </p>
+              <p class="title is-3 column is-3 stats" v-if="stats['totalCommentsSearched']">
+                Total Comments: <span> {{ stats.totalCommentsSearched }} </span>
               </p>
             </div>
-            <div class="stats-block">
-              <p class="title is-3">
-                Total Comments: <span ref="fetch">{{ countUp(stats.totalCommentsSearched, 'fetch') }}</span>
+
+            <div class="columns  has-text-centered is-flex main-body" v-if="stats">
+              <p class="title is-3 column is-3 stats">
+                Keywords Extracted: <span>{{ stats.keywordsExtracted }} </span>
               </p>
-            </div>
-            <div class="stats-block">
-              <p class="title is-3">
-                Keywords Extracted: <span ref="keyword">{{ countUp(stats.keywordsExtracted, 'keyword') }}</span>
-              </p>
-            </div>
-            <div class="stats-block">
-              <p class="title is-3">
-                Sentiment Extracted: <span ref="sentiment">{{ countUp(stats.sentimentAPIRequests, 'sentiment') }}</span>
+              <p class="title is-3 column is-3 stats">
+                Sentiment Extracted: <span> {{ stats.sentimentAPIRequests }} </span>
               </p>
             </div>
           </div>
@@ -60,25 +57,11 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-h3 {
-  font-family: 'Courier New', Courier, monospace !important;
-  font-weight: bold;
-}
 .home {
-  overflow-y: hidden !important;
-  max-height: 100%;
+  border: 2px solid ivory;
+  height: 100vh;
   font-family: 'Courier New', Courier, monospace;
   background-color: #1f2424 !important;
-}
-
-.main-img {
-  max-width: 85vw;
-  animation-name: bouncy;
-  animation-duration: 1.5s;
-  animation-fill-mode: both;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
-  animation-timing-function: linear;
 }
 
 .main-header {
@@ -98,55 +81,61 @@ h3 {
   }
 }
 
-@keyframes mergeIn {
-  from {
-    transform: translateY(-200px);
-  }
-  to {
-    transform: translateY(0px);
-  }
-}
 @media screen and (min-width: 760px) {
-
-  .stats-block {
-    border: 2px solid whitesmoke;
-    width: 65vh;
-    padding: 3rem;
-    margin-bottom: 2rem;
-    animation-name: mergeIn;
-    animation-duration: 1.5s;
-    p {
-      font-weight: bold;
-      font-size: 2vw;
-    }
+  .main-logo {
+    animation-name: bouncy;
+    animation-duration: 1s;
+    animation-fill-mode: both;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-timing-function: linear;
+    font-weight: bolder;
+    font-size: 7vw !important;
   }
+
   .enter-msg::before {
     content: 'Click to Enter';
+  }
+  .stats {
+    text-align: center;
+    p {
+      font-weight: bold;
+    }
+    span {
+      font-weight: bolder;
+    }
   }
 }
 
 @media screen and (max-width: 760px) {
-  .main-img {
-    animation-name: mergeIn;
-    animation-duration: 1s;
+  .home {
+    border: 2px solid ivory;
+
+    height: 100vh;
+  }
+  .main-logo {
+    animation-name: bouncy;
+    animation-duration: 1.5s;
     animation-fill-mode: both;
-    animation-iteration-count: 1;
+    animation-iteration-count: infinite;
     animation-direction: alternate;
     animation-timing-function: linear;
+    font-weight: bolder;
+    font-size: 12vw !important;
   }
   .enter-msg::before {
     content: 'Tap to Enter';
   }
-  .stats-block {
-    border: 2px solid whitesmoke;
-    padding: 40px;
-    margin-bottom: 15px;
-    animation-name: mergeIn;
-    animation-duration: 1s;
+
+  .stats {
+    text-align: center;
+    font-size: 20pt !important;
 
     p {
       font-weight: bold;
-      font-size: 16pt;
+    }
+    span {
+      font-weight: bolder;
     }
   }
 }

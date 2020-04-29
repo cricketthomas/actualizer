@@ -13,9 +13,9 @@
             </small>
             <div class="is-flex">
                 <b-select v-model="sentiment_type" size="is-small">
-                  <option value="compound" label="compound"></option>
-                  <option value="positive" label="positive"></option>
-                  <option value="negative" label="negative"></option>
+                  <option value="compound" label="compound">compound</option>
+                  <option value="positive" label="positive">positive</option>
+                  <option value="negative" label="negative">negative</option>
                 </b-select>
               <b-button @click="sentiment()" id="sentiment-btn" size="is-small" class="is-info">Get Setiment</b-button>
             </div>
@@ -40,9 +40,9 @@
             :type="{ 'is-danger': hasError }"
             :message="[{ 'The chart data selection cannot be null': hasError }]">
             <b-select placeholder="select a timeseries metric" v-model="data_selection" expanded size="is-small">
-              <option value="month" label="month"></option>
-              <option value="day" label="day"></option>
-              <option value="hour" label="hour"></option>
+              <option value="month" label="month">month</option>
+              <option value="day" label="day">day</option>
+              <option value="hour" label="hour">hour</option>
               <option v-show="analytics.sentiment.likeAggregate.length > 0" value="likes" label="likes"></option>
             </b-select>
           </b-field>

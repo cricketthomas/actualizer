@@ -6,7 +6,7 @@ var countUp = function (finalVal, ref) {
         } else {
             clearInterval(finalVal);
         }
-    }, 0.1);
+    }, 1000/ finalVal);
 };
 
 export default countUp;
