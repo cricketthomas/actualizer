@@ -15,7 +15,7 @@
   ],
   "start_url": "/dashboard/search",
   "display": "standalone",
-  "scope":"https://actualizer-dev.azurewebsites.net/",
+  "scope":"https://actualizer.azurewebsites.net/",
   "background_color": "#1f2424",
   "theme_color": "#1f2424",
   "orientation": "portrait"
