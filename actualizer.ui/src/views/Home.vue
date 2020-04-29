@@ -32,6 +32,9 @@
               </p>
             </div>
           </div>
+          <div v-else class="loading-text has-text-centered is-flex main-body">
+            <h2 class="title is-3">loading search stats<span>.</span><span>.</span><span>.</span></h2>
+          </div>
         </div>
       </section>
     </router-link>
@@ -77,6 +80,40 @@ export default {
   }
   to {
     transform: translateY(10px);
+  }
+}
+
+@keyframes blink {
+  from {
+    opacity: 0.1;
+  }
+}
+div.loading-text {
+      display: inline-block;
+  span:nth-child(1) {
+    animation-name: blink;
+    animation-duration: .66s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-timing-function: linear;
+
+  }
+  span:nth-child(2) {
+    animation-name: blink;
+    animation-duration: .8s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-timing-function: linear;
+  }
+  span:nth-child(3) {
+    animation-name: blink;
+    animation-duration: 1s;
+    animation-fill-mode: both;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-timing-function: linear;
   }
 }
 
