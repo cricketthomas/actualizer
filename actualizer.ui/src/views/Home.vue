@@ -13,18 +13,17 @@
             </div>
           </div>
         </div>
-        <div class="hero-body ">
+        <div class="hero-body">
           <div v-if="stats">
             <div class="columns has-text-centered is-flex main-body">
               <p class="title is-3 column is-3 stats">
                 Total Searches: <span ref="totalsearches"> {{ countUp(stats.totalSearches, 'totalsearches') }} </span>
               </p>
-              <p class="title is-3 column is-3 stats" v-if="stats['totalCommentsSearched']">
+              <p class="title is-3 column is-3 stats">
                 Total Comments: <span> {{ stats.totalCommentsSearched }} </span>
               </p>
             </div>
-
-            <div class="columns  has-text-centered is-flex main-body" v-if="stats">
+            <div class="columns  has-text-centered is-flex main-body">
               <p class="title is-3 column is-3 stats">
                 Keywords Extracted: <span>{{ stats.keywordsExtracted }} </span>
               </p>

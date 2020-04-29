@@ -40,6 +40,7 @@ const getters = {
     results(state) {
         return state.results;
     },
+    video_id: (state) => `https://www.youtube.com/watch?v=${state.results.metadata.video_id}&google_comment_id=`
 };
 
 export default {

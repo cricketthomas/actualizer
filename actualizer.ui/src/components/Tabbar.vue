@@ -29,10 +29,7 @@
 
 <script>
 export default {
-  name: 'Tabbar',
-  data() {
-    return {};
-  }
+  name: 'Tabbar'
 };
 </script>
 <style lang="scss">

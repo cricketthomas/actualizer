@@ -7,11 +7,11 @@
         <aside class="column is-2 is-narrow-mobile is-fullheight section is-hidden-mobile is-hidden-touch">
           <p class="menu-label">Navigation</p>
           <ul class="menu-list">
-            <li>
+            <!-- <li>
               <router-link to="/" exact>
                 <span class="icon"> <i class="fa fa-home"></i> </span>Home
               </router-link>
-            </li>
+            </li> -->
             <li>
               <router-link to="search">
                 <span class="icon">

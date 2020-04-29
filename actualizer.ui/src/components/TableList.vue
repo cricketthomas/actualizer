@@ -8,7 +8,7 @@
         <section>
         <b-table
         :data="filteredComments" ref="table"  narrowed :mobile-cards="true" 
-        @click="(row, index) => $buefy.dialog.alert({ message:`${row.text}`,confirmText: 'close', trapFocus: true, canCancel: ['escape','outside']})"
+        @click="(row, index) => $buefy.dialog.alert({ message:`${row.text} <br> <a href='${video_id}${row.commentId}' target='_blank'>view on video page<a/>`, confirmText: 'dismiss', trapFocus: true, canCancel: ['escape','outside']})"
         :paginated="isPaginated" :per-page="perPage" :current-page.sync="currentPage" :pagination-simple="isPaginationSimple" :pagination-position="paginationPosition"
         :default-sort-direction="defaultSortDirection" :sort-icon="sortIcon" :sort-icon-size="sortIconSize"      
         aria-next-label="Next page" aria-previous-label="Previous page" aria-page-label="Page" aria-current-label="Current page">
@@ -73,7 +73,8 @@ export default {
     },
 
     ...mapGetters({
-      results: 'results'
+      results: 'results',
+      video_id: 'video_id'
     }),
     ...mapState({
       user: 'user',

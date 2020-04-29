@@ -31,7 +31,7 @@
             <b-select v-model="chart_type" expanded size="is-small">
               <option value="area" selected>Area</option>
               <option value="line">Line</option>
-              <option value="bubble">Bubble</option>
+              <!-- <option value="bubble">Bubble</option> -->
             </b-select>
           </b-field>
           <b-field

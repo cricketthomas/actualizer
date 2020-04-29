@@ -35,7 +35,7 @@ axiosInstance.interceptors.response.use(
     let specialMessage = '';
     switch (errorCode) {
       case 400:
-        specialMessage = 'is that the right video id..(error YG 400)';
+        specialMessage = 'is that the right video id..(error 400)';
         break;
       case 500:
         specialMessage = 'somethings going down with my code on the backend..(error 500)';
@@ -45,6 +45,9 @@ axiosInstance.interceptors.response.use(
         break;
       case 403:
         specialMessage = "you don't have permissions to do that..(error 403)";
+        break;
+        case 415:
+      specialMessage = "You dont have any comments to do analysis on! (error 415)";
         break;
       default:
         specialMessage = `${error}`;
