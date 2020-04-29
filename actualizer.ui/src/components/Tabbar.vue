@@ -39,6 +39,6 @@ export default {
   border-bottom-left-radius: 0 !important;
 }
 .items {
-  margin-bottom: .4rem;
+  margin-bottom: .8rem;
 }
 </style>

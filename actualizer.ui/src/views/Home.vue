@@ -1,10 +1,10 @@
 <template>
   <div class="home">
-    <router-link to="dashboard/search">
-      <section class="is-fullheight" style="transform: translateY(50%);">
-        <div class="hero-head">
+    <section class="is-fullheight main-header">
+      <div class="hero-body">
+        <router-link to="dashboard/search">
           <div class="container has-text-centered">
-            <div class="is-flex has-centered-text main-header">
+            <div class="is-flex has-centered-text main-body">
               <h1 class="main-logo title is-1">Actualizer</h1>
             </div>
             <div>
@@ -12,8 +12,6 @@
               <small class="enter-msg"></small>
             </div>
           </div>
-        </div>
-        <div class="hero-body">
           <div v-if="stats">
             <div class="columns has-text-centered is-flex main-body">
               <p class="title is-3 column is-3 stats">
@@ -35,9 +33,9 @@
           <div v-else class="loading-text has-text-centered is-flex main-body">
             <h2 class="title is-3">loading search stats<span>.</span><span>.</span><span>.</span></h2>
           </div>
-        </div>
-      </section>
-    </router-link>
+        </router-link>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -60,15 +58,13 @@ export default {
 </script>
 <style lang="scss" scoped>
 .home {
-  border: 2px solid ivory;
-  height: 100vh;
+  height: 2000px;
   font-family: 'Courier New', Courier, monospace;
   background-color: #1f2424 !important;
 }
 
 .main-header {
-  display: flex;
-  justify-content: center;
+  transform: translateY(10rem);
 }
 .main-body {
   display: flex;
@@ -89,19 +85,18 @@ export default {
   }
 }
 div.loading-text {
-      display: inline-block;
+  display: inline-block;
   span:nth-child(1) {
     animation-name: blink;
-    animation-duration: .66s;
+    animation-duration: 0.66s;
     animation-fill-mode: forwards;
     animation-iteration-count: infinite;
     animation-direction: alternate;
     animation-timing-function: linear;
-
   }
   span:nth-child(2) {
     animation-name: blink;
-    animation-duration: .8s;
+    animation-duration: 0.8s;
     animation-fill-mode: forwards;
     animation-iteration-count: infinite;
     animation-direction: alternate;
@@ -144,11 +139,6 @@ div.loading-text {
 }
 
 @media screen and (max-width: 760px) {
-  .home {
-    border: 2px solid ivory;
-
-    height: 100vh;
-  }
   .main-logo {
     animation-name: bouncy;
     animation-duration: 1.5s;
