@@ -117,7 +117,8 @@ namespace actualizer.Controllers {
                     text = c.text,
                     language = c.language,
                     publishedAt = c.publishedAt,
-                    likeCount = c.likeCount
+                    likeCount = c.likeCount,
+                    commentId = c.commentId
                 }).ToList());
 
                 int sum = obj.Sum(s => s.count);
