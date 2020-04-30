@@ -5,7 +5,7 @@ $background-nav-color: #1f2424;
 #app {
   //max-width: 100%;
   //max-height: 100%;
-  overflow-x: hidden;
+  overflow-x: hidden !important;
   overflow-y: hidden;
 }
 
@@ -38,15 +38,6 @@ body {
   border-bottom-left-radius: 0px !important;
   border-bottom-right-radius: 0px !important;
   border-top: transparent #1f2424 200px !important; //hack, currently theres some overflow.
-}
-
-.loading {
-  backdrop-filter: blur(1px);
-  background-color: rgba(8, 9, 9, 0.2);
-
-  .icon {
-    color: rgb(0, 0, 255);
-  }
 }
 
 .needs-spacing {

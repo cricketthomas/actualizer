@@ -1,46 +1,41 @@
 <template>
   <div class="home">
-    <section class="is-fullheight main-header">
-      <div class="hero-body">
-        <router-link to="dashboard/search">
-          <div class="container has-text-centered">
-            <div class="is-flex has-centered-text main-body">
-              <h1 class="main-logo title is-1">Actualizer</h1>
-            </div>
-            <div>
-              <h3 class="title is-5">search youtube comments in bulk.</h3>
-              <small class="enter-msg"></small>
-            </div>
+    <section class="container has-text-centered main-section">
+      <router-link to="dashboard/search">
+        <div class="is-flex has-centered-text main-body">
+          <h1 class="main-logo title is-1">Actualizer</h1>
+        </div>
+        <div>
+          <h3 class="title is-5">search youtube comments in bulk.</h3>
+          <small class="enter-msg"></small>
+        </div>
+        <div v-if="stats">
+          <div class="columns has-text-centered is-flex main-body">
+            <p class="title is-3 column is-3 stats">
+              Total Searches: <span ref="totalsearches"> {{ countUp(stats.totalSearches, 'totalsearches') }} </span>
+            </p>
+            <p class="title is-3 column is-3 stats">
+              Total Comments: <span> {{ stats.totalCommentsSearched }} </span>
+            </p>
           </div>
-          <div v-if="stats">
-            <div class="columns has-text-centered is-flex main-body">
-              <p class="title is-3 column is-3 stats">
-                Total Searches: <span ref="totalsearches"> {{ countUp(stats.totalSearches, 'totalsearches') }} </span>
-              </p>
-              <p class="title is-3 column is-3 stats">
-                Total Comments: <span> {{ stats.totalCommentsSearched }} </span>
-              </p>
-            </div>
-            <div class="columns  has-text-centered is-flex main-body">
-              <p class="title is-3 column is-3 stats">
-                Keywords Extracted: <span>{{ stats.keywordsExtracted }} </span>
-              </p>
-              <p class="title is-3 column is-3 stats">
-                Sentiment Extracted: <span> {{ stats.sentimentAPIRequests }} </span>
-              </p>
-            </div>
+          <div class="columns has-text-centered is-flex main-body">
+            <p class="title is-3 column is-3 stats">
+              Keywords Extracted: <span>{{ stats.keywordsExtracted }} </span>
+            </p>
+            <p class="title is-3 column is-3 stats">
+              Sentiment Extracted: <span> {{ stats.sentimentAPIRequests }} </span>
+            </p>
           </div>
-          <div v-else class="loading-text has-text-centered is-flex main-body">
-            <h2 class="title is-3">loading search stats<span>.</span><span>.</span><span>.</span></h2>
-          </div>
-        </router-link>
-      </div>
+        </div>
+        <div v-else class="loading-text has-text-centered is-flex main-body">
+          <h2 class="title is-3">loading search stats<span>.</span><span>.</span><span>.</span></h2>
+        </div>
+      </router-link>
     </section>
   </div>
 </template>
 
 <script>
-import api from '@/api/axios.js';
 export default {
   name: 'home',
   data() {
@@ -49,22 +44,22 @@ export default {
     };
   },
   created() {
-    api
-      .get('/stats')
-      .then(response => (this.stats = response.data))
+    fetch(`${process.env.VUE_APP_API_URL}/stats`)
+      .then(response => response.json())
+      .then(data => (this.stats = data))
       .catch(err => new Error(err));
   }
 };
 </script>
 <style lang="scss" scoped>
 .home {
-  height: 2000px;
+  height: 40rem;
+  margin-top: 150px;
+  overflow-y: hidden !important;
   font-family: 'Courier New', Courier, monospace;
-  background-color: #1f2424 !important;
 }
-
-.main-header {
-  transform: translateY(10rem);
+.main-section {
+  padding: 20px;
 }
 .main-body {
   display: flex;

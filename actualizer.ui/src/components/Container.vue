@@ -76,7 +76,6 @@
           </div>
           <div class="container">
               <b-loading class="loading" :is-full-page="isFullPage" :active.sync="loading.isLoading" :can-cancel="true">
-                <b-icon id="icon" pack="fas" icon="sync-alt" size="is-medium" custom-class="fa-spin"></b-icon>
               </b-loading>
             <router-view/>
           </div>
