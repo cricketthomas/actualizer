@@ -3,20 +3,21 @@
     <nav class="navbar is-fixed-bottom is-dark bottom" role="navigation">
       <div class="navbar-brand ">
         <router-link class="navbar-item is-expanded is-block has-text-centered" to="/dashboard/search">
-          <i class="fa fa-search fa-sm"></i>
-          <p class="fa-sm items">Search</p>
+          <i class="fa fa-search fa-md"></i>
+          <!-- <p class="fa-sm items">Search</p> -->
         </router-link>
         <router-link class="navbar-item is-expanded is-block has-text-centered" to="/dashboard/analytics">
-          <i class="fa fa-chart-area fa-sm"></i>
-          <p class="fa-sm items">Analyze</p>
+          <i class="fa fa-chart-area fa-md"></i>
+          <!-- <p class="fa-sm items">Analyze</p> -->
         </router-link>
         <router-link class="navbar-item is-expanded is-block has-text-centered" to="/dashboard/settings">
-          <i class="fa fa-cog fa-sm"></i>
-          <p class="fa-sm items">Settings</p>
+          <i class="fa fa-cog fa-md"></i>
+          <!-- <p class="fa-sm items">Settings</p> -->
         </router-link>
         <router-link class="navbar-item is-expanded is-block has-text-centered" to="/dashboard/about">
-          <i class="fa fa-sm fa-info"></i>
-          <p class="items fa-sm">About</p>
+          <i class="fa fa-md fa-info">
+          </i>
+          <!-- <p class="items fa-sm">About</p> -->
         </router-link>
         <!-- <router-link class="navbar-item is-expanded is-block has-text-centered" to="/" exact>
           <i class="fa fa-home"></i>
@@ -39,6 +40,6 @@ export default {
   border-bottom-left-radius: 0 !important;
 }
 .items {
-  margin-bottom: .85rem;
+  margin-bottom: .65rem;
 }
 </style>

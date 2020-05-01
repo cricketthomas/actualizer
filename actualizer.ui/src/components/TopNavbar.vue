@@ -8,7 +8,7 @@
           </router-link>
           <span class="navbar-item is-hidden-desktop" style="margin-top: .5rem">
             <b-dropdown aria-role="list">
-              <p class="tag is-danger" slot="trigger" role="button">
+              <p class="tag is-primary" slot="trigger" role="button">
                 <i class="fa fa-chevron-circle-down is-size-9"></i>
               </p>
               <b-dropdown-item v-if="authenticated" aria-role="listitem" @click="logout()">

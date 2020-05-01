@@ -6,8 +6,8 @@
         <small>
           Keywords uses Microsoft ML to remove stopwords, then groups the commonly used words based on a threshold set
           by you, the default is 2.
-          <br />
-          Use the 'Exclude' field to enter additional words you would like to exclude.
+          <!-- <br />
+          Use the 'Exclude' field to enter additional words you would like to exclude. -->
         </small>
         <div class="is-flex">
           <b-select v-model="selected_font" size="is-small">
