@@ -87,8 +87,11 @@ export default {
     },
     getIDFromURL(videoURL) {
       try{
-        this.query.videoId = videoURL.match('=([^;]*)&')[1];
-      } catch{
+        if(videoURL.includes('youtu.be')){
+          return this.query.videoId = videoURL.match('be/([^;]*)')[1];
+        }
+        return this.query.videoId = videoURL.match('=([^;]*)&')[1];
+      } catch {
         throw new Error("Invalid Yotube URL");
       }
     }
